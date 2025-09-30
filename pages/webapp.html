@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthApp Web App Mockup</title>
+    <link rel="stylesheet" href="../styles/styles-webapp.css">
+</head>
+<body>
+    <div id="nav-placeholder"></div>
+    <script src="../scripts/include-nav.js"></script>
+    <main class="webapp-page">
+        <div class="mobile-container">
+            <!-- Overview Tab -->
+            <section class="overview" style="display:block;">
+                <h2 class="mobile-header">Overview</h2>
+                <div class="result-card">
+                    <span class="result-icon success">&#10003;</span>
+                    <span>Results – all well</span>
+                </div>
+                <div class="result-card">
+                    <span class="result-icon error">&#9888;</span>
+                    <span>Results – not well</span>
+                </div>
+                <div style="margin-top:16px; color:#aaa;">No test booked yet</div>
+            </section>
+
+            <!-- Results Tab -->
+            <section class="overview" style="display:none;">
+                <h2 class="mobile-header">Results</h2>
+                <div class="result-card">
+                    <span class="result-icon success">&#10003;</span>
+                    <span>Your test results are normal.</span>
+                </div>
+                <div class="result-card">
+                    <span class="result-icon error">&#9888;</span>
+                    <span>Your test results indicate issues.</span>
+                </div>
+                <div style="margin-top:12px;">
+                    <button class="btn-primary">Book an appointment with a local pharmacist</button>
+                </div>
+            </section>
+
+            <!-- Clinic Walk-in Tab -->
+            <section style="padding:16px; display:none;">
+                <h2 class="mobile-header">Clinic Walk-in</h2>
+                <div class="phlebotomist-list">
+                    <div class="phleb-card">
+                        <div class="phleb-avatar">A</div>
+                        <div>
+                            <div><strong>Auto-assign phlebotomist</strong></div>
+                            <div style="color:#888; font-size:13px;">Available now</div>
+                        </div>
+                    </div>
+                    <div class="phleb-card">
+                        <div class="phleb-avatar">J</div>
+                        <div>
+                            <div><strong>Jane Doe</strong></div>
+                            <div style="color:#888; font-size:13px;">Available 10am–2pm</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn-primary">Pay & Confirm Collection</button>
+            </section>
+
+            <!-- Test Package Confirmation Tab -->
+            <section class="test-confirm" style="display:none;">
+                <h2 class="mobile-header">Test Package Confirmation</h2>
+                <div style="margin-bottom:12px;">Do you have symptoms?</div>
+                <div class="test-card">
+                    <h3>Comprehensive Blood Test</h3>
+                    <p>Includes CBC, Lipids, Glucose, and more.</p>
+                    <div class="price">$99</div>
+                    <button class="btn-primary">Confirm & Proceed to Collection</button>
+                </div>
+            </section>
+
+            <!-- Bottom Navigation Tabs (static) -->
+            <nav class="bottom-nav">
+                <a class="active">Overview</a>
+                <a>Results</a>
+                <a>Clinic Walk-in</a>
+                <a>Profile</a>
+            </nav>
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 HealthApp. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
