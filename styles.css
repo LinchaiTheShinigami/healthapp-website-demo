@@ -20,31 +20,26 @@ nav {
     color: #fff;
     text-decoration: none;
 }
+/* Navigation Bar Styles */
 .nav-links {
     list-style: none;
     display: flex;
-    /* About Page Styles */
-    .about-page {
     gap: 1.5rem;
     margin: 0;
     padding: 0;
 }
 nav .container {
-    .about-page h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    .team-section {
 }
 .nav-links a {
-    .team-photos {
     color: #fff;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s;
 }
 .nav-links a:hover {
-    .photo-placeholder {
     color: #cce0ff;
 }
 .hero {
@@ -58,29 +53,69 @@ nav .container {
     margin-bottom: 1rem;
 }
 .hero p {
-    .photo-caption {
     font-size: 1.2rem;
     margin-bottom: 2rem;
 }
 .cta-btn {
     background: #fff;
-    @media (max-width: 700px) {
-         .team-photos {
-              flex-direction: column;
-              gap: 1rem;
-         }
-         .photo-placeholder {
-              width: 90px;
-              height: 90px;
-              font-size: 0.9rem;
-         }
-    }
     color: #2d6cdf;
     padding: 0.75rem 2rem;
     border-radius: 25px;
     text-decoration: none;
     font-weight: bold;
     transition: background 0.2s, color 0.2s;
+}
+/* About Page Styles */
+.about-page {
+    padding: 3rem 0;
+    background: #fff;
+    min-height: 60vh;
+    text-align: center;
+}
+.about-page h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+.team-section {
+    margin-top: 2.5rem;
+}
+.team-photos {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+.photo-placeholder {
+    width: 120px;
+    height: 120px;
+    background: #e0e7ef;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    color: #6c7a89;
+    box-shadow: 0 2px 8px rgba(44,108,223,0.08);
+    margin-bottom: 0.5rem;
+}
+.photo-caption {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    color: #222;
+}
+@media (max-width: 700px) {
+    .team-photos {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .photo-placeholder {
+        width: 90px;
+        height: 90px;
+        font-size: 0.9rem;
+    }
 }
 .cta-btn:hover {
     background: #2d6cdf;
