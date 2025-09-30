@@ -1,3 +1,6 @@
+/* ==========================
+   ABOUT PAGE STYLES
+   ========================== */
 body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -20,7 +23,6 @@ nav {
     color: #fff;
     text-decoration: none;
 }
-/* Navigation Bar Styles */
 .nav-links {
     list-style: none;
     display: flex;
@@ -42,30 +44,6 @@ nav .container {
 .nav-links a:hover {
     color: #cce0ff;
 }
-.hero {
-    background: linear-gradient(120deg, #2d6cdf 0%, #6ec6ff 100%);
-    color: #fff;
-    padding: 5rem 0 3rem 0;
-    text-align: center;
-}
-.hero h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-}
-.hero p {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-}
-.cta-btn {
-    background: #fff;
-    color: #2d6cdf;
-    padding: 0.75rem 2rem;
-    border-radius: 25px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background 0.2s, color 0.2s;
-}
-/* About Page Styles */
 .about-page {
     padding: 3rem 0;
     background: #fff;
@@ -106,31 +84,6 @@ nav .container {
     font-size: 0.95rem;
     color: #222;
 }
-@media (max-width: 700px) {
-    .team-photos {
-        flex-direction: column;
-        gap: 1rem;
-    }
-    .photo-placeholder {
-        width: 90px;
-        height: 90px;
-        font-size: 0.9rem;
-    }
-}
-.cta-btn:hover {
-    background: #2d6cdf;
-    color: #fff;
-    border: 1px solid #fff;
-}
-.about {
-    padding: 3rem 0;
-    background: #fff;
-    text-align: center;
-}
-.about h2 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-}
 footer {
     background: #222;
     color: #fff;
@@ -144,10 +97,16 @@ footer {
         flex-direction: column;
         gap: 0.5rem;
     }
-    .hero h1 {
-        font-size: 2rem;
-    }
-    .about h2 {
+    .about-page h1 {
         font-size: 1.3rem;
+    }
+    .team-photos {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .photo-placeholder {
+        width: 90px;
+        height: 90px;
+        font-size: 0.9rem;
     }
 }
