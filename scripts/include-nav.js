@@ -5,7 +5,7 @@ function getNavPath() {
   // If at root (e.g. /index.html), use 'snippets/nav.html'
   // If in subfolder (e.g. /pages/about.html), use '../snippets/nav.html'
   if (path.endsWith('index.html') || path === '/' || path === '/index.html') {
-    return 'snippets/nav.html';
+    return './snippets/nav.html';
   } else {
     return '../snippets/nav.html';
   }
