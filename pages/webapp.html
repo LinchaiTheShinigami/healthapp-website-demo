@@ -92,7 +92,11 @@
                     </section>
 
                     <section id="screen-home" class="mobile-screen">
-                        <h2 class="mobile-header">Home</h2>
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+                            <h2 class="mobile-header" style="margin:0;">Home</h2>
+                            <div style="flex:1;"></div>
+                            <button class="btn-secondary" data-target="screen-login" style="margin-left:16px; min-width:70px;">Logout</button>
+                        </div>
                         <div style="margin:12px 0;">Welcome to your HealthApp home screen.</div>
                         <div style="display:flex; gap:8px; flex-wrap:wrap;">
                             <button class="btn-primary" data-target="screen-book">Book a test</button>
@@ -102,9 +106,9 @@
 
                     <nav class="bottom-nav">
                         <a data-target="screen-home">Home</a>
-                        <a data-target="screen-review">Orders</a>
                         <a data-target="screen-book">Book</a>
-                        <a data-target="screen-login">Login</a>
+                        <a data-target="screen-review">Orders</a>
+                        <a data-target="screen-goals">Goals</a>
                     </nav>
                 </div>
                 <div class="device-home-indicator"></div>
