@@ -12,77 +12,154 @@
     <main class="webapp-page">
     <h1 class="webapp-hero">Mobile App Demo</h1>
         <div class="mobile-container">
-            <!-- Overview Tab -->
-            <section class="overview" style="display:block;">
-                <h2 class="mobile-header">Overview</h2>
-                <div class="result-card">
-                    <span class="result-icon success">&#10003;</span>
-                    <span>Results – all well</span>
-                </div>
-                <div class="result-card">
-                    <span class="result-icon error">&#9888;</span>
-                    <span>Results – not well</span>
-                </div>
-                <div style="margin-top:16px; color:#aaa;">No test booked yet</div>
-            </section>
+            <!-- New mobile screens for flow: Login -> Goals -> Book -> Review -> Payment -> Home -->
 
-            <!-- Results Tab -->
-            <section class="overview" style="display:none;">
-                <h2 class="mobile-header">Results</h2>
-                <div class="result-card">
-                    <span class="result-icon success">&#10003;</span>
-                    <span>Your test results are normal.</span>
+            <!-- Login Screen -->
+            <section id="screen-login" class="mobile-screen" style="display:block; padding:16px;">
+                <h2 class="mobile-header">Login</h2>
+                <div style="margin-bottom:12px;">
+                    <input type="text" placeholder="Email" style="width:100%; padding:8px; margin-bottom:8px;" />
+                    <input type="password" placeholder="Password" style="width:100%; padding:8px;" />
                 </div>
-                <div class="result-card">
-                    <span class="result-icon error">&#9888;</span>
-                    <span>Your test results indicate issues.</span>
-                </div>
-                <div style="margin-top:12px;">
-                    <button class="btn-primary">Book an appointment with a local pharmacist</button>
+                <div style="display:flex; gap:8px;">
+                    <button class="btn-secondary" data-target="screen-home">Skip Login</button>
+                    <button class="btn-primary" data-target="screen-goals">Log in</button>
                 </div>
             </section>
 
-            <!-- Clinic Walk-in Tab -->
-            <section style="padding:16px; display:none;">
-                <h2 class="mobile-header">Clinic Walk-in</h2>
-                <div class="phlebotomist-list">
-                    <div class="phleb-card">
-                        <div class="phleb-avatar">A</div>
-                        <div>
-                            <div><strong>Auto-assign phlebotomist</strong></div>
-                            <div style="color:#888; font-size:13px;">Available now</div>
-                        </div>
-                    </div>
-                    <div class="phleb-card">
-                        <div class="phleb-avatar">J</div>
-                        <div>
-                            <div><strong>Jane Doe</strong></div>
-                            <div style="color:#888; font-size:13px;">Available 10am–2pm</div>
-                        </div>
-                    </div>
+            <!-- Goals Screen -->
+            <section id="screen-goals" class="mobile-screen" style="display:none; padding:16px;">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+                    <button class="btn-back">Back</button>
+                    <h2 class="mobile-header" style="margin:0;">Goals</h2>
                 </div>
-                <button class="btn-primary">Pay & Confirm Collection</button>
+                <p>Select your primary health goal:</p>
+                <div style="display:flex; flex-direction:column; gap:8px; margin:12px 0;">
+                    <button class="pill">Lose weight</button>
+                    <button class="pill">Improve fitness</button>
+                    <button class="pill">Manage cholesterol</button>
+                </div>
+                <button class="btn-primary" data-target="screen-book">Next</button>
             </section>
 
-            <!-- Test Package Confirmation Tab -->
-            <section class="test-confirm" style="display:none;">
-                <h2 class="mobile-header">Test Package Confirmation</h2>
-                <div style="margin-bottom:12px;">Do you have symptoms?</div>
+            <!-- Book a Test Screen -->
+            <section id="screen-book" class="mobile-screen" style="display:none; padding:16px;">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+                    <button class="btn-back">Back</button>
+                    <h2 class="mobile-header" style="margin:0;">Book a Test</h2>
+                </div>
                 <div class="test-card">
                     <h3>Comprehensive Blood Test</h3>
                     <p>Includes CBC, Lipids, Glucose, and more.</p>
                     <div class="price">$99</div>
-                    <button class="btn-primary">Confirm & Proceed to Collection</button>
+                </div>
+                <div style="margin-top:12px; display:flex; gap:8px;">
+                    <button class="btn-secondary" data-target="screen-home">Cancel</button>
+                    <button class="btn-primary" data-target="screen-review">Review Order</button>
                 </div>
             </section>
 
-            <!-- Bottom Navigation Tabs (static) -->
+            <!-- Review Order Screen -->
+            <section id="screen-review" class="mobile-screen" style="display:none; padding:16px;">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+                    <button class="btn-back">Back</button>
+                    <h2 class="mobile-header" style="margin:0;">Review Order</h2>
+                </div>
+                <div style="margin-bottom:12px;">
+                    <div><strong>Comprehensive Blood Test</strong></div>
+                    <div style="color:#666;">Quantity: 1</div>
+                    <div style="margin-top:8px;">Total: <strong>$99</strong></div>
+                </div>
+                <div style="display:flex; gap:8px;">
+                    <button class="btn-secondary" data-target="screen-book">Edit</button>
+                    <button class="btn-primary" data-target="screen-payment">Proceed to Payment</button>
+                </div>
+            </section>
+
+            <!-- Payment Screen -->
+            <section id="screen-payment" class="mobile-screen" style="display:none; padding:16px;">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+                    <button class="btn-back">Back</button>
+                    <h2 class="mobile-header" style="margin:0;">Payment</h2>
+                </div>
+                <div style="margin-bottom:12px;">
+                    <input type="text" placeholder="Card number" style="width:100%; padding:8px; margin-bottom:8px;" />
+                    <div style="display:flex; gap:8px;"><input type="text" placeholder="MM/YY" style="flex:1; padding:8px;" /><input type="text" placeholder="CVC" style="width:80px; padding:8px;" /></div>
+                </div>
+                <div style="display:flex; gap:8px;">
+                    <button class="btn-secondary" data-target="screen-review">Back to review</button>
+                    <button class="btn-primary" data-target="screen-home">Pay $99</button>
+                </div>
+            </section>
+
+            <!-- Home Screen -->
+            <section id="screen-home" class="mobile-screen" style="display:none; padding:16px;">
+                <h2 class="mobile-header">Home</h2>
+                <div style="margin:12px 0;">Welcome to your HealthApp home screen.</div>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                    <button class="btn-primary" data-target="screen-book">Book a test</button>
+                    <button class="btn-secondary" data-target="screen-goals">Update goals</button>
+                </div>
+            </section>
+
+            <!-- Static Bottom Navigation (kept for parity) -->
             <nav class="bottom-nav">
-                <a class="active">Overview</a>
-                <a>Results</a>
-                <a>Clinic Walk-in</a>
-                <a>Profile</a>
+                <a data-target="screen-home">Home</a>
+                <a data-target="screen-review">Orders</a>
+                <a data-target="screen-book">Book</a>
+                <a data-target="screen-login">Profile</a>
             </nav>
+
+            <!-- Inline navigation script to handle simple in-page navigation and back history -->
+            <script>
+                (function(){
+                    const screens = Array.from(document.querySelectorAll('.mobile-screen'));
+                    const bottomLinks = Array.from(document.querySelectorAll('.bottom-nav [data-target]'));
+                    let historyStack = [];
+
+                    function showScreen(id, pushHistory=true){
+                        const target = document.getElementById(id);
+                        if(!target) return;
+                        const current = screens.find(s => s.style.display !== 'none');
+                        if(current && pushHistory){
+                            historyStack.push(current.id);
+                        }
+                        screens.forEach(s => s.style.display = 'none');
+                        target.style.display = 'block';
+                        // update back button visibility
+                        document.querySelectorAll('.btn-back').forEach(b => {
+                            b.style.display = historyStack.length ? 'inline-block' : 'none';
+                        });
+                    }
+
+                    // Attach data-target buttons
+                    document.body.addEventListener('click', function(e){
+                        const el = e.target.closest('[data-target]');
+                        if(!el) return;
+                        const target = el.getAttribute('data-target');
+                        if(target) showScreen(target);
+                    });
+
+                    // Back buttons
+                    document.body.addEventListener('click', function(e){
+                        if(!e.target.closest('.btn-back')) return;
+                        const prev = historyStack.pop();
+                        if(prev) showScreen(prev, false);
+                    });
+
+                    // Bottom nav links
+                    bottomLinks.forEach(link => {
+                        link.addEventListener('click', e => {
+                            const tgt = link.getAttribute('data-target');
+                            if(tgt) showScreen(tgt);
+                        });
+                    });
+
+                    // initial state: hide all but login (or home if you prefer)
+                    // ensure back buttons are hidden initially
+                    document.querySelectorAll('.btn-back').forEach(b => b.style.display = 'none');
+                })();
+            </script>
         </div>
     </main>
     <footer>
