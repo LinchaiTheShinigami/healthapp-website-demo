@@ -10,154 +10,180 @@
     <div id="nav-placeholder"></div>
     <script src="../scripts/include-nav.js"></script>
     <main class="webapp-page">
-    <h1 class="webapp-hero">Mobile App Demo</h1>
+        <h1 class="webapp-hero">Mobile App Demo</h1>
         <div class="mobile-container">
-            <!-- New mobile screens for flow: Login -> Goals -> Book -> Review -> Payment -> Home -->
+            <div class="mobile-frame">
+                <div class="device-notch">
+                    <span class="device-speaker"></span>
+                    <span class="device-camera"></span>
+                </div>
+                <div class="device-screen">
+                    <section id="screen-login" class="mobile-screen is-active">
+                        <h2 class="mobile-header">Login</h2>
+                        <div style="margin-bottom:12px;">
+                            <input type="text" placeholder="Email" style="width:100%; padding:8px; margin-bottom:8px;" />
+                            <input type="password" placeholder="Password" style="width:100%; padding:8px;" />
+                        </div>
+                        <div style="display:flex; gap:8px;">
+                            <button class="btn-secondary" data-target="screen-home">Skip Login</button>
+                            <button class="btn-primary" data-target="screen-goals">Log in</button>
+                        </div>
+                    </section>
 
-            <!-- Login Screen -->
-            <section id="screen-login" class="mobile-screen" style="display:block; padding:16px;">
-                <h2 class="mobile-header">Login</h2>
-                <div style="margin-bottom:12px;">
-                    <input type="text" placeholder="Email" style="width:100%; padding:8px; margin-bottom:8px;" />
-                    <input type="password" placeholder="Password" style="width:100%; padding:8px;" />
-                </div>
-                <div style="display:flex; gap:8px;">
-                    <button class="btn-secondary" data-target="screen-home">Skip Login</button>
-                    <button class="btn-primary" data-target="screen-goals">Log in</button>
-                </div>
-            </section>
+                    <section id="screen-goals" class="mobile-screen">
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+                            <button class="btn-back">Back</button>
+                            <h2 class="mobile-header" style="margin:0;">Goals</h2>
+                        </div>
+                        <p>Select your primary health goal:</p>
+                        <div style="display:flex; flex-direction:column; gap:8px; margin:12px 0;">
+                            <button class="pill" data-target="screen-book">Lose weight</button>
+                            <button class="pill" data-target="screen-book">Improve fitness</button>
+                            <button class="pill" data-target="screen-book">Manage cholesterol</button>
+                        </div>
+                        <button class="btn-primary" data-target="screen-book">Skip To Booking</button>
+                    </section>
 
-            <!-- Goals Screen -->
-            <section id="screen-goals" class="mobile-screen" style="display:none; padding:16px;">
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
-                    <button class="btn-back">Back</button>
-                    <h2 class="mobile-header" style="margin:0;">Goals</h2>
-                </div>
-                <p>Select your primary health goal:</p>
-                <div style="display:flex; flex-direction:column; gap:8px; margin:12px 0;">
-                    <button class="pill">Lose weight</button>
-                    <button class="pill">Improve fitness</button>
-                    <button class="pill">Manage cholesterol</button>
-                </div>
-                <button class="btn-primary" data-target="screen-book">Next</button>
-            </section>
+                    <section id="screen-book" class="mobile-screen">
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+                            <button class="btn-back">Back</button>
+                            <h2 class="mobile-header" style="margin:0;">Book a Test</h2>
+                        </div>
+                        <div class="test-card">
+                            <h3>Comprehensive Blood Test</h3>
+                            <p>Includes CBC, Lipids, Glucose, and more.</p>
+                            <div class="price">$99</div>
+                        </div>
+                        <div style="margin-top:12px; display:flex; gap:8px;">
+                            <button class="btn-secondary" data-target="screen-home">Cancel</button>
+                            <button class="btn-primary" data-target="screen-review">Review Order</button>
+                        </div>
+                    </section>
 
-            <!-- Book a Test Screen -->
-            <section id="screen-book" class="mobile-screen" style="display:none; padding:16px;">
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
-                    <button class="btn-back">Back</button>
-                    <h2 class="mobile-header" style="margin:0;">Book a Test</h2>
-                </div>
-                <div class="test-card">
-                    <h3>Comprehensive Blood Test</h3>
-                    <p>Includes CBC, Lipids, Glucose, and more.</p>
-                    <div class="price">$99</div>
-                </div>
-                <div style="margin-top:12px; display:flex; gap:8px;">
-                    <button class="btn-secondary" data-target="screen-home">Cancel</button>
-                    <button class="btn-primary" data-target="screen-review">Review Order</button>
-                </div>
-            </section>
+                    <section id="screen-review" class="mobile-screen">
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+                            <button class="btn-back">Back</button>
+                            <h2 class="mobile-header" style="margin:0;">Review Order</h2>
+                        </div>
+                        <div style="margin-bottom:12px;">
+                            <div><strong>Comprehensive Blood Test</strong></div>
+                            <div style="color:#666;">Quantity: 1</div>
+                            <div style="margin-top:8px;">Total: <strong>$99</strong></div>
+                        </div>
+                        <div style="display:flex; gap:8px;">
+                            <button class="btn-secondary" data-target="screen-book">Edit</button>
+                            <button class="btn-primary" data-target="screen-payment">Proceed to Payment</button>
+                        </div>
+                    </section>
 
-            <!-- Review Order Screen -->
-            <section id="screen-review" class="mobile-screen" style="display:none; padding:16px;">
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
-                    <button class="btn-back">Back</button>
-                    <h2 class="mobile-header" style="margin:0;">Review Order</h2>
-                </div>
-                <div style="margin-bottom:12px;">
-                    <div><strong>Comprehensive Blood Test</strong></div>
-                    <div style="color:#666;">Quantity: 1</div>
-                    <div style="margin-top:8px;">Total: <strong>$99</strong></div>
-                </div>
-                <div style="display:flex; gap:8px;">
-                    <button class="btn-secondary" data-target="screen-book">Edit</button>
-                    <button class="btn-primary" data-target="screen-payment">Proceed to Payment</button>
-                </div>
-            </section>
+                    <section id="screen-payment" class="mobile-screen">
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+                            <button class="btn-back">Back</button>
+                            <h2 class="mobile-header" style="margin:0;">Payment</h2>
+                        </div>
+                        <div style="margin-bottom:12px;">
+                            <input type="text" placeholder="Card number" style="width:100%; padding:8px; margin-bottom:8px;" />
+                            <div style="display:flex; gap:8px;"><input type="text" placeholder="MM/YY" style="flex:1; padding:8px;" /><input type="text" placeholder="CVC" style="width:80px; padding:8px;" /></div>
+                        </div>
+                        <div style="display:flex; gap:8px;">
+                            <button class="btn-secondary" data-target="screen-review">Back to review</button>
+                            <button class="btn-primary" data-target="screen-home">Pay $99</button>
+                        </div>
+                    </section>
 
-            <!-- Payment Screen -->
-            <section id="screen-payment" class="mobile-screen" style="display:none; padding:16px;">
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
-                    <button class="btn-back">Back</button>
-                    <h2 class="mobile-header" style="margin:0;">Payment</h2>
-                </div>
-                <div style="margin-bottom:12px;">
-                    <input type="text" placeholder="Card number" style="width:100%; padding:8px; margin-bottom:8px;" />
-                    <div style="display:flex; gap:8px;"><input type="text" placeholder="MM/YY" style="flex:1; padding:8px;" /><input type="text" placeholder="CVC" style="width:80px; padding:8px;" /></div>
-                </div>
-                <div style="display:flex; gap:8px;">
-                    <button class="btn-secondary" data-target="screen-review">Back to review</button>
-                    <button class="btn-primary" data-target="screen-home">Pay $99</button>
-                </div>
-            </section>
+                    <section id="screen-home" class="mobile-screen">
+                        <h2 class="mobile-header">Home</h2>
+                        <div style="margin:12px 0;">Welcome to your HealthApp home screen.</div>
+                        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                            <button class="btn-primary" data-target="screen-book">Book a test</button>
+                            <button class="btn-secondary" data-target="screen-goals">Update goals</button>
+                        </div>
+                    </section>
 
-            <!-- Home Screen -->
-            <section id="screen-home" class="mobile-screen" style="display:none; padding:16px;">
-                <h2 class="mobile-header">Home</h2>
-                <div style="margin:12px 0;">Welcome to your HealthApp home screen.</div>
-                <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                    <button class="btn-primary" data-target="screen-book">Book a test</button>
-                    <button class="btn-secondary" data-target="screen-goals">Update goals</button>
+                    <nav class="bottom-nav">
+                        <a data-target="screen-home">Home</a>
+                        <a data-target="screen-review">Orders</a>
+                        <a data-target="screen-book">Book</a>
+                        <a data-target="screen-login">Login</a>
+                    </nav>
                 </div>
-            </section>
+                <div class="device-home-indicator"></div>
+            </div>
 
-            <!-- Static Bottom Navigation (kept for parity) -->
-            <nav class="bottom-nav">
-                <a data-target="screen-home">Home</a>
-                <a data-target="screen-review">Orders</a>
-                <a data-target="screen-book">Book</a>
-                <a data-target="screen-login">Profile</a>
-            </nav>
-
-            <!-- Inline navigation script to handle simple in-page navigation and back history -->
             <script>
                 (function(){
                     const screens = Array.from(document.querySelectorAll('.mobile-screen'));
                     const bottomLinks = Array.from(document.querySelectorAll('.bottom-nav [data-target]'));
                     let historyStack = [];
 
-                    function showScreen(id, pushHistory=true){
-                        const target = document.getElementById(id);
-                        if(!target) return;
-                        const current = screens.find(s => s.style.display !== 'none');
-                        if(current && pushHistory){
-                            historyStack.push(current.id);
-                        }
-                        screens.forEach(s => s.style.display = 'none');
-                        target.style.display = 'block';
-                        // update back button visibility
-                        document.querySelectorAll('.btn-back').forEach(b => {
-                            b.style.display = historyStack.length ? 'inline-block' : 'none';
+                    function getActiveScreen() {
+                        return screens.find(screen => screen.classList.contains('is-active'));
+                    }
+
+                    function setBackVisibility() {
+                        document.querySelectorAll('.btn-back').forEach(button => {
+                            button.style.display = historyStack.length ? 'inline-flex' : 'none';
                         });
                     }
 
-                    // Attach data-target buttons
-                    document.body.addEventListener('click', function(e){
-                        const el = e.target.closest('[data-target]');
-                        if(!el) return;
-                        const target = el.getAttribute('data-target');
-                        if(target) showScreen(target);
-                    });
+                    function showScreen(id, pushHistory = true) {
+                        const target = document.getElementById(id);
+                        if (!target || target.classList.contains('is-active')) {
+                            return;
+                        }
 
-                    // Back buttons
-                    document.body.addEventListener('click', function(e){
-                        if(!e.target.closest('.btn-back')) return;
-                        const prev = historyStack.pop();
-                        if(prev) showScreen(prev, false);
-                    });
+                        const current = getActiveScreen();
+                        if (current && pushHistory) {
+                            historyStack.push(current.id);
+                        }
 
-                    // Bottom nav links
-                    bottomLinks.forEach(link => {
-                        link.addEventListener('click', e => {
-                            const tgt = link.getAttribute('data-target');
-                            if(tgt) showScreen(tgt);
+                        screens.forEach(screen => {
+                            screen.classList.remove('is-active');
                         });
+
+                        target.classList.add('is-active');
+                        target.scrollTop = 0;
+                        setBackVisibility();
+                    }
+
+                    document.body.addEventListener('click', function(event) {
+                        const backButton = event.target.closest('.btn-back');
+                        if (backButton) {
+                            const previous = historyStack.pop();
+                            if (previous) {
+                                showScreen(previous, false);
+                            }
+                            setBackVisibility();
+                            return;
+                        }
+
+                        const trigger = event.target.closest('[data-target]');
+                        if (!trigger) {
+                            return;
+                        }
+
+                        const targetId = trigger.getAttribute('data-target');
+                        if (!targetId) {
+                            return;
+                        }
+
+                        const fromBottomNav = !!trigger.closest('.bottom-nav');
+                        if (fromBottomNav) {
+                            historyStack = [];
+                        }
+
+                        showScreen(targetId, !fromBottomNav);
+                        if (fromBottomNav) {
+                            setBackVisibility();
+                        }
                     });
 
-                    // initial state: hide all but login (or home if you prefer)
-                    // ensure back buttons are hidden initially
-                    document.querySelectorAll('.btn-back').forEach(b => b.style.display = 'none');
+                    bottomLinks.forEach(link => {
+                        link.addEventListener('click', event => event.preventDefault());
+                    });
+
+                    historyStack = [];
+                    setBackVisibility();
                 })();
             </script>
         </div>
