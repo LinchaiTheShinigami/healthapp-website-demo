@@ -164,7 +164,8 @@ input[type="password"]:focus {
 .mobile-frame {
     position: relative;
     width: min(360px, calc(100vw - 2rem));
-    height: clamp(640px, 90vh, 780px);
+    height: 65vh;
+    /* height: clamp(340px, 60vh, 780px); */
     padding: 70px 18px 34px;
     border-radius: 44px;
     background: linear-gradient(155deg, #0d111b, #1a2332);
