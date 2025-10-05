@@ -18,5 +18,15 @@ This is a simple, modern static website template for HealthApp. You can use this
 
 ---
 
+## Live Debuggging Experience
+Install Node.js (npm is bundled with this)
+> winget-install nodejs
+
+Globally install http-server (https://www.npmjs.com/package/http-server)
+> npm install --global http-server 
+
+Start the HTTP server (note it will serve your local ip and localhost, and open it on a browser)
+> http-server -o
+
 Feel free to customize the content and styles to fit your needs!
 # healthapp
