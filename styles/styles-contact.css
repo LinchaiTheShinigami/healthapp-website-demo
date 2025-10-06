@@ -4,8 +4,8 @@
 body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f8f9fa;
-    color: #222;
+    background: #f4f7f5; /* Light sage green */
+    color: #2a3d34; /* Dark sage green */
 }
 .container {
     width: 90%;
@@ -13,7 +13,7 @@ body {
     margin: 0 auto;
 }
 nav {
-    background: #2d6cdf;
+    background: #6a9e7c; /* Sage green */
     color: #fff;
     padding: 1rem 0;
 }
@@ -42,11 +42,11 @@ nav .container {
     transition: color 0.2s;
 }
 .nav-links a:hover {
-    color: #cce0ff;
+    color: #d9f2e6; /* Light sage green */
 }
 .contact-page {
     padding: 3rem 0;
-    background: #fff;
+    background: #e8f0eb; /* Light sage green */
     min-height: 60vh;
     text-align: center;
 }
@@ -57,10 +57,10 @@ nav .container {
 .contact-form {
     max-width: 420px;
     margin: 0 auto;
-    background: #f8f9fa;
+    background: #f4f7f5;
     padding: 2rem 2rem 1.5rem 2rem;
     border-radius: 16px;
-    box-shadow: 0 2px 16px rgba(44,108,223,0.08);
+    box-shadow: 0 2px 16px rgba(106, 158, 124, 0.08);
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
@@ -69,12 +69,12 @@ nav .container {
     font-weight: 500;
     margin-bottom: 0.3rem;
     text-align: left;
-    color: #2d6cdf;
+    color: #6a9e7c;
 }
 .contact-form input,
 .contact-form textarea {
     padding: 0.85rem 1rem;
-    border: 1px solid #cce0ff;
+    border: 1px solid #c8dcd1; /* Light sage border */
     border-radius: 8px;
     font-size: 1rem;
     font-family: inherit;
@@ -83,7 +83,7 @@ nav .container {
 }
 .contact-form input:focus,
 .contact-form textarea:focus {
-    border-color: #2d6cdf;
+    border-color: #6a9e7c;
     outline: none;
 }
 .contact-form textarea {
@@ -99,7 +99,7 @@ nav .container {
 }
 .cta-btn {
     background: #fff;
-    color: #2d6cdf;
+    color: #6a9e7c;
     padding: 0.75rem 2rem;
     border-radius: 25px;
     text-decoration: none;
@@ -107,12 +107,12 @@ nav .container {
     transition: background 0.2s, color 0.2s;
 }
 .cta-btn:hover {
-    background: #2d6cdf;
+    background: #6a9e7c;
     color: #fff;
     border: 1px solid #fff;
 }
 footer {
-    background: #222;
+    background: #2a3d34;
     color: #fff;
     text-align: center;
     padding: 1rem 0;

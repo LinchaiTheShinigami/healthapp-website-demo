@@ -1,15 +1,15 @@
 body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f8f9fa;
-    color: #222;
+    background: #f4f7f5; /* Light sage green */
+    color: #2a3d34; /* Dark sage green */
 }
 
 /* Webapp Hero Heading Style */
 .webapp-hero {
     font-size: 2.5rem;
     font-weight: bold;
-    color: #0b3f61;
+    color: #3a5a40; /* Sage green heading */
     text-align: center;
     margin: 2rem 0 1.5rem;
     letter-spacing: 0.5px;
@@ -22,10 +22,10 @@ body {
 }
 
 nav {
-    background: #2d6cdf;
+    background: #6a9e7c; /* Sage green */
     color: #fff;
     padding: 1rem 0;
-    box-shadow: 0 3px 12px rgba(24, 64, 145, 0.3);
+    box-shadow: 0 3px 12px rgba(106, 158, 124, 0.3);
 }
 
 .logo {
@@ -57,7 +57,7 @@ nav .container {
 }
 
 .nav-links a:hover {
-    color: #cce0ff;
+    color: #d9f2e6; /* Light sage green */
 }
 
 /* Buttons & Inputs */
@@ -77,26 +77,26 @@ nav .container {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #3b6df6, #2e53d9);
+    background: linear-gradient(135deg, #4a7a5a, #3a5a40); /* Sage green gradient */
     color: #fff;
     border: none;
-    box-shadow: 0 10px 20px rgba(59, 109, 246, 0.25);
+    box-shadow: 0 10px 20px rgba(58, 90, 64, 0.25);
 }
 
 .btn-primary:hover {
     transform: translateY(-1px);
-    box-shadow: 0 14px 26px rgba(59, 109, 246, 0.35);
+    box-shadow: 0 14px 26px rgba(58, 90, 64, 0.35);
 }
 
 .btn-secondary {
     background: #fff;
-    color: #3b6df6;
-    border: 1px solid rgba(59, 109, 246, 0.3);
-    box-shadow: 0 6px 14px rgba(20, 40, 80, 0.08);
+    color: #4a7a5a;
+    border: 1px solid rgba(74, 122, 90, 0.3);
+    box-shadow: 0 6px 14px rgba(42, 61, 52, 0.08);
 }
 
 .btn-secondary:hover {
-    background: rgba(59, 109, 246, 0.08);
+    background: rgba(74, 122, 90, 0.08);
 }
 
 .btn-back {
@@ -105,52 +105,52 @@ nav .container {
     justify-content: center;
     padding: 10px 14px;
     border-radius: 12px;
-    background: #e8edff;
-    color: #2e53d9;
+    background: #e8f0eb; /* Light sage green */
+    color: #3a5a40;
     border: none;
     font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 6px 14px rgba(46, 83, 217, 0.2);
+    box-shadow: 0 6px 14px rgba(58, 90, 64, 0.2);
     transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .btn-back:hover {
     transform: translateY(-1px);
-    box-shadow: 0 10px 20px rgba(46, 83, 217, 0.25);
+    box-shadow: 0 10px 20px rgba(58, 90, 64, 0.25);
 }
 
 .pill {
     padding: 10px 16px;
     border-radius: 999px;
-    border: 1px solid rgba(59, 109, 246, 0.35);
+    border: 1px solid rgba(74, 122, 90, 0.35);
     background: #fff;
-    color: #3b6df6;
+    color: #4a7a5a;
     font-weight: 600;
     cursor: pointer;
     transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .pill:hover {
-    background: rgba(59, 109, 246, 0.1);
-    box-shadow: 0 8px 18px rgba(59, 109, 246, 0.2);
+    background: rgba(74, 122, 90, 0.1);
+    box-shadow: 0 8px 18px rgba(74, 122, 90, 0.2);
 }
 
 input[type="text"],
 input[type="password"] {
-    border: 1px solid #d6dcef;
+    border: 1px solid #c8dcd1; /* Light sage border */
     border-radius: 12px;
     padding: 12px 14px;
     font-size: 0.95rem;
     background: #fff;
-    box-shadow: inset 0 1px 2px rgba(13, 17, 27, 0.05);
+    box-shadow: inset 0 1px 2px rgba(42, 61, 52, 0.05);
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 input[type="text"]:focus,
 input[type="password"]:focus {
     outline: none;
-    border-color: #3b6df6;
-    box-shadow: 0 0 0 3px rgba(59, 109, 246, 0.15);
+    border-color: #4a7a5a;
+    box-shadow: 0 0 0 3px rgba(74, 122, 90, 0.15);
 }
 
 /* Mobile App Mockup Styles */
@@ -210,7 +210,7 @@ input[type="password"]:focus {
 .device-screen {
     position: relative;
     width: 100%;
-    background: linear-gradient(180deg, #fdfdfd 0%, #f7f8fb 100%);
+    background: linear-gradient(180deg, #f4f7f5 0%, #e8f0eb 100%); /* Sage gradient */
     border-radius: 32px;
     box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
     display: flex;
@@ -247,11 +247,11 @@ input[type="password"]:focus {
 }
 
 .test-card {
-    background: #f0f3ff;
-    border: 1px solid rgba(59, 109, 246, 0.15);
+    background: #e8f0eb;
+    border: 1px solid rgba(74, 122, 90, 0.15);
     border-radius: 16px;
     padding: 16px 18px;
-    box-shadow: 0 12px 24px rgba(15, 40, 120, 0.12);
+    box-shadow: 0 12px 24px rgba(58, 90, 64, 0.12);
 }
 
 .test-card h3 {
@@ -267,7 +267,7 @@ input[type="password"]:focus {
 }
 
 .test-card .price {
-    color: #2e53d9;
+    color: #3a5a40;
     font-weight: 700;
     font-size: 1.05rem;
 }
@@ -279,8 +279,8 @@ input[type="password"]:focus {
     justify-content: space-between;
     gap: 12px;
     padding: 14px 24px 24px;
-    background: rgba(245, 247, 250, 0.96);
-    border-top: 1px solid rgba(13, 17, 27, 0.08);
+    background: rgba(244, 247, 245, 0.96);
+    border-top: 1px solid rgba(42, 61, 52, 0.08);
     border-radius: 0 0 28px 28px;
     backdrop-filter: blur(6px);
 }
@@ -288,7 +288,7 @@ input[type="password"]:focus {
 .bottom-nav a {
     flex: 1 1 0;
     text-align: center;
-    color: #3b6df6;
+    color: #4a7a5a;
     font-weight: 600;
     font-size: 0.85rem;
     text-decoration: none;
@@ -298,12 +298,12 @@ input[type="password"]:focus {
 }
 
 .bottom-nav a:hover {
-    background: rgba(59, 109, 246, 0.12);
-    color: #244ec9;
+    background: rgba(74, 122, 90, 0.12);
+    color: #2a3d34;
 }
 
 .bottom-nav a.active {
-    background: #3b6df6;
+    background: #4a7a5a;
     color: #fff;
 }
 
@@ -319,7 +319,7 @@ input[type="password"]:focus {
 }
 
 footer {
-    background: #222;
+    background: #2a3d34;
     color: #fff;
     text-align: center;
     padding: 1rem 0;
