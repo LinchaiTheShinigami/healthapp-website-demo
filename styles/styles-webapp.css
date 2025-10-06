@@ -159,13 +159,14 @@ input[type="password"]:focus {
     justify-content: center;
     margin: 3rem auto 4rem;
     padding: 0 1rem;
+    width: 100%;
+    max-width: 375px;
 }
 
 .mobile-frame {
     position: relative;
-    width: min(360px, calc(100vw - 2rem));
-    height: 65vh;
-    /* height: clamp(340px, 60vh, 780px); */
+    width: 100%;
+    height: auto;
     padding: 70px 18px 34px;
     border-radius: 44px;
     background: linear-gradient(155deg, #0d111b, #1a2332);
@@ -210,6 +211,8 @@ input[type="password"]:focus {
 .device-screen {
     position: relative;
     width: 100%;
+    height: 60vh; /* Fixed height set to 80% of the viewport height */
+    max-height: 700px; /* Maximum height for larger screens */
     background: linear-gradient(180deg, #f4f7f5 0%, #e8f0eb 100%); /* Sage gradient */
     border-radius: 32px;
     box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
@@ -327,18 +330,20 @@ footer {
     font-size: 0.95rem;
 }
 
+/* Responsive styles for webapp.html */
+.mobile-container {
+    width: 100%;
+    max-width: 375px;
+    margin: 0 auto;
+}
+
+.mobile-frame {
+    width: 100%;
+    height: auto;
+}
+
 @media (max-width: 500px) {
     .mobile-container {
-        margin: 2rem auto 3rem;
-        padding: 0 0.5rem;
-    }
-
-    .mobile-frame {
-        width: calc(100vw - 1.5rem);
-        padding: 60px 12px 28px;
-    }
-
-    .mobile-screen {
-        padding: 20px 20px 24px;
+        padding: 0 1rem;
     }
 }

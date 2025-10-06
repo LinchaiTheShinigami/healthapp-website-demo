@@ -11,6 +11,7 @@ body {
     width: 90%;
     max-width: 1100px;
     margin: 0 auto;
+    padding: 0 1rem;
 }
 nav {
     background: #6a9e7c; /* Sage green */
@@ -47,7 +48,7 @@ nav .container {
 .hero {
     background: linear-gradient(120deg, #6a9e7c 0%, #a8d5ba 100%); /* Sage gradient */
     color: #fff;
-    padding: 5rem 0 3rem 0;
+    padding: 3rem 1rem;
     text-align: center;
 }
 .hero h1 {
@@ -80,6 +81,18 @@ footer {
     margin-top: 2rem;
     font-size: 0.95rem;
 }
+.team-photos {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+.photo-placeholder img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%; /* Add circular shape */
+    object-fit: cover; /* Ensure the image fits properly */
+}
 @media (max-width: 700px) {
     .nav-links {
         flex-direction: column;
@@ -87,5 +100,20 @@ footer {
     }
     .hero h1 {
         font-size: 2rem;
+    }
+}
+@media (max-width: 500px) {
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+
+    .photo-placeholder img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%; /* Maintain circular shape on smaller screens */
     }
 }

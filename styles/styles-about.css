@@ -11,6 +11,7 @@ body {
     width: 90%;
     max-width: 1100px;
     margin: 0 auto;
+    padding: 0 1rem;
 }
 nav {
     background: #6a9e7c; /* Sage green */
@@ -60,9 +61,9 @@ nav .container {
 .team-photos {
     display: flex;
     justify-content: center;
-    gap: 2rem;
-    margin-top: 1.5rem;
+    gap: 1rem;
     flex-wrap: wrap;
+    margin-top: 1.5rem;
 }
 .photo-placeholder {
     width: 120px;
@@ -78,6 +79,10 @@ nav .container {
     box-shadow: 0 2px 8px rgba(106, 158, 124, 0.08);
     margin-bottom: 0.5rem;
 }
+.photo-placeholder img {
+    width: 100px;
+    height: 100px;
+}
 .photo-caption {
     display: block;
     margin-top: 0.5rem;
@@ -92,6 +97,8 @@ footer {
     margin-top: 2rem;
     font-size: 0.95rem;
 }
+
+/* Responsive styles for about.html */
 @media (max-width: 700px) {
     .nav-links {
         flex-direction: column;
@@ -108,5 +115,17 @@ footer {
         width: 90px;
         height: 90px;
         font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 500px) {
+    .team-photos {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .photo-placeholder img {
+        width: 80px;
+        height: 80px;
     }
 }
