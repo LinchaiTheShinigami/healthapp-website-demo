@@ -1,0 +1,76 @@
+<section id="screen-collection" class="mobile-screen">
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+        <button class="btn-back" data-target="screen-review">Back</button>
+        <h2 class="mobile-header" style="margin:0;">Collection Method</h2>
+    </div>
+    <div id="total-line" style="color:#2a7a41; font-weight:700;">Total Price: £0.00</div>
+
+    <div class="collect-list">
+        <div class="collect-card">
+            <div class="row">
+                <div class="title"><span aria-hidden="true">🏠</span> Home Test Kit</div>
+                <div class="delta ok">+£10</div>
+            </div>
+            <div class="desc">Turnaround: ~3 days from lab receiving your return package.</div>
+            <div class="row">
+                <span class="spacer"></span>
+                <button class="btn-primary" data-target="screen-payment" onclick="chooseCollection('Home Test Kit',10)">Choose this method</button>
+            </div>
+        </div>
+
+        <div class="collect-card">
+            <div class="row">
+                <div class="title"><span aria-hidden="true">📍</span> Local Clinic Walk‑in</div>
+                <div class="delta ok">+£25</div>
+            </div>
+            <div class="desc">Find a lab with open slots near you.</div>
+            <div class="row">
+                <span class="spacer"></span>
+                <button class="btn-primary" data-target="screen-payment" onclick="chooseCollection('Local Clinic Walk‑in',25)">Choose this method</button>
+            </div>
+        </div>
+
+        <div class="collect-card">
+            <div class="row">
+                <div class="title"><span aria-hidden="true">🩺</span> Home Phlebotomist (Premium)</div>
+                <div class="delta ok">+£50</div>
+            </div>
+            <div class="desc">Premium service with a registered practitioner visiting your home.</div>
+            <div class="row">
+                <span class="spacer"></span>
+                <button class="btn-primary" data-target="screen-payment" onclick="chooseCollection('Home Phlebotomist (Premium)',50)">Choose this method</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .collect-list { display:flex; flex-direction:column; gap:12px; }
+        .collect-card { background:#2b3a50; color:#cfe3ff; border:1px solid rgba(31,69,114,0.28); border-radius:16px; padding:14px; box-shadow:0 10px 22px rgba(10,14,29,0.18); }
+        .collect-card .row { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+        .collect-card .title { font-weight:800; color:#eaf2ff; display:flex; align-items:center; gap:8px; }
+        .collect-card .desc { color:#b8c8e0; margin:8px 0 10px; }
+        .collect-card .delta { font-weight:800; }
+        .collect-card .ok { color:#7fd48f; }
+        .spacer { flex:1 1 auto; }
+        @media (max-width: 380px) { .collect-card .row { flex-direction:column; align-items:flex-start; } .collect-card .row .btn-primary { width:100%; } }
+    </style>
+
+    <script>
+        (function(){
+            const price = parseFloat(sessionStorage.getItem('packagePrice') || '0') || 0;
+            const el = document.getElementById('total-line');
+            el.textContent = `Total Price: £${price.toFixed(2)}`;
+        })();
+
+        function chooseCollection(method, cost){
+            try {
+                sessionStorage.setItem('shippingCost', String(cost));
+                sessionStorage.setItem('collectionMethod', method);
+            } 
+            catch(e) { 
+                console.error(e);
+            }
+        }
+    </script>
+</section>
+

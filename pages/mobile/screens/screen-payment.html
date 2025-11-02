@@ -7,11 +7,11 @@
     <!-- Order Summary -->
     <div class="pay-card">
         <div class="pay-title">Order Summary</div>
-        <div class="pay-row"><span id="summary-items">Subtotal (1 item)</span><span id="subtotal">£0.00</span></div>
-        <div class="pay-row"><span>Shipping Estimate</span><span id="shipping">£0.00</span></div>
-        <div class="pay-row"><span>Taxes &amp; Fees</span><span id="taxes">£0.00</span></div>
+        <div class="pay-row"><span id="summary-items">Subtotal (1 item)</span><span id="subtotal">&pound;0.00</span></div>
+        <div class="pay-row"><span>Shipping Estimate</span><span id="shipping">&pound;0.00</span></div>
+        <div class="pay-row"><span>Taxes &amp; Fees</span><span id="taxes">&pound;0.00</span></div>
         <div class="pay-sep"></div>
-        <div class="pay-row total"><span>Order Total</span><span id="order-total">£0.00</span></div>
+        <div class="pay-row total"><span>Order Total</span><span id="order-total">&pound;0.00</span></div>
         <div class="pay-link">View full order details →</div>
     </div>
 
@@ -27,7 +27,7 @@
             <img class="pm-logo" src="../../../Images/payments/Google_Pay_Logo.svg" alt="Google Pay"/>
         </button>
         <div class="pay-separator"><span>OR PAY WITH CARD</span></div>
-        <button id="pay-card" class="pm-button pm-primary" data-target="screen-home" onclick="navigateToScreen(event)">Pay $0.00 with Card</button>
+        <button id="pay-card" class="pm-button pm-primary" data-target="screen-home" onclick="navigateToScreen(event)">Pay &pound;0.00 with Card</button>
     </div>
 
     <style>
@@ -53,24 +53,27 @@
 
     <script>
         (function(){
-            function format(n){ return `£${n.toFixed(2)}`; }
+            function formatGBP(n){ return String.fromCharCode(163) + n.toFixed(2); }
             const priceRaw = (sessionStorage.getItem('packagePrice') || '99');
             const name = sessionStorage.getItem('packageName') || 'Selected Package';
             const price = isNaN(parseFloat(priceRaw)) ? 99 : parseFloat(priceRaw);
-            const shipping = 5.00;
+            const shipping = (isNaN(parseFloat(sessionStorage.getItem("shippingCost"))) ? 0 : parseFloat(sessionStorage.getItem("shippingCost")));
             const taxes = Math.round(price * 0.05 * 100) / 100; // 5%
             const total = Math.round((price + shipping + taxes) * 100) / 100;
 
             document.getElementById('summary-items').textContent = `Subtotal (1 item)`;
-            document.getElementById('subtotal').textContent = format(price);
-            document.getElementById('shipping').textContent = format(shipping);
-            document.getElementById('taxes').textContent = format(taxes);
-            document.getElementById('order-total').textContent = format(total);
+            document.getElementById('subtotal').textContent = formatGBP(price);
+            document.getElementById('shipping').textContent = formatGBP(shipping);
+            document.getElementById('taxes').textContent = formatGBP(taxes);
+            document.getElementById('order-total').textContent = formatGBP(total);
             const payBtn = document.getElementById('pay-card');
-            payBtn.textContent = `Pay ${format(total)} with Card`;
+            payBtn.textContent = `Pay ${formatGBP(total)} with Card`;
         })();
     </script>
 </section>
+
+
+
 
 
 
