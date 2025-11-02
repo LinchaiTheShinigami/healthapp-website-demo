@@ -1,15 +1,56 @@
 <section id="screen-review" class="mobile-screen">
-    <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
-        <button class="btn-back" data-target="screen-home">Back</button>
-        <h2 class="mobile-header" style="margin:0;">Review Order</h2>
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+        <button class="btn-back" data-target="screen-goals">Back to Goals</button>
+        <h2 class="mobile-header" style="margin:0;">Book a Test</h2>
     </div>
-    <div style="margin-bottom:12px;">
-        <div><strong>Comprehensive Blood Test</strong></div>
-        <div style="color:#666;">Quantity: 1</div>
-        <div style="margin-top:8px;">Total: <strong>$99</strong></div>
+    <div style="color:#41536f; font-size:0.95rem; margin-top:-2px;">Select the most appropriate option to continue.</div>
+
+    <div style="margin-top:12px; color:#5b6c82; font-size:0.8rem; font-weight:700; letter-spacing:0.4px;">GOAL SELECTED</div>
+    <div id="selected-goal" class="pill" style="display:inline-block; margin-top:6px; background:#5b68ff; color:#fff; border:none;">General Wellness</div>
+
+    <!-- Package options -->
+    <div class="option-card">
+        <div class="option-row">
+            <div class="option-title">Full Test Package</div>
+            <div class="option-price">£250</div>
+        </div>
+        <p class="option-desc">Book the comprehensive panel for your selected goal, ensuring a complete set of biomarker insights.</p>
+        <button class="option-link" data-target="screen-payment">Select this option</button>
     </div>
-    <div style="display:flex; gap:8px;">
-        <button class="btn-secondary" data-target="screen-book">Edit</button>
-        <button class="btn-primary" data-target="screen-payment">Proceed to Payment</button>
+
+    <div style="text-align:center; color:#5b6c82; font-weight:700; margin:4px 0;">OR</div>
+
+    <div class="option-card alt">
+        <div class="option-row">
+            <div class="option-title">Customise Test Package</div>
+            <div class="option-icon" aria-hidden="true">≣≣</div>
+        </div>
+        <p class="option-desc">Answer questions to get a more targeted package based on your individual needs.</p>
+        <div class="option-hint">Reduce the cost by up to 25%</div>
+        <button class="option-link" data-target="screen-payment">Select this option</button>
     </div>
+
+    <style>
+        .option-card { background:#e1e7ee; border:1px solid rgba(31,69,114,0.18); border-radius:16px; padding:14px; box-shadow:0 12px 24px rgba(10,14,29,0.12); }
+        .option-card + .option-card { margin-top:10px; }
+        .option-card.alt { background:#e8f0eb; border-color:rgba(74,122,90,0.18); }
+        .option-row { display:flex; align-items:center; justify-content:space-between; }
+        .option-title { font-weight:800; color:#1b2538; }
+        .option-price { font-weight:800; color:#2a7a41; }
+        .option-icon { color:#6a9e7c; font-weight:700; }
+        .option-desc { color:#41536f; margin:8px 0 6px; }
+        .option-hint { color:#2a7a41; font-weight:700; }
+        .option-link { background:transparent; border:none; color:#5b68ff; font-weight:700; padding:8px 0 0; text-align:left; cursor:pointer; }
+    </style>
+
+    <script>
+        // Inject selected goal from sessionStorage if available
+        (function(){
+            const el = document.getElementById('selected-goal');
+            try {
+                const goal = sessionStorage.getItem('selectedGoal');
+                if (goal) el.textContent = goal;
+            } catch(e) {}
+        })();
+    </script>
 </section>

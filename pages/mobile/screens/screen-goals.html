@@ -4,10 +4,28 @@
         <h2 class="mobile-header" style="margin:0;">Goals</h2>
     </div>
     <p>Select your primary health goal:</p>
-    <div style="display:flex; flex-direction:column; gap:8px; margin:12px 0;">
-        <button class="pill" data-target="screen-book">Lose weight</button>
-        <button class="pill" data-target="screen-book">Improve fitness</button>
-        <button class="pill" data-target="screen-book">Manage cholesterol</button>
+    <div class="goals-list" style="display:flex; flex-direction:column; gap:8px; margin:12px 0;">
+        <button class="pill goal-btn" data-goal="Lose weight">Lose weight</button>
+        <button class="pill goal-btn" data-goal="Improve fitness">Improve fitness</button>
+        <button class="pill goal-btn" data-goal="Manage cholesterol">Manage cholesterol</button>
+        <button class="pill goal-btn" data-goal="General Wellness">General Wellness</button>
     </div>
     <button class="btn-primary" data-target="screen-book">Skip To Booking</button>
+
+    <script>
+        // Store selected goal and navigate to review
+        (function(){
+            const root = document.getElementById('screen-goals');
+            if (!root) return;
+            root.querySelectorAll('.goal-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const goal = btn.getAttribute('data-goal') || btn.textContent.trim();
+                    try { sessionStorage.setItem('selectedGoal', goal); } catch(e) {}
+                    if (window.navigateToScreen) {
+                        window.navigateToScreen('screen-review');
+                    }
+                });
+            });
+        })();
+    </script>
 </section>
