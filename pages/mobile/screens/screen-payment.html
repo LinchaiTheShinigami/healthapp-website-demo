@@ -1,14 +1,76 @@
 <section id="screen-payment" class="mobile-screen">
-    <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
-        <button class="btn-back" data-target="screen-home">Back</button>
-        <h2 class="mobile-header" style="margin:0;">Payment</h2>
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+        <button class="btn-back" data-target="screen-review">Back to Review</button>
+        <h2 class="mobile-header" style="margin:0;">Review &amp; Pay</h2>
     </div>
-    <div style="margin-bottom:12px;">
-        <input type="text" placeholder="Card number" style="width:100%; padding:8px; margin-bottom:8px;" />
-        <div style="display:flex; gap:8px;"><input type="text" placeholder="MM/YY" style="flex:1; padding:8px;" /><input type="text" placeholder="CVC" style="width:80px; padding:8px;" /></div>
+
+    <!-- Order Summary -->
+    <div class="pay-card">
+        <div class="pay-title">Order Summary</div>
+        <div class="pay-row"><span id="summary-items">Subtotal (1 item)</span><span id="subtotal">£0.00</span></div>
+        <div class="pay-row"><span>Shipping Estimate</span><span id="shipping">£0.00</span></div>
+        <div class="pay-row"><span>Taxes &amp; Fees</span><span id="taxes">£0.00</span></div>
+        <div class="pay-sep"></div>
+        <div class="pay-row total"><span>Order Total</span><span id="order-total">£0.00</span></div>
+        <div class="pay-link">View full order details →</div>
     </div>
-    <div style="display:flex; gap:8px;">
-        <button class="btn-secondary" data-target="screen-review">Back to review</button>
-        <button class="btn-primary" data-target="screen-home">Pay $99</button>
+
+    <!-- Payment Methods -->
+    <div class="pay-card">
+        <div class="pay-title">Select Payment Method</div>
+        <button class="pm-button pm-apple" aria-label="Pay with Apple Pay">
+            <span class="pm-text">Pay with</span>
+            <img class="pm-logo" src="../../../Images/payments/Apple_Pay_logo.svg" alt="Apple Pay"/>
+        </button>
+        <button class="pm-button pm-google" aria-label="Pay with Google Pay">
+            <span class="pm-text">Pay with</span>
+            <img class="pm-logo" src="../../../Images/payments/Google_Pay_Logo.svg" alt="Google Pay"/>
+        </button>
+        <div class="pay-separator"><span>OR PAY WITH CARD</span></div>
+        <button id="pay-card" class="pm-button pm-primary" data-target="screen-home" onclick="navigateToScreen(event)">Pay $0.00 with Card</button>
     </div>
+
+    <style>
+        .pay-card { background:#ffffff; border:1px solid rgba(31,69,114,0.15); border-radius:16px; padding:14px; box-shadow:0 8px 18px rgba(10,14,29,0.08); margin-bottom:12px; }
+        .pay-title { font-weight:800; color:#1b2538; margin-bottom:10px; }
+        .pay-row { display:flex; align-items:center; justify-content:space-between; padding:10px 0; color:#41536f; }
+        .pay-row.total { color:#1b2538; font-weight:800; }
+        .pay-sep { height:1px; background:rgba(27,37,56,0.12); }
+        .pay-link { color:#5b68ff; font-weight:700; margin-top:10px; }
+
+                .pm-button { width:100%; padding:14px; border-radius:12px; border:1px solid rgba(27,37,56,0.12); background:#0e1730; color:#fff; font-weight:700; margin-top:10px; box-shadow:0 6px 14px rgba(10,14,29,0.15); display:flex; align-items:center; justify-content:center; gap:10px; }
+        .pm-apple { background:#0e1730; }
+        .pm-google { background:#fff; color:#1b2538; }
+        .pm-primary { background:#5b68ff; border-color:#5b68ff; color:#fff; }
+
+        .pay-separator { display:flex; align-items:center; justify-content:center; gap:10px; color:#5b6c82; font-weight:700; margin:10px 0; }
+        .pay-separator::before, .pay-separator::after { content:""; flex:1; height:1px; background:rgba(27,37,56,0.12); }
+        .pay-separator span { white-space:nowrap; }
+        .pm-logo { height:18px; width:auto; display:inline-block; }
+        /* Invert Apple Pay logo to white for dark button */
+        .pm-apple .pm-logo { filter: invert(1) brightness(2); }
+    </style>
+
+    <script>
+        (function(){
+            function format(n){ return `£${n.toFixed(2)}`; }
+            const priceRaw = (sessionStorage.getItem('packagePrice') || '99');
+            const name = sessionStorage.getItem('packageName') || 'Selected Package';
+            const price = isNaN(parseFloat(priceRaw)) ? 99 : parseFloat(priceRaw);
+            const shipping = 5.00;
+            const taxes = Math.round(price * 0.05 * 100) / 100; // 5%
+            const total = Math.round((price + shipping + taxes) * 100) / 100;
+
+            document.getElementById('summary-items').textContent = `Subtotal (1 item)`;
+            document.getElementById('subtotal').textContent = format(price);
+            document.getElementById('shipping').textContent = format(shipping);
+            document.getElementById('taxes').textContent = format(taxes);
+            document.getElementById('order-total').textContent = format(total);
+            const payBtn = document.getElementById('pay-card');
+            payBtn.textContent = `Pay ${format(total)} with Card`;
+        })();
+    </script>
 </section>
+
+
+
