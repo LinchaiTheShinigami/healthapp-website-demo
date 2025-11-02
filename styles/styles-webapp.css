@@ -243,6 +243,37 @@ input[type="password"]:focus {
     min-height: 0; /* ensure scroll area is computed correctly */
 }
 
+/* Dashboard Cards */
+.dash-card {
+    background: #e8f0eb;
+    border: 1px solid rgba(74, 122, 90, 0.18);
+    border-radius: 16px;
+    padding: 14px;
+    box-shadow: 0 10px 22px rgba(58, 90, 64, 0.12);
+    margin-bottom: 12px;
+}
+
+.dash-card--alert {
+    background: #e1e7ee;
+    border: 1px solid rgba(31, 69, 114, 0.18);
+    box-shadow: 0 10px 22px rgba(31, 69, 114, 0.12);
+}
+
+.dash-title { color:#2a7a41; font-weight:700; margin-bottom:6px; }
+.dash-sub { color:#5b6c82; font-size:0.85rem; margin-bottom:10px; }
+
+.mini-list { display:flex; flex-direction:column; gap:8px; }
+.mini-row { display:grid; grid-template-columns:1fr auto; align-items:center; padding:10px 12px; border-radius:10px; }
+
+/* Row variants based on card context */
+.dash-card--alert .mini-row { background:#2b3a50; color:#cfe3ff; }
+.dash-card .mini-row { border:1px solid rgba(74,122,90,0.18); background:#ffffff; color:#1b2538; }
+
+.mini-label { font-weight:600; }
+.mini-value { display:flex; gap:6px; align-items:center; white-space:nowrap; }
+.tx-good { color:#2a7a41; }
+.tx-bad { color:#b84a4a; }
+
 .mobile-screen.is-active {
     display: flex;
     flex: 1 1 auto;
