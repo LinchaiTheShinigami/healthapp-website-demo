@@ -50,7 +50,7 @@ function initializeScreenNavigation() {
 
 // Expose APIs globally for inline handlers
 //window.navigateToScreen = navigateToScreen;
-window.initializeScreenNavigation = initializeScreenNavigation;
+//window.initializeScreenNavigation = initializeScreenNavigation;
 
 // Initialize delegation immediately
 initializeScreenNavigation();
