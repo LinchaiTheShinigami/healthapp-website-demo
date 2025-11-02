@@ -1,15 +1,71 @@
 <section id="screen-book" class="mobile-screen">
-    <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
         <button class="btn-back" data-target="screen-home">Back</button>
-        <h2 class="mobile-header" style="margin:0;">Book a Test</h2>
+        <h2 class="mobile-header" style="margin:0;">Select Your Recommended Test</h2>
     </div>
-    <div class="test-card">
-        <h3>Comprehensive Blood Test</h3>
-        <p>Includes CBC, Lipids, Glucose, and more.</p>
-        <div class="price">$99</div>
+    <div style="color:#41536f;">Based on your answers, here are the streamlined test panels.</div>
+
+    <div class="booking-list">
+        <div class="booking-card" data-name="Longevity Panel" data-price="199.99">
+            <div class="row">
+                <div class="title">Longevity Panel</div>
+                <span class="tag tag-ok">Recommended</span>
+            </div>
+            <div class="desc">Key markers for inflammation, heart health, and metabolic function.</div>
+            <div class="row">
+                <div class="price">£199.99</div>
+                <button class="btn-primary" data-target="screen-payment" onclick="selectPackage('Longevity Panel', 199.99)">Select this test</button>
+            </div>
+        </div>
+
+        <div class="booking-card" data-name="Athlete Performance" data-price="249.99">
+            <div class="row">
+                <div class="title">Athlete Performance</div>
+            </div>
+            <div class="desc">Detailed hormone, electrolyte, and nutrient levels for intense training.</div>
+            <div class="row">
+                <div class="price">£249.99</div>
+                <button class="btn-primary" data-target="screen-payment" onclick="selectPackage('Athlete Performance', 249.99)">Select this test</button>
+            </div>
+        </div>
+
+        <div class="booking-card" data-name="Foundational Health" data-price="99.99">
+            <div class="row">
+                <div class="title">Foundational Health</div>
+            </div>
+            <div class="desc">Basic comprehensive blood count and general chemistry panel.</div>
+            <div class="row">
+                <div class="price">£99.99</div>
+                <button class="btn-primary" data-target="screen-payment" onclick="selectPackage('Foundational Health', 99.99)">Select this test</button>
+            </div>
+        </div>
     </div>
-    <div style="margin-top:12px; display:flex; gap:8px;">
-        <button class="btn-secondary" data-target="screen-home">Cancel</button>
-        <button class="btn-primary" data-target="screen-review">Review Order</button>
+
+    <div style="margin-top:12px;">
+        <button class="btn-secondary" data-target="screen-home" style="width:100%;">Cancel</button>
     </div>
+
+    <style>
+        .booking-list { display:flex; flex-direction:column; gap:12px; }
+        .booking-card { background:#fff; border:1px solid rgba(31,69,114,0.18); border-radius:14px; padding:14px; box-shadow:0 10px 18px rgba(10,14,29,0.08); }
+        .booking-card .row { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+        .booking-card .title { font-weight:800; color:#1b2538; }
+        .booking-card .desc { color:#41536f; margin:8px 0 10px; }
+        .booking-card .price { font-weight:800; color:#1b2538; }
+        .tag { font-size:0.75rem; padding:6px 10px; border-radius:999px; border:1px solid transparent; }
+        .tag-ok { color:#2a7a41; background:rgba(42,122,65,0.12); border-color:rgba(42,122,65,0.25); }
+        @media (max-width: 380px) { .booking-card .row { flex-direction:column; align-items:flex-start; } .booking-card .row .btn-primary { width:100%; } }
+    </style>
+
+    <script>
+        function selectPackage(name, price){
+            try {
+                sessionStorage.setItem('packageName', name);
+                sessionStorage.setItem('packagePrice', String(price));
+            } 
+            catch(e) { 
+                console.error(e);
+            }
+        }
+    </script>
 </section>
