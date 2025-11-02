@@ -5,93 +5,7 @@
             <span class="device-camera"></span>
         </div>
         <div class="device-screen">
-            <section id="screen-login" class="mobile-screen is-active">
-                <h1 class="mobile-app-title">HealthApp</h1>
-                <h2 class="mobile-header">Login</h2>
-                <div style="margin-bottom:12px;">
-                    <input type="text" placeholder="Email" style="width:100%; padding:8px; margin-bottom:8px;" />
-                    <input type="password" placeholder="Password" style="width:100%; padding:8px;" />
-                </div>
-                <div style="display:flex; gap:8px;">
-                    <button class="btn-secondary" data-target="screen-home">Skip Login</button>
-                    <button class="btn-primary" data-target="screen-goals">Log in</button>
-                </div>
-            </section>
-
-            <section id="screen-goals" class="mobile-screen">
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
-                    <button class="btn-back">Back</button>
-                    <h2 class="mobile-header" style="margin:0;">Goals</h2>
-                </div>
-                <p>Select your primary health goal:</p>
-                <div style="display:flex; flex-direction:column; gap:8px; margin:12px 0;">
-                    <button class="pill" data-target="screen-book">Lose weight</button>
-                    <button class="pill" data-target="screen-book">Improve fitness</button>
-                    <button class="pill" data-target="screen-book">Manage cholesterol</button>
-                </div>
-                <button class="btn-primary" data-target="screen-book">Skip To Booking</button>
-            </section>
-
-            <section id="screen-book" class="mobile-screen">
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
-                    <button class="btn-back">Back</button>
-                    <h2 class="mobile-header" style="margin:0;">Book a Test</h2>
-                </div>
-                <div class="test-card">
-                    <h3>Comprehensive Blood Test</h3>
-                    <p>Includes CBC, Lipids, Glucose, and more.</p>
-                    <div class="price">$99</div>
-                </div>
-                <div style="margin-top:12px; display:flex; gap:8px;">
-                    <button class="btn-secondary" data-target="screen-home">Cancel</button>
-                    <button class="btn-primary" data-target="screen-review">Review Order</button>
-                </div>
-            </section>
-
-            <section id="screen-review" class="mobile-screen">
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
-                    <button class="btn-back">Back</button>
-                    <h2 class="mobile-header" style="margin:0;">Review Order</h2>
-                </div>
-                <div style="margin-bottom:12px;">
-                    <div><strong>Comprehensive Blood Test</strong></div>
-                    <div style="color:#666;">Quantity: 1</div>
-                    <div style="margin-top:8px;">Total: <strong>$99</strong></div>
-                </div>
-                <div style="display:flex; gap:8px;">
-                    <button class="btn-secondary" data-target="screen-book">Edit</button>
-                    <button class="btn-primary" data-target="screen-payment">Proceed to Payment</button>
-                </div>
-            </section>
-
-            <section id="screen-payment" class="mobile-screen">
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
-                    <button class="btn-back">Back</button>
-                    <h2 class="mobile-header" style="margin:0;">Payment</h2>
-                </div>
-                <div style="margin-bottom:12px;">
-                    <input type="text" placeholder="Card number" style="width:100%; padding:8px; margin-bottom:8px;" />
-                    <div style="display:flex; gap:8px;"><input type="text" placeholder="MM/YY" style="flex:1; padding:8px;" /><input type="text" placeholder="CVC" style="width:80px; padding:8px;" /></div>
-                </div>
-                <div style="display:flex; gap:8px;">
-                    <button class="btn-secondary" data-target="screen-review">Back to review</button>
-                    <button class="btn-primary" data-target="screen-home">Pay $99</button>
-                </div>
-            </section>
-
-            <section id="screen-home" class="mobile-screen">
-                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
-                    <h2 class="mobile-header" style="margin:0;">Home</h2>
-                    <div style="flex:1;"></div>
-                    <button class="btn-secondary" data-target="screen-login" style="margin-left:16px; min-width:70px;">Logout</button>
-                </div>
-                <div style="margin:12px 0;">Welcome to your HealthApp home screen.</div>
-                <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                    <button class="btn-primary" data-target="screen-book">Book a test</button>
-                    <button class="btn-secondary" data-target="screen-goals">Update goals</button>
-                </div>
-            </section>
-
+            <div id="screens-placeholder"></div>
             <nav class="bottom-nav">
                 <a data-target="screen-home">Home</a>
                 <a data-target="screen-book">Book</a>
@@ -102,3 +16,23 @@
         <div class="device-home-indicator"></div>
     </div>
 </div>
+<script>
+    // Initialize navigation
+    const nav = document.querySelector('.bottom-nav');
+    if (nav) {
+        nav.addEventListener('click', (e) => {
+            const target = e.target.dataset.target;
+            if (target) {
+                loadHTMLContent(`./mobile/screens/${target}.html`, 'screens-placeholder', () => {
+                    const screen = document.getElementById(target);
+                    if (screen) {
+                        screen.classList.add('is-active');
+                    }
+                });
+            }
+        });
+    }
+
+    // Initialize mobile app when DOM is loaded
+    loadHTMLContent('./mobile/screens/screen-login.html', 'screens-placeholder');
+</script>

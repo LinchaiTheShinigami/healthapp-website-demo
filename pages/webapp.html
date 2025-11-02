@@ -5,23 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HealthApp Web App Mockup</title>
     <link rel="stylesheet" href="../styles/styles-webapp.css">
+    <script src="../scripts/html-loader.js"></script>
 </head>
 <body>
     <div id="nav-placeholder"></div>
-    <script src="../scripts/include-nav.js"></script>
+    <script>
+        // Load navigation
+        loadHTMLContent('../snippets/nav.html', 'nav-placeholder');
+    </script>
     <main class="webapp-page">
         <h1 class="webapp-hero">Mobile App Demo</h1>
         <div id="mobile-placeholder"></div>
         <script>
-            // Load extracted mobile container HTML
-            fetch('mobile/mobile-container.html')
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('mobile-placeholder').innerHTML = html;
-                })
-                .catch(err => console.error('Failed to load mobile container:', err));
+            // Initialize mobile app when DOM is loaded
+            document.addEventListener('DOMContentLoaded', () => {
+                loadHTMLContent('mobile/mobile-container.html', 'mobile-placeholder');
+            });
         </script>
-        <script src="../scripts/mobile-app.js" defer></script>
     </main>
     <footer>
         <div class="container">
