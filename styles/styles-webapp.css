@@ -219,7 +219,17 @@ input[type="password"]:focus {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    min-height: 0; /* allow children to shrink and enable scrolling */
     z-index: 1;
+}
+
+/* The placeholder that receives each screen; must flex and allow its child to scroll */
+#screens-placeholder {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0; /* critical for scrollable children in flex layouts */
+    overflow: hidden; /* prevent content from bleeding under bottom nav */
 }
 
 .mobile-screen {
@@ -227,9 +237,10 @@ input[type="password"]:focus {
     flex-direction: column;
     gap: 16px;
     padding: 24px 24px 28px;
-    overflow-y: auto;
+    overflow-y: auto; /* allow screen content to scroll when needed */
     -webkit-overflow-scrolling: touch;
     color: #1b2538;
+    min-height: 0; /* ensure scroll area is computed correctly */
 }
 
 .mobile-screen.is-active {

@@ -9,4 +9,54 @@
         <button class="btn-primary" data-target="screen-book">Book a test</button>
         <button class="btn-secondary" data-target="screen-goals">Update goals</button>
     </div>
+
+    <div class="dashboard" style="margin-top:14px;">
+        <h3 class="section-title" style="margin:6px 0 10px;">Your Health Dashboard</h3>
+
+        <!-- Bad result summary card -->
+        <div class="dash-card" style="background:#e1e7ee; border:1px solid rgba(31,69,114,0.18); border-radius:16px; padding:14px; box-shadow:0 10px 22px rgba(31,69,114,0.12); margin-bottom:12px;">
+            <div style="color:#2a7a41; font-weight:700; margin-bottom:6px;">Latest Results Summary</div>
+            <div style="color:#5b6c82; font-size:0.85rem; margin-bottom:10px;">Goal: Focus on Key Area · Booked on: 9/28/2025</div>
+
+            <div class="mini-card" style="background:#2b3a50; color:#cfe3ff; border-radius:10px; padding:10px 12px; margin-bottom:8px; display:flex; justify-content:space-between;">
+                <div>HbA1c (Blood Sugar)</div>
+                <div><strong style="color:#7fd48f;">1.06 mmol/L</strong> <span style="color:#7fd48f;">(Optimal)</span></div>
+            </div>
+            <div class="mini-card" style="background:#2b3a50; color:#cfe3ff; border-radius:10px; padding:10px 12px; margin-bottom:8px; display:flex; justify-content:space-between;">
+                <div>Lipid Panel</div>
+                <div><strong style="color:#ff8a7a;">0.59 mmol/L</strong> <span style="color:#ff8a7a;">(Low)</span></div>
+            </div>
+            <div class="mini-card" style="background:#2b3a50; color:#cfe3ff; border-radius:10px; padding:10px 12px; margin-bottom:4px; display:flex; justify-content:space-between;">
+                <div>Vitamin D</div>
+                <div><strong style="color:#7fd48f;">6.5 nmol/L</strong> <span style="color:#7fd48f;">(Optimal)</span></div>
+            </div>
+
+            <div style="margin-top:12px;">
+                <button class="btn-primary" data-target="screen-results-bad" style="background:#c73d3d; box-shadow:0 10px 20px rgba(199,61,61,0.25); width:100%;">Review 1 Urgent Result</button>
+            </div>
+        </div>
+
+        <!-- Good result summary card -->
+        <div class="dash-card" style="background:#e8f0eb; border:1px solid rgba(74,122,90,0.18); border-radius:16px; padding:14px; box-shadow:0 10px 22px rgba(58,90,64,0.12);">
+            <div style="color:#2a7a41; font-weight:700; margin-bottom:6px;">Latest Results Summary</div>
+            <div style="color:#5b6c82; font-size:0.85rem; margin-bottom:10px;">Goal: Maintain · Booked on: 9/28/2025</div>
+
+            <div class="mini-card" style="background:#ffffff; border:1px solid rgba(74,122,90,0.18); color:#1b2538; border-radius:10px; padding:10px 12px; margin-bottom:8px; display:flex; justify-content:space-between;">
+                <div>Creatine Kinase</div>
+                <div><strong style="color:#2a7a41;">3.66 U/L</strong> <span style="color:#2a7a41;">(Optimal)</span></div>
+            </div>
+            <div class="mini-card" style="background:#ffffff; border:1px solid rgba(74,122,90,0.18); color:#1b2538; border-radius:10px; padding:10px 12px; margin-bottom:8px; display:flex; justify-content:space-between;">
+                <div>Cortisol</div>
+                <div><strong style="color:#2a7a41;">2.81 nmol/L</strong> <span style="color:#2a7a41;">(Optimal)</span></div>
+            </div>
+            <div class="mini-card" style="background:#ffffff; border:1px solid rgba(74,122,90,0.18); color:#1b2538; border-radius:10px; padding:10px 12px; margin-bottom:4px; display:flex; justify-content:space-between;">
+                <div>Testosterone</div>
+                <div><strong style="color:#2a7a41;">1.26 nmol/L</strong> <span style="color:#2a7a41;">(Optimal)</span></div>
+            </div>
+
+            <div style="margin-top:12px;">
+                <button class="btn-secondary" data-target="screen-results" style="width:100%;">View Detailed Results</button>
+            </div>
+        </div>
+    </div>
 </section>
