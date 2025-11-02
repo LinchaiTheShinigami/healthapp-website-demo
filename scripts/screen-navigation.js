@@ -40,7 +40,7 @@ async function navigateToScreen(targetScreen) {
 function initializeScreenNavigation() {
     // Only handle btn-primary and btn-secondary to avoid conflicting with bottom nav
     document.addEventListener('click', (e) => {
-        const button = e.target.closest('button.btn-primary[data-target], button.btn-secondary[data-target]');
+        const button = e.target.closest('button.btn-primary[data-target], button.btn-secondary[data-target], button.btn-back[data-target]');
         if (!button) return;
         e.preventDefault();
         const target = button.getAttribute('data-target');

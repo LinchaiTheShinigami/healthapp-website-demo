@@ -1,0 +1,144 @@
+<section id="screen-results-bad" class="mobile-screen">
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+        <button class="btn-back" data-target="screen-home">Back</button>
+        <h2 class="mobile-header" style="margin:0;">Your Test Results</h2>
+        <button class="btn-secondary" data-target="screen-results">Good Result</button>
+    </div>
+    <div style="color:#41536f; font-size:0.9rem; margin-top:-4px;">Report for test booked on: 9/28/2025</div>
+
+    <div class="subtabs">
+        <button class="subtab is-active" data-tab="results">Results</button>
+        <button class="subtab" data-tab="recs">Recommendations</button>
+    </div>
+
+    <div id="tab-results" class="tab-panel is-active">
+        <h3 class="section-title">Biomarker Report</h3>
+
+        <div class="report-card">
+            <div class="report-row">
+                <div class="report-title">HbA1c (Blood Sugar)</div>
+                <div class="report-status ok">Optimal</div>
+            </div>
+            <div class="report-meta">Your result: <strong>1.06 mmol/L</strong></div>
+            <div class="rag-scale">
+                <span class="seg red"></span>
+                <span class="seg amber"></span>
+                <span class="seg green"></span>
+                <span class="seg amber"></span>
+                <span class="seg red"></span>
+                <span class="pointer" style="left: 32%;"></span>
+            </div>
+            <div class="report-range">NHS Optimal Range: 1 - 3.8 mmol/L</div>
+        </div>
+
+        <div class="report-card">
+            <div class="report-row">
+                <div class="report-title">Lipid Panel</div>
+                <div class="report-status low">Low</div>
+            </div>
+            <div class="report-meta">Your result: <strong>0.59 mmol/L</strong></div>
+            <div class="rag-scale">
+                <span class="seg red"></span>
+                <span class="seg amber"></span>
+                <span class="seg green"></span>
+                <span class="seg amber"></span>
+                <span class="seg red"></span>
+                <span class="pointer" style="left: 8%;"></span>
+            </div>
+            <div class="report-range">NHS Optimal Range: 0.8 - 4.0 mmol/L</div>
+        </div>
+
+        <div class="report-card">
+            <div class="report-row">
+                <div class="report-title">Vitamin D</div>
+                <div class="report-status ok">Optimal</div>
+            </div>
+            <div class="report-meta">Your result: <strong>6.5 nmol/L</strong></div>
+            <div class="rag-scale">
+                <span class="seg red"></span>
+                <span class="seg amber"></span>
+                <span class="seg green"></span>
+                <span class="seg amber"></span>
+                <span class="seg red"></span>
+                <span class="pointer" style="left: 36%;"></span>
+            </div>
+            <div class="report-range">NHS Optimal Range: 3.0 - 8.0 nmol/L</div>
+        </div>
+    </div>
+
+    <div id="tab-recs" class="tab-panel">
+        <h3 class="section-title" style="margin-bottom:8px;">Next Steps &amp; Guidance</h3>
+        <div class="guidance-card danger">
+            <div class="guidance-row">
+                <span class="check">!</span>
+                <strong>Action Required</strong>
+            </div>
+            <p style="margin:8px 0 10px;">We noticed <strong>1 biomarker</strong> outside the optimal range. It is essential to consult a healthcare professional to discuss these results.</p>
+            <div class="guidance-sub">Your options for consultation:</div>
+            <ul class="guidance-list">
+                <li><strong>NHS GP:</strong> Free of charge, but wait times may vary.</li>
+                <li><strong>Private GP:</strong> Faster consultation, fee applies.</li>
+                <li><strong>Pharmacist:</strong> Useful for general wellness advice or specific nutrient deficiencies (e.g., Vitamin D).</li>
+            </ul>
+        </div>
+    </div>
+
+    <style>
+        /* Sub tabs */
+        .subtabs { display:flex; gap:20px; align-items:center; border-bottom:1px solid rgba(31,69,114,0.18); padding-bottom:8px; margin-top:6px; }
+        .subtab { background:transparent; border:none; color:#41536f; font-weight:600; padding:8px 0; cursor:pointer; position:relative; }
+        .subtab.is-active { color:#1f4572; }
+        .subtab.is-active::after { content:""; position:absolute; left:0; right:0; bottom:-9px; height:3px; background:#6a9e7c; border-radius:2px; }
+
+        /* Panels */
+        .tab-panel { display:none; }
+        .tab-panel.is-active { display:block; }
+        .section-title { font-size:1.05rem; margin:12px 0 8px; color:#1b2538; }
+
+        /* Report card */
+        .report-card { background:#e8f0eb; border:1px solid rgba(74,122,90,0.15); border-radius:16px; padding:14px 16px; box-shadow:0 10px 20px rgba(58,90,64,0.12); margin-bottom:12px; }
+        .report-row { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+        .report-title { font-weight:700; color:#1b2538; }
+        .report-status { font-weight:700; padding:6px 10px; border-radius:999px; font-size:0.85rem; border:1px solid transparent; }
+        .report-status.ok { color:#2a7a41; background:rgba(42,122,65,0.12); border-color:rgba(42,122,65,0.25); }
+        .report-status.low { color:#b84a4a; background:rgba(184,74,74,0.12); border-color:rgba(184,74,74,0.25); }
+        .report-meta { color:#41536f; margin:8px 0 10px; }
+        .report-range { color:#5b6c82; font-size:0.85rem; margin-top:8px; }
+
+        /* RAG scale */
+        .rag-scale { position:relative; display:grid; grid-template-columns:repeat(5,1fr); gap:4px; height:12px; align-items:center; background:transparent; }
+        .rag-scale .seg { display:block; height:8px; border-radius:4px; }
+        .rag-scale .red { background:#b84a4a; }
+        .rag-scale .amber { background:#c89b3c; }
+        .rag-scale .green { background:#3a8f5a; }
+        .rag-scale .pointer { position:absolute; top:-4px; width:2px; height:16px; background:#1b2538; border-radius:1px; transform:translateX(-50%); box-shadow:0 0 0 2px rgba(27,37,56,0.08); }
+
+        /* Guidance */
+        .guidance-card { border-radius:16px; padding:16px; }
+        .guidance-card.danger { background:#fdecea; border:1px solid rgba(184,74,74,0.35); color:#5a2a2a; box-shadow:0 10px 22px rgba(184,74,74,0.15); }
+        .guidance-row { display:flex; align-items:center; gap:10px; font-size:1rem; margin-bottom:6px; }
+        .guidance-row .check { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background:#b84a4a; color:#fff; font-size:0.85rem; font-weight:700; }
+        .guidance-sub { font-weight:700; }
+        .guidance-list { margin:6px 0 0 18px; color:#1b2538; }
+    </style>
+
+    <script>
+        // Simple tab switcher scoped to this screen
+        (function(){
+            const root = document.getElementById('screen-results-bad');
+            if (!root) return;
+            const tabs = root.querySelectorAll('.subtab');
+            tabs.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('is-active'));
+                    btn.classList.add('is-active');
+                    const target = btn.dataset.tab;
+                    root.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('is-active'));
+                    const panel = root.querySelector(`#tab-${target}`);
+                    if (panel) panel.classList.add('is-active');
+                });
+            });
+        })();
+    </script>
+</section>
+
