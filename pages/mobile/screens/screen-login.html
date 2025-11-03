@@ -1,12 +1,64 @@
 <section id="screen-login" class="mobile-screen is-active">
-    <h1 class="mobile-app-title">Ayuta Health App</h1>
-    <h2 class="mobile-header">Login</h2>
-    <div style="margin-bottom:12px;">
-        <input type="text" placeholder="Email" style="width:100%; padding:8px; margin-bottom:8px;" />
-        <input type="password" placeholder="Password" style="width:100%; padding:8px;" />
+    <div class="login-card">
+        <h1 class="mobile-app-title" style="display:flex; align-items:center; justify-content:center; gap:8px; text-align:center; line-height:1;">
+            <img class="app-sun" src="../../../Images/Logo/sun_cropped.png" alt="" />
+            Ayuta
+        </h1>
+        <h1 class="mobile-header" style="margin:0 0 35px;"></h1>
+        <div class="oauth-stack">
+            <button class="oauth-btn is-light" data-target="screen-goals">
+                <img class="oauth-logo" src="../../../Images/login/Google__G__logo.svg" alt="Google" />
+                Continue with Google
+            </button>
+            <button class="oauth-btn is-dark" data-target="screen-goals">
+                <img class="oauth-logo" src="../../../Images/login/Apple_logo_black.svg" alt="Apple" />
+                Continue with Apple
+            </button>
+            <button class="oauth-btn is-light" data-target="screen-goals">
+                <img class="oauth-logo" src="../../../Images/login/2023_Facebook_icon.svg" alt="Facebook" />
+                Continue with Facebook
+            </button>
+        </div>
+        <div class="or-sep"><span>OR</span></div>
+        <button class="btn-primary anon-btn" data-target="screen-home">Enter as Anonymous User</button>
+        <div class="login-disclaimer">By continuing, you agree to Ayuta's Terms and Privacy Policy.</div>
     </div>
-    <div style="display:flex; gap:8px;">
-        <button class="btn-secondary" data-target="screen-home">Skip Login</button>
-        <button class="btn-primary" data-target="screen-goals">Log in</button>
-    </div>
+
+    <style>
+        /* Ensure the whole screen composes correctly and doesn't overflow */
+        #screen-login { display:flex; flex-direction:column; gap:0; min-height:0; flex: 1 1 auto; padding: 0; overflow-x: hidden; }
+        .login-card {
+            background:#fff;
+            border:none;
+            border-radius:0; /* edge-to-edge */
+            padding:20px; /* extra top padding to space title and subtitle */
+            box-shadow:none;
+            width:100%;
+            max-width: 100%;
+            min-width: 0; /* allow flex item to shrink to container */
+            box-sizing: border-box; /* include padding in total width */
+            flex: 1 1 auto; /* fill all remaining space of mobile-screen */
+            align-self: stretch;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            min-height:0; /* allow inner scroll */
+            height: 100%;
+            overflow:auto;
+            overflow-x: hidden; /* prevent horizontal overflow */
+            margin: 0; /* remove any default spacing */
+        }
+        .mobile-app-title { margin: 0; }
+        .oauth-stack { display:flex; flex-direction:column; gap:10px; margin-top:6px; }
+        .oauth-btn { display:flex; align-items:center; justify-content:center; gap:10px; width:100%; padding:12px; border-radius:12px; font-weight:700; cursor:pointer; border:1px solid rgba(27,37,56,0.16); }
+        .oauth-btn.is-light { background:#fff; color:#1b2538; }
+        .oauth-btn.is-dark { background:#0e1730; color:#fff; }
+        .oauth-btn.is-dark .oauth-logo { filter: invert(1) brightness(2); }
+        .oauth-logo { height:18px; width:auto; display:inline-block; }
+        .or-sep { display:flex; align-items:center; justify-content:center; gap:12px; color:#5b6c82; font-weight:700; margin:16px 0; }
+        .or-sep::before, .or-sep::after { content:""; height:1px; background:rgba(27,37,56,0.12); flex:1; }
+        .login-disclaimer { margin-top:14px; font-size:0.8rem; color:#5b6c82; text-align:center; }
+        .anon-btn { width:100%; padding:12px; min-height:48px; display:flex; align-items:center; justify-content:center; }
+        .app-sun { height:1.2em; width:auto; object-fit:contain; }
+    </style>
 </section>
