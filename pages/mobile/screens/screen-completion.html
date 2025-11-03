@@ -1,15 +1,16 @@
 <section id="screen-completion" class="mobile-screen">
-    <canvas id="confetti" style="position:absolute; inset:0; pointer-events:none;"></canvas>
+    <canvas id="confetti" style="position:absolute; inset:0; pointer-events:none; z-index:10;"></canvas>
 
     <div class="completion-wrap">
         <div class="msg">
             <h2 class="title">Order Complete! 🎉</h2>
             <p class="subtitle">Thank you for your purchase. Your order has been successfully processed.</p>
+            <p class="order-line">Order No: <strong id="order-number">—</strong></p>
         </div>
 
         <form class="receipt-form" onsubmit="return false;">
             <label>Email address</label>
-            <input id="receipt-email" type="email" placeholder="you@email.com" required />
+            <input id="receipt-email" type="email" placeholder="your@email.com" required />
             <label>Name (optional)</label>
             <input id="receipt-name" type="text" placeholder="Your name" />
             <button type="button" class="btn-primary" data-target="screen-home">Email me a copy of the receipt</button>
@@ -18,7 +19,8 @@
 
     <style>
         #screen-completion { position: relative; padding-top: 12px; }
-        .completion-wrap { display:flex; flex-direction:column; gap:16px; animation: fadeIn 0.6s ease 0.8s both; }
+        .completion-wrap { display:flex; flex-direction:column; gap:16px; opacity:0; transform: translateY(8px); transition: opacity 420ms ease, transform 420ms ease; }
+        .completion-wrap.is-visible { opacity:1; transform: none; }
         .msg { text-align:center; }
         .title { margin:0 0 6px; font-size:1.4rem; color:#1b2538; }
         .subtitle { margin:0; color:#41536f; }
@@ -26,42 +28,102 @@
         .receipt-form label { font-weight:600; color:#1b2538; }
         .receipt-form input { padding:10px 12px; border-radius:10px; border:1px solid rgba(31,69,114,0.25); font-size:0.95rem; }
         .receipt-form .btn-primary { width:100%; }
+        .order-line { margin:8px 0 0; color:#1b2538; font-weight:600; letter-spacing:0.3px; }
         @keyframes fadeIn { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform:none; } }
     </style>
 
     <script>
-        // Simple confetti animation
+        // Confetti animation (based on dev.to tutorial approach)
         (function(){
             const canvas = document.getElementById('confetti');
             const ctx = canvas.getContext('2d');
-            let W, H; let pieces=[]; let start = performance.now();
-            function resize(){ W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight; }
-            window.addEventListener('resize', resize); resize();
+            let W=0, H=0, DPR = Math.max(1, window.devicePixelRatio || 1);
+            function resize(){
+                const parent = canvas.parentElement;
+                const rect = parent.getBoundingClientRect();
+                W = Math.max(1, rect.width);
+                H = Math.max(1, rect.height);
+                canvas.width = Math.floor(W * DPR);
+                canvas.height = Math.floor(H * DPR);
+                canvas.style.width = W + 'px';
+                canvas.style.height = H + 'px';
+                ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+            }
+            window.addEventListener('resize', resize);
+            // Delay a tick to ensure layout is ready when injected
+            setTimeout(resize, 0);
 
             const colors = ['#6a9e7c','#5b68ff','#f0c419','#e76f51','#2a9d8f'];
-            for(let i=0;i<120;i++){
-                pieces.push({
-                    x: Math.random()*W,
-                    y: -Math.random()*H,
-                    r: 3+Math.random()*5,
-                    c: colors[Math.floor(Math.random()*colors.length)],
-                    v: 50+Math.random()*120,
-                    w: -1+Math.random()*2
-                });
+            const pieces = [];
+            const COUNT = 160;
+            function spawn(){
+                pieces.length = 0;
+                for(let i=0;i<COUNT;i++){
+                    const fromRight = Math.random() > 0.5;
+                    const x = fromRight ? W + 6 : -6;
+                    const y = H * (0.2 + Math.random()*0.4); // mid vertical band
+                    const speedX = 200 + Math.random()*200; // inward burst
+                    pieces.push({
+                        x,
+                        y,
+                        size: 6 + Math.random()*7,
+                        color: colors[(Math.random()*colors.length)|0],
+                        angle: Math.random()*Math.PI,
+                        angVel: (-2+Math.random()*4) * 0.06,
+                        vx: fromRight ? -speedX : speedX, // shoot inward from sides
+                        vy: -(80 + Math.random()*140) // slight pop upwards
+                    });
+                }
             }
 
-            function draw(t){
-                const dt = Math.min(0.033,(t-start)/1000); start = t;
+            const duration = 2000; // ms
+            let started;
+            function draw(now){
+                if (!W || !H){ requestAnimationFrame(draw); return; }
+                if (started === undefined) started = now;
                 ctx.clearRect(0,0,W,H);
+                const dt = 1/60; // fixed timestep
                 pieces.forEach(p=>{
-                    p.y += p.v*dt; p.x += p.w*dt*60;
-                    if(p.y>H+20) { p.y = -10; p.x = Math.random()*W; }
-                    ctx.fillStyle = p.c; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+                    p.vy += 320*dt; // gravity pulls down
+                    p.x += p.vx*dt;
+                    p.y += p.vy*dt;
+                    p.angle += p.angVel;
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate(p.angle);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size*0.6);
+                    ctx.restore();
                 });
-                if(performance.now() < firstTime + 1800) req = requestAnimationFrame(draw); else canvas.style.display='none';
+                if (now - started < duration) {
+                    requestAnimationFrame(draw);
+                } else {
+                    canvas.style.display='none';
+                    const wrap = document.querySelector('.completion-wrap');
+                    if (wrap) wrap.classList.add('is-visible');
+                }
             }
-            const firstTime = performance.now(); let req = requestAnimationFrame(draw);
+
+            // Ensure proper sizing then spawn and draw
+            requestAnimationFrame(()=>{ resize(); spawn(); requestAnimationFrame(draw); });
+        })();
+
+        // Generate a structured order number and persist it for this session
+        (function(){
+            function generateOrderId(){
+                const d = new Date();
+                const y = d.getFullYear();
+                const m = String(d.getMonth()+1).padStart(2,'0');
+                const day = String(d.getDate()).padStart(2,'0');
+                // 6 uppercase base36 chars
+                const seg = Math.random().toString(36).slice(2,8).toUpperCase();
+                return `AYU-${y}${m}${day}-${seg}`;
+            }
+            let id = null;
+            try { id = sessionStorage.getItem('orderId') || null; } catch(e) {}
+            if (!id) { id = generateOrderId(); try { sessionStorage.setItem('orderId', id); } catch(e) {} }
+            const el = document.getElementById('order-number');
+            if (el) el.textContent = id;
         })();
     </script>
 </section>
-
