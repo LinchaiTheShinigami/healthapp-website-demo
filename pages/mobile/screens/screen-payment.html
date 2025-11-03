@@ -18,16 +18,16 @@
     <!-- Payment Methods -->
     <div class="pay-card">
         <div class="pay-title">Select Payment Method</div>
-        <button class="pm-button pm-apple" aria-label="Pay with Apple Pay">
+        <button class="pm-button pm-apple" aria-label="Pay with Apple Pay" data-target="screen-completion">
             <span class="pm-text">Pay with</span>
             <img class="pm-logo" src="../../../Images/payments/Apple_Pay_logo.svg" alt="Apple Pay"/>
         </button>
-        <button class="pm-button pm-google" aria-label="Pay with Google Pay">
+        <button class="pm-button pm-google" aria-label="Pay with Google Pay" data-target="screen-completion">
             <span class="pm-text">Pay with</span>
             <img class="pm-logo" src="../../../Images/payments/Google_Pay_Logo.svg" alt="Google Pay"/>
         </button>
         <div class="pay-separator"><span>OR PAY WITH CARD</span></div>
-        <button id="pay-card" class="pm-button pm-primary" data-target="screen-home" onclick="navigateToScreen(event)">Pay &pound;0.00 with Card</button>
+        <button id="pay-card" class="pm-button pm-primary" data-target="screen-completion">Pay &pound;0.00 with Card</button>
     </div>
 
     <style>

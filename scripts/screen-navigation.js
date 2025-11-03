@@ -38,11 +38,28 @@ async function navigateToScreen(targetScreen) {
 
 // Delegate clicks from buttons with data-target
 function initializeScreenNavigation() {
-    // Only handle btn-primary and btn-secondary to avoid conflicting with bottom nav
+    // Utility: find the closest element that matches any selector in the array
+    const closestAny = (el, selectors) => {
+        for (const sel of selectors) {
+            const node = el.closest(sel);
+            if (node) return node;
+        }
+        return null;
+    };
+
+    // Central list of delegated selectors to listen for
+    const NAV_CLICK_SELECTORS = [
+        'button.btn-primary[data-target]',
+        'button.btn-secondary[data-target]',
+        'button.btn-back[data-target]',
+        'button.option-link[data-target]',
+        '.oauth-btn[data-target]',
+        '.pm-button[data-target]'
+    ];
+
+    // Only handle elements in NAV_CLICK_SELECTORS to avoid conflicting with bottom nav
     document.addEventListener('click', (e) => {
-        const button = e.target.closest(
-            'button.btn-primary[data-target], button.btn-secondary[data-target], button.btn-back[data-target], button.option-link[data-target]'
-        );
+        const button = closestAny(e.target, NAV_CLICK_SELECTORS);
         if (!button) return;
         e.preventDefault();
         const target = button.getAttribute('data-target');

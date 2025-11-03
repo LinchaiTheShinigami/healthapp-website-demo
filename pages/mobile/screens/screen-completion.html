@@ -1,0 +1,67 @@
+<section id="screen-completion" class="mobile-screen">
+    <canvas id="confetti" style="position:absolute; inset:0; pointer-events:none;"></canvas>
+
+    <div class="completion-wrap">
+        <div class="msg">
+            <h2 class="title">Order Complete! 🎉</h2>
+            <p class="subtitle">Thank you for your purchase. Your order has been successfully processed.</p>
+        </div>
+
+        <form class="receipt-form" onsubmit="return false;">
+            <label>Email address</label>
+            <input id="receipt-email" type="email" placeholder="you@email.com" required />
+            <label>Name (optional)</label>
+            <input id="receipt-name" type="text" placeholder="Your name" />
+            <button type="button" class="btn-primary" data-target="screen-home">Email me a copy of the receipt</button>
+        </form>
+    </div>
+
+    <style>
+        #screen-completion { position: relative; padding-top: 12px; }
+        .completion-wrap { display:flex; flex-direction:column; gap:16px; animation: fadeIn 0.6s ease 0.8s both; }
+        .msg { text-align:center; }
+        .title { margin:0 0 6px; font-size:1.4rem; color:#1b2538; }
+        .subtitle { margin:0; color:#41536f; }
+        .receipt-form { display:flex; flex-direction:column; gap:10px; }
+        .receipt-form label { font-weight:600; color:#1b2538; }
+        .receipt-form input { padding:10px 12px; border-radius:10px; border:1px solid rgba(31,69,114,0.25); font-size:0.95rem; }
+        .receipt-form .btn-primary { width:100%; }
+        @keyframes fadeIn { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform:none; } }
+    </style>
+
+    <script>
+        // Simple confetti animation
+        (function(){
+            const canvas = document.getElementById('confetti');
+            const ctx = canvas.getContext('2d');
+            let W, H; let pieces=[]; let start = performance.now();
+            function resize(){ W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight; }
+            window.addEventListener('resize', resize); resize();
+
+            const colors = ['#6a9e7c','#5b68ff','#f0c419','#e76f51','#2a9d8f'];
+            for(let i=0;i<120;i++){
+                pieces.push({
+                    x: Math.random()*W,
+                    y: -Math.random()*H,
+                    r: 3+Math.random()*5,
+                    c: colors[Math.floor(Math.random()*colors.length)],
+                    v: 50+Math.random()*120,
+                    w: -1+Math.random()*2
+                });
+            }
+
+            function draw(t){
+                const dt = Math.min(0.033,(t-start)/1000); start = t;
+                ctx.clearRect(0,0,W,H);
+                pieces.forEach(p=>{
+                    p.y += p.v*dt; p.x += p.w*dt*60;
+                    if(p.y>H+20) { p.y = -10; p.x = Math.random()*W; }
+                    ctx.fillStyle = p.c; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+                });
+                if(performance.now() < firstTime + 1800) req = requestAnimationFrame(draw); else canvas.style.display='none';
+            }
+            const firstTime = performance.now(); let req = requestAnimationFrame(draw);
+        })();
+    </script>
+</section>
+
