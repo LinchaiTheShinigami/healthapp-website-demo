@@ -54,7 +54,8 @@ function initializeScreenNavigation() {
         'button.btn-back[data-target]',
         'button.option-link[data-target]',
         '.oauth-btn[data-target]',
-        '.pm-button[data-target]'
+        '.pm-button[data-target]',
+        'a[data-target]'
     ];
 
     // Only handle elements in NAV_CLICK_SELECTORS to avoid conflicting with bottom nav
