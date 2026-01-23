@@ -3,46 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact | HealthApp Demo</title>
+    <title>Contact | Ayuta Health</title>
     <link rel="icon" href="../Images/Logo/ayuta_favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../styles/site-base.css">
     <link rel="stylesheet" href="../styles/styles-contact.css">
+    <script src="../scripts/contact-form.js" defer></script>
 </head>
 <body>
     <div id="nav-placeholder"></div>
     <script src="../scripts/include-nav.js"></script>
-    <main class="contact-page">
+    <main class="contact-page section">
         <div class="container">
+            <span class="eyebrow">Contact</span>
             <h1>Contact Us</h1>
-            <form class="contact-form" action="mailto:anuj.gupta@cryptopill.co.uk,aditya.gupta@cryptopill.co.uk" method="POST" onsubmit="return formatMailto(this);">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required autocomplete="name" placeholder="Your Name">
-                
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required autocomplete="email" placeholder="you@email.com">
-
-                <label for="message">Message:</label>
-                <textarea id="message" name="message" rows="5" required autocomplete="off" placeholder="Type your message here..."></textarea>
-
-                <button type="submit" class="cta-btn">Send Message</button>
+            <p class="contact-subtitle">Send a note and our team will get back to you with next steps.</p>
+            <form class="contact-form card" action="mailto:anuj.gupta@cryptopill.co.uk,aditya.gupta@cryptopill.co.uk" method="POST" data-mailto="anuj.gupta@cryptopill.co.uk,aditya.gupta@cryptopill.co.uk">
+                <div class="form-row">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required autocomplete="name" placeholder="Your name">
+                </div>
+                <div class="form-row">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required autocomplete="email" placeholder="you@domain.com">
+                </div>
+                <div class="form-row">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" required autocomplete="off" placeholder="Type your message here"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Send message</button>
             </form>
         </div>
     </main>
-    <footer>
+    <footer class="site-footer">
         <div class="container">
             <p>&copy; 2025 Ayuta Ltd. All rights reserved.</p>
         </div>
     </footer>
-    <script>
-        function formatMailto(form) {
-            const name = encodeURIComponent(form.name.value);
-            const email = encodeURIComponent(form.email.value);
-            const message = encodeURIComponent(form.message.value);
-
-            const mailto = `mailto:ayuta.info@gmail.com?subject=Message%20from%20${name}&body=Name:%20${name}%0AEmail:%20${email}%0A%0A${message}`;
-
-            window.location.href = mailto;
-            return false; // Prevent default form submission
-        }
-    </script>
 </body>
 </html>

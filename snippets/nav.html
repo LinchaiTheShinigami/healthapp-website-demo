@@ -1,10 +1,19 @@
-<nav>
-    <div class="container">
-        <a href="../index.html" class="logo">Ayuta Health App</a>
-        <ul class="nav-links">
-            <li><a href="../index.html" id="nav-home">Home</a></li>
-            <li><a href="../pages/about.html" id="nav-about">About</a></li>
-            <li><a href="../pages/contact.html" id="nav-contact">Contact</a></li>
-        </ul>
+<nav class="site-nav" aria-label="Primary">
+    <div class="nav-shell">
+        <a class="brand" data-nav-link data-path="index.html">
+            <img class="brand-mark" data-asset="Images/Logo/ayuta_logo.svg" alt="Ayuta logo">
+            <span>Ayuta Health</span>
+        </a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" data-nav-toggle>Menu</button>
+        <div class="nav-links" id="primary-nav">
+            <a class="nav-link" data-nav-link data-path="index.html" data-nav-key="home">Home</a>
+            <a class="nav-link" data-nav-link data-path="index.html#how-it-works">How it works</a>
+            <a class="nav-link" data-nav-link data-path="index.html#products">Products</a>
+            <a class="nav-link" data-nav-link data-path="index.html#checkout">Checkout</a>
+            <a class="nav-link" data-nav-link data-path="index.html#login">Login</a>
+            <a class="nav-link" data-nav-link data-path="index.html#orders">Orders</a>
+            <a class="nav-link" data-nav-link data-path="pages/webapp.html" data-nav-key="mobile">Mobile demo</a>
+        </div>
+        <a class="btn btn-primary nav-cta" data-nav-link data-path="index.html#products">Get started</a>
     </div>
 </nav>

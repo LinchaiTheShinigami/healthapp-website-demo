@@ -1,36 +1,77 @@
-// Dynamically include nav.html into the #nav-placeholder element
-function getNavPath() {
-  // Get current path depth
+function getBasePath() {
   const path = window.location.pathname;
-  // If at root (e.g. /index.html), use 'snippets/nav.html'
-  // If in subfolder (e.g. /pages/about.html), use '../snippets/nav.html'
-  if (path.endsWith('index.html') || path === '/' || path === '/index.html') {
-    throw new Error('index.html has its own nav, no need to include it.');
-  } else {
-    return '../snippets/nav.html';
+  const page = path.split('/').pop();
+  if (!page || page === '' || page === 'index.html') {
+    return '';
+  }
+  return '../';
+}
+
+function getNavPath(basePath) {
+  return `${basePath}snippets/nav.html`;
+}
+
+function setNavLinks(navRoot, basePath) {
+  navRoot.querySelectorAll('[data-nav-link][data-path]').forEach(link => {
+    const target = link.getAttribute('data-path');
+    link.setAttribute('href', `${basePath}${target}`);
+  });
+
+  navRoot.querySelectorAll('[data-asset]').forEach(asset => {
+    const src = asset.getAttribute('data-asset');
+    asset.setAttribute('src', `${basePath}${src}`);
+  });
+}
+
+function setActiveLink(navRoot) {
+  const page = window.location.pathname.split('/').pop() || 'index.html';
+  let activeKey = null;
+  if (page === '' || page === 'index.html') activeKey = 'home';
+  if (page === 'webapp.html') activeKey = 'mobile';
+  if (activeKey) {
+    const activeLink = navRoot.querySelector(`[data-nav-key="${activeKey}"]`);
+    if (activeLink) {
+      activeLink.classList.add('is-active');
+      activeLink.setAttribute('aria-current', 'page');
+    }
   }
 }
 
-fetch(getNavPath())
-  .then(response => {
-    if (!response.ok) throw new Error('Nav snippet not found');
-    return response.text();
-  })
-  .then(data => {
-    document.getElementById('nav-placeholder').innerHTML = data;
-    // Highlight active link
-    const page = window.location.pathname.split('/').pop();
-    if (page === 'index.html' || page === '') {
-      document.getElementById('nav-home').classList.add('active');
-    } else if (page === 'about.html') {
-      document.getElementById('nav-about').classList.add('active');
-    } else if (page === 'contact.html') {
-      document.getElementById('nav-contact').classList.add('active');
-    } else if (page === 'webapp.html') {
-      //No button that needs to be set to active
-    }
-  })
-  .catch(error => {
-    document.getElementById('nav-placeholder').innerHTML = '<!-- Navigation not found -->';
-    console.error(error);
+function wireNavToggle(navRoot) {
+  const toggle = navRoot.querySelector('[data-nav-toggle]');
+  if (!toggle) return;
+  toggle.addEventListener('click', () => {
+    const isOpen = navRoot.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', String(isOpen));
   });
+
+  navRoot.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      navRoot.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+}
+
+const basePath = getBasePath();
+const navPlaceholder = document.getElementById('nav-placeholder');
+
+if (navPlaceholder) {
+  fetch(getNavPath(basePath))
+    .then(response => {
+      if (!response.ok) throw new Error('Nav snippet not found');
+      return response.text();
+    })
+    .then(data => {
+      navPlaceholder.innerHTML = data;
+      const navRoot = navPlaceholder.querySelector('.site-nav');
+      if (!navRoot) return;
+      setNavLinks(navRoot, basePath);
+      setActiveLink(navRoot);
+      wireNavToggle(navRoot);
+    })
+    .catch(error => {
+      navPlaceholder.innerHTML = '<!-- Navigation not found -->';
+      console.error(error);
+    });
+}

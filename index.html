@@ -3,53 +3,321 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HealthApp Demo</title>
+    <meta name="description" content="Ayuta Health helps you choose health products, pay securely, and track orders in one place.">
+    <title>Ayuta Health</title>
     <link rel="icon" href="Images/Logo/ayuta_favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="styles/site-base.css">
     <link rel="stylesheet" href="styles/styles-index.css">
+    <script src="scripts/include-nav.js" defer></script>
+    <script src="scripts/stripe-mock.js" defer></script>
+    <script src="scripts/home-flow.js" defer></script>
 </head>
-<body>
-    <nav>
-        <div class="container">
-            <a href="./index.html" class="logo">Ayuta Health App</a>
-            <ul class="nav-links">
-                <li><a href="./index.html" id="nav-home">Home</a></li>
-                <li><a href="./pages/about.html" id="nav-about">About</a></li>
-                <li><a href="./pages/contact.html" id="nav-contact">Contact</a></li>
-            </ul>
-        </div>
-    </nav>
+<body class="home">
+    <div id="nav-placeholder"></div>
+
     <header class="hero" id="home">
-        <div class="container">
-            <h1>Welcome to HealthApp</h1>
-            <p>Your journey to better health starts here.</p>
-            <a href="pages/webapp.html" class="cta-btn">Try our Web App!</a>
-        </div>
-        
-    </header>
-            <div class="container">
-            <h1>About Us</h1>
-            <p>HealthApp is dedicated to making health management simple and accessible for everyone. Our team is passionate about leveraging technology to improve well-being and empower individuals on their health journey.</p>
-            <div class="team-section">
-                <h2>Meet the Team</h2>
-                <div class="team-photos">
-                    <div class="photo-placeholder">
-                        <img src="Images/Anuj Gupta.jpg" alt="Anuj Gupta">
-                        <br><span class="photo-caption">Anuj Gupta</span>
+        <div class="container hero-grid">
+            <div class="hero-copy reveal">
+                <span class="eyebrow">Ayuta Health</span>
+                <h1 class="hero-title">Find the right health products and move from checkout to order tracking fast.</h1>
+                <p class="hero-lede">
+                    Ayuta brings the mobile demo flow to the web: set a goal, select your tests, pay with Stripe, and
+                    sign in with email to monitor every order.
+                </p>
+                <div class="hero-actions">
+                    <a class="btn btn-primary" href="#products">Start with products</a>
+                    <a class="btn btn-ghost" href="pages/webapp.html">View mobile demo</a>
+                </div>
+                <div class="hero-note">
+                    <span class="hero-pill">Stripe-ready checkout</span>
+                    <span class="hero-pill">Single-factor email login</span>
+                    <span class="hero-pill">Order tracking dashboard</span>
+                </div>
+            </div>
+            <div class="hero-panel card reveal delay-1">
+                <div class="hero-panel-header">
+                    <span class="eyebrow">Your journey</span>
+                    <h2 class="hero-panel-title">From goal to delivery in a single flow.</h2>
+                </div>
+                <div class="hero-steps">
+                    <div class="hero-step" data-flow-step="goal">
+                        <span>Choose a health goal</span>
+                        <strong>01</strong>
                     </div>
-                    <div class="photo-placeholder">
-                        <img src="Images/Aditya Gupta.jpg" alt="Aditya Gupta">
-                        <br><span class="photo-caption">Aditya Gupta</span>
+                    <div class="hero-step" data-flow-step="products">
+                        <span>Select your products</span>
+                        <strong>02</strong>
                     </div>
-                    <div class="photo-placeholder">
-                        <img src="Images/Archi Sharma.jpg" alt="Archi Sharma">
-                        <br><span class="photo-caption">Archi Sharma</span>
+                    <div class="hero-step" data-flow-step="checkout">
+                        <span>Checkout with Stripe</span>
+                        <strong>03</strong>
+                    </div>
+                    <div class="hero-step" data-flow-step="register">
+                        <span>Register your profile</span>
+                        <strong>04</strong>
+                    </div>
+                    <div class="hero-step" data-flow-step="orders">
+                        <span>Track orders</span>
+                        <strong>05</strong>
+                    </div>
+                </div>
+                <div class="hero-summary">
+                    <div>
+                        <p class="hero-summary-label">Current goal</p>
+                        <p class="hero-summary-value" id="hero-goal">General wellness</p>
+                    </div>
+                    <div>
+                        <p class="hero-summary-label">Cart total</p>
+                        <p class="hero-summary-value" id="hero-total">GBP 0.00</p>
                     </div>
                 </div>
             </div>
         </div>
-    <!-- About section moved to about.html -->
-    <footer>
-        <div class="container">
+    </header>
+
+    <main>
+        <section class="section flow-section" id="how-it-works">
+            <div class="container">
+                <span class="eyebrow">How it works</span>
+                <h2 class="section-title">The same flow you designed for mobile, now web-ready.</h2>
+                <p class="section-subtitle">
+                    This path mirrors the demo screens: goal selection, product review, payment, registration, and a
+                    simple email login to manage orders.
+                </p>
+                <div class="flow-grid">
+                    <article class="flow-card reveal delay-1" data-flow-step="goal">
+                        <p class="flow-step">01</p>
+                        <h3>Choose your goal</h3>
+                        <p>Pick a focus area to surface the right panels fast.</p>
+                    </article>
+                    <article class="flow-card reveal delay-2" data-flow-step="products">
+                        <p class="flow-step">02</p>
+                        <h3>Select products</h3>
+                        <p>Add the tests that match your goal to your cart.</p>
+                    </article>
+                    <article class="flow-card reveal delay-3" data-flow-step="checkout">
+                        <p class="flow-step">03</p>
+                        <h3>Pay with Stripe</h3>
+                        <p>Mock Stripe calls demonstrate the payment experience.</p>
+                    </article>
+                    <article class="flow-card reveal delay-4" data-flow-step="register">
+                        <p class="flow-step">04</p>
+                        <h3>Complete registration</h3>
+                        <p>Store profile details in the browser cache for now.</p>
+                    </article>
+                    <article class="flow-card reveal delay-5" data-flow-step="orders">
+                        <p class="flow-step">05</p>
+                        <h3>Monitor orders</h3>
+                        <p>Sign in by email to track paid orders instantly.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section products-section" id="products">
+            <div class="container">
+                <span class="eyebrow">Products</span>
+                <h2 class="section-title">Find health products by goal.</h2>
+                <p class="section-subtitle">Filter by focus area, add a kit, and move straight to checkout.</p>
+
+                <div class="goal-filter" role="radiogroup" aria-label="Filter products by goal">
+                    <button class="pill" data-goal="all" aria-pressed="true">All goals</button>
+                    <button class="pill" data-goal="wellness" aria-pressed="false">General wellness</button>
+                    <button class="pill" data-goal="metabolic" aria-pressed="false">Metabolic health</button>
+                    <button class="pill" data-goal="energy" aria-pressed="false">Energy and sleep</button>
+                    <button class="pill" data-goal="performance" aria-pressed="false">Performance focus</button>
+                </div>
+
+                <div class="product-grid">
+                    <article class="product-card reveal delay-1" data-product-id="core" data-product-name="Core Health Panel" data-product-price="249" data-goals="wellness,metabolic">
+                        <span class="product-tag">Most popular</span>
+                        <h3>Core Health Panel</h3>
+                        <p>Full biomarker scan with clinician review and fast turnaround.</p>
+                        <div class="product-meta">
+                            <span class="product-price">GBP 249</span>
+                            <span class="product-chip">12 biomarkers</span>
+                        </div>
+                        <button class="btn btn-outline product-toggle" type="button">Add to cart</button>
+                    </article>
+                    <article class="product-card reveal delay-2" data-product-id="metabolic" data-product-name="Metabolic Focus Kit" data-product-price="189" data-goals="metabolic,energy">
+                        <span class="product-tag is-teal">Best for balance</span>
+                        <h3>Metabolic Focus Kit</h3>
+                        <p>Track glucose, lipids, and inflammation markers with insights.</p>
+                        <div class="product-meta">
+                            <span class="product-price">GBP 189</span>
+                            <span class="product-chip">8 biomarkers</span>
+                        </div>
+                        <button class="btn btn-outline product-toggle" type="button">Add to cart</button>
+                    </article>
+                    <article class="product-card reveal delay-3" data-product-id="energy" data-product-name="Energy and Sleep Panel" data-product-price="159" data-goals="energy,wellness">
+                        <span class="product-tag is-gold">Quick check</span>
+                        <h3>Energy and Sleep Panel</h3>
+                        <p>Hormone and nutrient insights to support recovery and rest.</p>
+                        <div class="product-meta">
+                            <span class="product-price">GBP 159</span>
+                            <span class="product-chip">6 biomarkers</span>
+                        </div>
+                        <button class="btn btn-outline product-toggle" type="button">Add to cart</button>
+                    </article>
+                    <article class="product-card reveal delay-4" data-product-id="performance" data-product-name="Performance Builder Kit" data-product-price="219" data-goals="performance,energy">
+                        <span class="product-tag">For athletes</span>
+                        <h3>Performance Builder Kit</h3>
+                        <p>Measures recovery, cortisol, and key performance markers.</p>
+                        <div class="product-meta">
+                            <span class="product-price">GBP 219</span>
+                            <span class="product-chip">10 biomarkers</span>
+                        </div>
+                        <button class="btn btn-outline product-toggle" type="button">Add to cart</button>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section checkout-section" id="checkout">
+            <div class="container">
+                <span class="eyebrow">Checkout</span>
+                <h2 class="section-title">Review and pay with Stripe.</h2>
+                <p class="section-subtitle">Payments are mocked, but the flow mirrors Stripe payment intents.</p>
+
+                <div class="checkout-grid">
+                    <form class="card checkout-card" id="checkout-form">
+                        <h3>Payment details</h3>
+                        <div class="form-row">
+                            <label for="checkout-email">Email for receipt</label>
+                            <input id="checkout-email" name="checkout-email" type="email" autocomplete="email" placeholder="you@domain.com" required>
+                        </div>
+                        <div class="form-row">
+                            <label for="card-number">Card number</label>
+                            <input id="card-number" name="card-number" type="text" inputmode="numeric" placeholder="4242 4242 4242 4242" required>
+                        </div>
+                        <div class="card-grid">
+                            <div class="form-row">
+                                <label for="card-exp">Expiry</label>
+                                <input id="card-exp" name="card-exp" type="text" inputmode="numeric" placeholder="MM / YY" required>
+                            </div>
+                            <div class="form-row">
+                                <label for="card-cvc">CVC</label>
+                                <input id="card-cvc" name="card-cvc" type="text" inputmode="numeric" placeholder="123" required>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary checkout-button" type="submit">Pay with Stripe (mock)</button>
+                        <p class="checkout-note">This demo stores payment results in the browser cache only.</p>
+                        <div class="status" id="checkout-status" role="status" aria-live="polite"></div>
+                    </form>
+
+                    <div class="card summary-card">
+                        <div class="summary-header">
+                            <h3>Your order</h3>
+                            <button class="text-button" type="button" id="clear-cart">Clear cart</button>
+                        </div>
+                        <div id="cart-items" class="summary-list"></div>
+                        <div class="summary-row">
+                            <span>Subtotal</span>
+                            <span id="summary-subtotal">GBP 0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Shipping</span>
+                            <span id="summary-shipping">GBP 0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Taxes and fees</span>
+                            <span id="summary-taxes">GBP 0.00</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Order total</span>
+                            <span id="summary-total">GBP 0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section account-section" id="login">
+            <div class="container">
+                <span class="eyebrow">Account access</span>
+                <h2 class="section-title">Register once, then sign in by email.</h2>
+                <p class="section-subtitle">Single-factor access keeps the flow fast after payment.</p>
+
+                <div class="account-grid">
+                    <form class="card account-card" id="registration">
+                        <h3>Complete registration</h3>
+                        <div class="form-row">
+                            <label for="register-name">Full name</label>
+                            <input id="register-name" name="register-name" type="text" autocomplete="name" placeholder="Alex Johnson" required>
+                        </div>
+                        <div class="form-row">
+                            <label for="register-email">Email address</label>
+                            <input id="register-email" name="register-email" type="email" autocomplete="email" placeholder="you@domain.com" required>
+                        </div>
+                        <div class="form-row">
+                            <label for="register-phone">Phone number</label>
+                            <input id="register-phone" name="register-phone" type="tel" autocomplete="tel" placeholder="+44 7700 900000">
+                        </div>
+                        <button class="btn btn-primary" type="submit">Save profile</button>
+                        <div class="status" id="register-status" role="status" aria-live="polite"></div>
+                    </form>
+
+                    <form class="card account-card" id="login-form">
+                        <h3>Email login</h3>
+                        <div class="form-row">
+                            <label for="login-email">Email address</label>
+                            <input id="login-email" name="login-email" type="email" autocomplete="email" placeholder="you@domain.com" required>
+                        </div>
+                        <button class="btn btn-outline" type="submit">Send login link</button>
+                        <p class="login-note">We mock the link and log you in instantly for the demo.</p>
+                        <div class="status" id="login-status" role="status" aria-live="polite"></div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section class="section orders-section" id="orders">
+            <div class="container">
+                <span class="eyebrow">Orders</span>
+                <h2 class="section-title">Monitor your paid orders in one dashboard.</h2>
+                <p class="section-subtitle">Order data is stored locally so you can demo the full flow.</p>
+
+                <div class="orders-grid">
+                    <div class="card orders-card">
+                        <h3>Status</h3>
+                        <p class="orders-status status" id="orders-status">Sign in to view orders.</p>
+                        <div class="orders-actions">
+                            <button class="btn btn-ghost" type="button" id="clear-demo">Clear demo data</button>
+                        </div>
+                    </div>
+                    <div class="card orders-card">
+                        <h3>Recent orders</h3>
+                        <div id="orders-list" class="orders-list"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div>
+                <p class="footer-title">Ayuta Health</p>
+                <p>Health products, payment, and tracking in one flow.</p>
+            </div>
+            <div>
+                <p class="footer-title">Explore</p>
+                <div class="footer-links">
+                    <a href="#products">Products</a>
+                    <a href="#checkout">Checkout</a>
+                    <a href="#login">Login</a>
+                    <a href="pages/webapp.html">Mobile demo</a>
+                </div>
+            </div>
+            <div>
+                <p class="footer-title">Company</p>
+                <div class="footer-links">
+                    <a href="pages/about.html">About</a>
+                    <a href="pages/contact.html">Contact</a>
+                </div>
+            </div>
+        </div>
+        <div class="container footer-bottom">
             <p>&copy; 2025 Ayuta Ltd. All rights reserved.</p>
         </div>
     </footer>

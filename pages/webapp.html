@@ -3,28 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HealthApp Web App Mockup</title>
+    <title>Mobile Demo | Ayuta Health</title>
     <link rel="icon" href="../Images/Logo/ayuta_favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../styles/site-base.css">
     <link rel="stylesheet" href="../styles/styles-webapp.css">
     <script src="../scripts/html-loader.js"></script>
+    <script src="../scripts/include-nav.js" defer></script>
+    <script src="../scripts/webapp-page.js" defer></script>
 </head>
 <body>
     <div id="nav-placeholder"></div>
-    <script>
-        // Load navigation
-        loadHTMLContent('../snippets/nav.html', 'nav-placeholder');
-    </script>
-    <main class="webapp-page">
+    <main class="webapp-page section">
         <h1 class="webapp-hero">Mobile App Demo</h1>
         <div id="mobile-placeholder"></div>
-        <script>
-            // Initialize mobile app when DOM is loaded
-            document.addEventListener('DOMContentLoaded', () => {
-                loadHTMLContent('mobile/mobile-container.html', 'mobile-placeholder');
-            });
-        </script>
     </main>
-    <footer>
+    <footer class="site-footer">
         <div class="container">
             <p>&copy; 2025 Ayuta Ltd. All rights reserved.</p>
         </div>

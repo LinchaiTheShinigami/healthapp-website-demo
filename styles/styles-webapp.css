@@ -1,68 +1,20 @@
-body {
-    margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f4f7f5; /* Light sage green */
-    color: #2a3d34; /* Dark sage green */
+.webapp-page {
+    text-align: center;
 }
 
 /* Webapp Hero Heading Style */
 .webapp-hero {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #3a5a40; /* Sage green heading */
+    font-family: var(--font-display);
+    font-size: clamp(2.1rem, 4vw, 3rem);
+    color: var(--ink);
     text-align: center;
-    margin: 2rem 0 1.5rem;
-    letter-spacing: 0.5px;
+    margin: 0 0 1.5rem;
+    letter-spacing: 0.3px;
 }
 
-.container {
-    width: 90%;
-    max-width: 1100px;
-    margin: 0 auto;
-}
-
-nav {
-    background: #6a9e7c; /* Sage green */
-    color: #fff;
-    padding: 1rem 0;
-    box-shadow: 0 3px 12px rgba(106, 158, 124, 0.3);
-}
-
-.logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #fff;
-    text-decoration: none;
-}
-
-.nav-links {
-    list-style: none;
-    display: flex;
-    gap: 1.5rem;
-    margin: 0;
-    padding: 0;
-}
-
-nav .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.nav-links a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.2s ease;
-}
-
-.nav-links a:hover {
-    color: #d9f2e6; /* Light sage green */
-}
-
-/* Buttons & Inputs */
-.btn-primary,
-.btn-secondary {
+/* Buttons & Inputs scoped to the mobile demo */
+.mobile-container .btn-primary,
+.mobile-container .btn-secondary {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -76,30 +28,30 @@ nav .container {
     transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, color 0.15s ease;
 }
 
-.btn-primary {
+.mobile-container .btn-primary {
     background: linear-gradient(135deg, #4a7a5a, #3a5a40); /* Sage green gradient */
     color: #fff;
     border: none;
     box-shadow: 0 10px 20px rgba(58, 90, 64, 0.25);
 }
 
-.btn-primary:hover {
+.mobile-container .btn-primary:hover {
     transform: translateY(-1px);
     box-shadow: 0 14px 26px rgba(58, 90, 64, 0.35);
 }
 
-.btn-secondary {
+.mobile-container .btn-secondary {
     background: #fff;
     color: #4a7a5a;
     border: 1px solid rgba(74, 122, 90, 0.3);
     box-shadow: 0 6px 14px rgba(42, 61, 52, 0.08);
 }
 
-.btn-secondary:hover {
+.mobile-container .btn-secondary:hover {
     background: rgba(74, 122, 90, 0.08);
 }
 
-.btn-back {
+.mobile-container .btn-back {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -114,12 +66,12 @@ nav .container {
     transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.btn-back:hover {
+.mobile-container .btn-back:hover {
     transform: translateY(-1px);
     box-shadow: 0 10px 20px rgba(58, 90, 64, 0.25);
 }
 
-.pill {
+.mobile-container .pill {
     padding: 10px 16px;
     border-radius: 999px;
     border: 1px solid rgba(74, 122, 90, 0.35);
@@ -130,13 +82,13 @@ nav .container {
     transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.pill:hover {
+.mobile-container .pill:hover {
     background: rgba(74, 122, 90, 0.1);
     box-shadow: 0 8px 18px rgba(74, 122, 90, 0.2);
 }
 
-input[type="text"],
-input[type="password"] {
+.mobile-container input[type="text"],
+.mobile-container input[type="password"] {
     border: 1px solid #c8dcd1; /* Light sage border */
     border-radius: 12px;
     padding: 12px 14px;
@@ -146,8 +98,8 @@ input[type="password"] {
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-input[type="text"]:focus,
-input[type="password"]:focus {
+.mobile-container input[type="text"]:focus,
+.mobile-container input[type="password"]:focus {
     outline: none;
     border-color: #4a7a5a;
     box-shadow: 0 0 0 3px rgba(74, 122, 90, 0.15);
@@ -361,15 +313,6 @@ input[type="password"]:focus {
     height: 5px;
     border-radius: 3px;
     background: rgba(255, 255, 255, 0.6);
-}
-
-footer {
-    background: #2a3d34;
-    color: #fff;
-    text-align: center;
-    padding: 1rem 0;
-    margin-top: 2rem;
-    font-size: 0.95rem;
 }
 
 /* Responsive styles for webapp.html */
