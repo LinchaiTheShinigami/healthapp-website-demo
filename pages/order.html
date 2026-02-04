@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order | Ayuta Health</title>
+    <link rel="icon" href="../Images/Logo/ayuta_favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../styles/site-base.css">
+    <link rel="stylesheet" href="../styles/styles-order.css">
+    <script src="../scripts/app-store.js" defer></script>
+    <script src="../scripts/nav-state.js" defer></script>
+    <script src="../scripts/account-modal.js" defer></script>
+    <script src="../scripts/stripe-mock.js" defer></script>
+    <script src="../scripts/include-nav.js" defer></script>
+    <script src="../scripts/order-page.js" defer></script>
+</head>
+<body class="order-page">
+    <div id="nav-placeholder"></div>
+
+    <main class="order-main">
+        <div class="order-shell">
+            <section class="order-left">
+                <header class="order-hero card">
+                    <div>
+                        <span class="eyebrow">Order menu</span>
+                        <h1>Build your health order.</h1>
+                        <p>Choose a goal, pick your panels, and keep your basket visible while you pay and register.</p>
+                    </div>
+                    <div class="order-hero-actions">
+                        <a class="btn btn-primary" href="#checkout-step">Pay now</a>
+                        <button class="btn btn-ghost" type="button" data-login-trigger>Login</button>
+                    </div>
+                </header>
+
+                <div class="order-steps">
+                    <a class="order-step" data-step="goal" href="#goal-step">01 Choose goal</a>
+                    <a class="order-step" data-step="menu" href="#menu-step">02 Build basket</a>
+                    <a class="order-step" data-step="pay" href="#checkout-step">03 Pay</a>
+                    <a class="order-step" data-step="register" href="#registration-step">04 Register</a>
+                </div>
+
+                <section class="order-section" id="goal-step">
+                    <div class="section-header">
+                        <h2>Pick your focus</h2>
+                        <p>Select one goal to tailor the menu below.</p>
+                    </div>
+                    <div class="goal-filter" role="radiogroup" aria-label="Filter products by goal">
+                        <button class="pill" data-goal="all" aria-pressed="true">All goals</button>
+                        <button class="pill" data-goal="wellness" aria-pressed="false">General wellness</button>
+                        <button class="pill" data-goal="metabolic" aria-pressed="false">Metabolic health</button>
+                        <button class="pill" data-goal="energy" aria-pressed="false">Energy and sleep</button>
+                        <button class="pill" data-goal="performance" aria-pressed="false">Performance focus</button>
+                    </div>
+                </section>
+
+                <section class="order-section" id="menu-step">
+                    <div class="section-header">
+                        <h2>Choose your panels</h2>
+                        <p>Add any kit to your basket and see totals update on the right.</p>
+                    </div>
+
+                    <div class="menu-category" id="menu-core" data-goals="wellness,metabolic">
+                        <div class="menu-header">
+                            <h3>Core health panels</h3>
+                            <span>Clinician-reviewed</span>
+                        </div>
+                        <div class="menu-grid">
+                            <article class="menu-item" data-product-id="core" data-product-name="Core Health Panel" data-product-price="249" data-goals="wellness,metabolic">
+                                <div>
+                                    <h4>Core Health Panel</h4>
+                                    <p>Full biomarker scan with clinician review and fast turnaround.</p>
+                                    <span class="menu-meta">12 biomarkers</span>
+                                </div>
+                                <div class="menu-actions">
+                                    <span class="menu-price">GBP 249</span>
+                                    <button class="btn btn-outline menu-toggle" type="button">Add</button>
+                                </div>
+                            </article>
+                            <article class="menu-item" data-product-id="performance" data-product-name="Performance Builder Kit" data-product-price="219" data-goals="performance,energy">
+                                <div>
+                                    <h4>Performance Builder Kit</h4>
+                                    <p>Measures recovery, cortisol, and key performance markers.</p>
+                                    <span class="menu-meta">10 biomarkers</span>
+                                </div>
+                                <div class="menu-actions">
+                                    <span class="menu-price">GBP 219</span>
+                                    <button class="btn btn-outline menu-toggle" type="button">Add</button>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+
+                    <div class="menu-category" id="menu-metabolic" data-goals="metabolic,energy">
+                        <div class="menu-header">
+                            <h3>Metabolic and balance</h3>
+                            <span>Best for balance</span>
+                        </div>
+                        <div class="menu-grid">
+                            <article class="menu-item" data-product-id="metabolic" data-product-name="Metabolic Focus Kit" data-product-price="189" data-goals="metabolic,energy">
+                                <div>
+                                    <h4>Metabolic Focus Kit</h4>
+                                    <p>Track glucose, lipids, and inflammation markers with insights.</p>
+                                    <span class="menu-meta">8 biomarkers</span>
+                                </div>
+                                <div class="menu-actions">
+                                    <span class="menu-price">GBP 189</span>
+                                    <button class="btn btn-outline menu-toggle" type="button">Add</button>
+                                </div>
+                            </article>
+                            <article class="menu-item" data-product-id="recovery" data-product-name="Recovery Balance Panel" data-product-price="175" data-goals="metabolic,wellness">
+                                <div>
+                                    <h4>Recovery Balance Panel</h4>
+                                    <p>Inflammation, gut health, and nutrient recovery markers.</p>
+                                    <span class="menu-meta">7 biomarkers</span>
+                                </div>
+                                <div class="menu-actions">
+                                    <span class="menu-price">GBP 175</span>
+                                    <button class="btn btn-outline menu-toggle" type="button">Add</button>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+
+                    <div class="menu-category" id="menu-energy" data-goals="energy,wellness">
+                        <div class="menu-header">
+                            <h3>Energy and sleep</h3>
+                            <span>Quick check</span>
+                        </div>
+                        <div class="menu-grid">
+                            <article class="menu-item" data-product-id="energy" data-product-name="Energy and Sleep Panel" data-product-price="159" data-goals="energy,wellness">
+                                <div>
+                                    <h4>Energy and Sleep Panel</h4>
+                                    <p>Hormone and nutrient insights to support recovery and rest.</p>
+                                    <span class="menu-meta">6 biomarkers</span>
+                                </div>
+                                <div class="menu-actions">
+                                    <span class="menu-price">GBP 159</span>
+                                    <button class="btn btn-outline menu-toggle" type="button">Add</button>
+                                </div>
+                            </article>
+                            <article class="menu-item" data-product-id="focus" data-product-name="Focus and Clarity Kit" data-product-price="145" data-goals="energy,performance">
+                                <div>
+                                    <h4>Focus and Clarity Kit</h4>
+                                    <p>Micronutrient and hormone check for mental clarity.</p>
+                                    <span class="menu-meta">5 biomarkers</span>
+                                </div>
+                                <div class="menu-actions">
+                                    <span class="menu-price">GBP 145</span>
+                                    <button class="btn btn-outline menu-toggle" type="button">Add</button>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="order-section" id="checkout-step">
+                    <div class="section-header">
+                        <h2>Review and pay</h2>
+                        <p>Payments are mocked but follow Stripe payment intent patterns.</p>
+                    </div>
+                    <form class="checkout-card card" id="checkout-form">
+                        <div class="form-row">
+                            <label for="checkout-email">Email for receipt</label>
+                            <input id="checkout-email" name="checkout-email" type="email" autocomplete="email" placeholder="you@domain.com" required>
+                        </div>
+                        <div class="form-row">
+                            <label for="card-number">Card number</label>
+                            <input id="card-number" name="card-number" type="text" inputmode="numeric" placeholder="4242 4242 4242 4242" required>
+                        </div>
+                        <div class="card-grid">
+                            <div class="form-row">
+                                <label for="card-exp">Expiry</label>
+                                <input id="card-exp" name="card-exp" type="text" inputmode="numeric" placeholder="MM / YY" required>
+                            </div>
+                            <div class="form-row">
+                                <label for="card-cvc">CVC</label>
+                                <input id="card-cvc" name="card-cvc" type="text" inputmode="numeric" placeholder="123" required>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary checkout-button" type="submit">Pay with Stripe (mock)</button>
+                        <p class="checkout-note">Payment results are stored in your browser cache for this demo.</p>
+                        <div class="status" id="checkout-status" role="status" aria-live="polite"></div>
+                    </form>
+                </section>
+
+                <section class="order-section" id="registration-step">
+                    <div class="section-header">
+                        <h2>Complete registration</h2>
+                        <p>After payment, register once and log in with email on any page.</p>
+                    </div>
+                    <div class="card registration-card">
+                        <p id="registration-message">Payment comes first. You can register right after checkout.</p>
+                        <button class="btn btn-outline" type="button" data-register-trigger>Open registration</button>
+                    </div>
+                </section>
+            </section>
+
+            <aside class="order-basket">
+                <div class="basket card">
+                    <div class="basket-header">
+                        <h3>Your basket</h3>
+                        <button class="text-button" type="button" id="clear-cart">Clear</button>
+                    </div>
+                    <div id="basket-items" class="basket-items"></div>
+                    <div class="basket-summary">
+                        <div class="summary-row">
+                            <span>Subtotal</span>
+                            <span id="summary-subtotal">GBP 0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Shipping</span>
+                            <span id="summary-shipping">GBP 0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Taxes and fees</span>
+                            <span id="summary-taxes">GBP 0.00</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Order total</span>
+                            <span id="summary-total">GBP 0.00</span>
+                        </div>
+                    </div>
+                    <a class="btn btn-primary basket-cta" href="#checkout-step">Proceed to payment</a>
+                    <button class="btn btn-ghost basket-login" type="button" data-login-trigger>Login anytime</button>
+                    <p class="basket-hint">Selections stay saved while you navigate the site.</p>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2025 Ayuta Ltd. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

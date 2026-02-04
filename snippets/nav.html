@@ -1,5 +1,8 @@
 <nav class="site-nav" aria-label="Primary">
     <div class="nav-shell">
+        <a class="profile-link" data-nav-link data-path="pages/profile.html" data-nav-key="profile" data-auth="required" hidden aria-label="User profile">
+            <span class="profile-avatar" data-profile-initial>U</span>
+        </a>
         <a class="brand" data-nav-link data-path="index.html">
             <img class="brand-mark" data-asset="Images/Logo/ayuta_logo.svg" alt="Ayuta logo">
             <span>Ayuta Health</span>
@@ -7,13 +10,55 @@
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" data-nav-toggle>Menu</button>
         <div class="nav-links" id="primary-nav">
             <a class="nav-link" data-nav-link data-path="index.html" data-nav-key="home">Home</a>
-            <a class="nav-link" data-nav-link data-path="index.html#how-it-works">How it works</a>
-            <a class="nav-link" data-nav-link data-path="index.html#products">Products</a>
-            <a class="nav-link" data-nav-link data-path="index.html#checkout">Checkout</a>
-            <a class="nav-link" data-nav-link data-path="index.html#login">Login</a>
-            <a class="nav-link" data-nav-link data-path="index.html#orders">Orders</a>
+            <a class="nav-link" data-nav-link data-path="pages/order.html" data-nav-key="order">Order</a>
             <a class="nav-link" data-nav-link data-path="pages/webapp.html" data-nav-key="mobile">Mobile demo</a>
+            <a class="nav-link" data-nav-link data-path="pages/orders.html" data-nav-key="orders" data-auth="required" hidden>Orders</a>
+            <a class="nav-link" data-nav-link data-path="pages/results.html" data-nav-key="results" data-auth="required" hidden>Test results</a>
         </div>
-        <a class="btn btn-primary nav-cta" data-nav-link data-path="index.html#products">Get started</a>
+        <div class="nav-actions">
+            <a class="btn btn-outline nav-order" data-nav-link data-path="pages/order.html">Order</a>
+            <button class="btn btn-primary nav-login" type="button" data-login-trigger>Login</button>
+        </div>
     </div>
 </nav>
+<div class="account-modal" data-account-modal hidden>
+    <div class="account-backdrop" data-account-close></div>
+    <div class="account-panel" role="dialog" aria-modal="true" aria-labelledby="account-title">
+        <button class="account-close" type="button" data-account-close aria-label="Close">&times;</button>
+        <div class="account-header">
+            <p class="eyebrow">Account</p>
+            <h2 id="account-title">Login or register</h2>
+        </div>
+        <div class="account-tabs" role="tablist">
+            <button class="account-tab is-active" type="button" role="tab" aria-selected="true" data-account-tab="login">Login</button>
+            <button class="account-tab" type="button" role="tab" aria-selected="false" data-account-tab="register">Register</button>
+        </div>
+        <div class="account-body">
+            <form class="account-pane is-active" data-account-pane="login">
+                <div class="form-row">
+                    <label for="account-login-email">Email address</label>
+                    <input id="account-login-email" name="account-login-email" type="email" autocomplete="email" placeholder="you@domain.com" required>
+                </div>
+                <button class="btn btn-primary" type="submit">Send login link</button>
+                <p class="login-note">We mock the link and sign you in instantly.</p>
+                <div class="status" data-account-status="login" role="status" aria-live="polite"></div>
+            </form>
+            <form class="account-pane" data-account-pane="register">
+                <div class="form-row">
+                    <label for="account-name">Full name</label>
+                    <input id="account-name" name="account-name" type="text" autocomplete="name" placeholder="Alex Johnson" required>
+                </div>
+                <div class="form-row">
+                    <label for="account-email">Email address</label>
+                    <input id="account-email" name="account-email" type="email" autocomplete="email" placeholder="you@domain.com" required>
+                </div>
+                <div class="form-row">
+                    <label for="account-phone">Phone number</label>
+                    <input id="account-phone" name="account-phone" type="tel" autocomplete="tel" placeholder="+44 7700 900000">
+                </div>
+                <button class="btn btn-primary" type="submit">Save profile</button>
+                <div class="status" data-account-status="register" role="status" aria-live="polite"></div>
+            </form>
+        </div>
+    </div>
+</div>

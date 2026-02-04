@@ -27,7 +27,11 @@ function setActiveLink(navRoot) {
   const page = window.location.pathname.split('/').pop() || 'index.html';
   let activeKey = null;
   if (page === '' || page === 'index.html') activeKey = 'home';
+  if (page === 'order.html') activeKey = 'order';
   if (page === 'webapp.html') activeKey = 'mobile';
+  if (page === 'orders.html') activeKey = 'orders';
+  if (page === 'results.html') activeKey = 'results';
+  if (page === 'profile.html') activeKey = 'profile';
   if (activeKey) {
     const activeLink = navRoot.querySelector(`[data-nav-key="${activeKey}"]`);
     if (activeLink) {
@@ -69,6 +73,12 @@ if (navPlaceholder) {
       setNavLinks(navRoot, basePath);
       setActiveLink(navRoot);
       wireNavToggle(navRoot);
+      if (window.AyutaNav && typeof window.AyutaNav.init === 'function') {
+        window.AyutaNav.init(navRoot);
+      }
+      if (window.AyutaAccount && typeof window.AyutaAccount.init === 'function') {
+        window.AyutaAccount.init(navRoot);
+      }
     })
     .catch(error => {
       navPlaceholder.innerHTML = '<!-- Navigation not found -->';

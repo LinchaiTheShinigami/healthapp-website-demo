@@ -1,0 +1,111 @@
+.account-page {
+    padding: 64px 0;
+}
+
+.account-hero {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.account-hero h1 {
+    margin: 0;
+    font-family: var(--font-display);
+}
+
+.account-hero p {
+    margin: 0;
+    color: var(--muted);
+}
+
+.account-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+}
+
+.account-card {
+    display: grid;
+    gap: 16px;
+}
+
+.account-card h2 {
+    margin: 0;
+}
+
+.account-status {
+    color: var(--muted);
+}
+
+.order-list,
+.result-list {
+    display: grid;
+    gap: 16px;
+}
+
+.order-item,
+.result-item {
+    border: 1px solid rgba(22, 28, 26, 0.1);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    background: #fff;
+    display: grid;
+    gap: 6px;
+}
+
+.order-item h3,
+.result-item h3 {
+    margin: 0;
+}
+
+.order-meta,
+.result-meta {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin: 0;
+}
+
+.order-tags,
+.result-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.order-tag,
+.result-tag {
+    background: rgba(31, 122, 110, 0.12);
+    color: var(--accent-2);
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.profile-row {
+    display: grid;
+    gap: 6px;
+}
+
+.profile-label {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+}
+
+.profile-value {
+    font-weight: 600;
+}
+
+.profile-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+@media (max-width: 640px) {
+    .account-page {
+        padding-top: 48px;
+    }
+}

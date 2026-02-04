@@ -23,6 +23,10 @@
     box-sizing: border-box;
 }
 
+[hidden] {
+    display: none !important;
+}
+
 body {
     margin: 0;
     min-height: 100vh;
@@ -195,6 +199,37 @@ textarea {
     color: var(--accent-dark);
 }
 
+.text-button {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-weight: 600;
+    padding: 0;
+}
+
+.text-button:hover {
+    color: var(--ink);
+}
+
+.order-meta {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin: 0;
+}
+
+.login-note {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin: 10px 0 0;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+}
+
 .site-nav {
     position: sticky;
     top: 0;
@@ -234,6 +269,31 @@ textarea {
     margin-left: auto;
 }
 
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: 12px;
+}
+
+.profile-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(31, 122, 110, 0.12);
+    border: 1px solid rgba(31, 122, 110, 0.35);
+    color: var(--accent-2);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.profile-avatar {
+    font-size: 0.9rem;
+}
+
 .nav-link {
     color: var(--muted);
     font-weight: 600;
@@ -248,6 +308,10 @@ textarea {
 
 .nav-cta {
     margin-left: 12px;
+}
+
+.nav-login {
+    min-width: 96px;
 }
 
 .nav-toggle {
@@ -295,6 +359,95 @@ textarea {
     border: 0;
 }
 
+.account-modal {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    z-index: 400;
+}
+
+.account-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(20, 24, 22, 0.45);
+    backdrop-filter: blur(4px);
+}
+
+.account-panel {
+    position: relative;
+    width: min(520px, 92%);
+    background: #fff;
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    box-shadow: var(--shadow);
+    z-index: 1;
+    display: grid;
+    gap: 18px;
+}
+
+.account-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--stroke);
+    background: #fff;
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.account-header h2 {
+    font-family: var(--font-display);
+    margin: 8px 0 0;
+}
+
+.account-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    background: rgba(22, 28, 26, 0.05);
+    border-radius: 999px;
+    padding: 6px;
+}
+
+.account-tab {
+    border: none;
+    background: transparent;
+    border-radius: 999px;
+    padding: 10px 14px;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--muted);
+}
+
+.account-tab.is-active {
+    background: #fff;
+    color: var(--ink);
+    box-shadow: 0 10px 20px rgba(22, 28, 26, 0.12);
+}
+
+.account-body {
+    display: grid;
+    gap: 12px;
+}
+
+.account-pane {
+    display: none;
+    gap: 12px;
+}
+
+.account-pane.is-active {
+    display: grid;
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
 @media (max-width: 960px) {
     .nav-toggle {
         display: inline-flex;
@@ -327,8 +480,12 @@ textarea {
         transform: translateY(8px);
     }
 
-    .nav-cta {
-        display: none;
+    .nav-actions {
+        margin-left: 0;
+    }
+
+    .nav-shell {
+        flex-wrap: wrap;
     }
 }
 

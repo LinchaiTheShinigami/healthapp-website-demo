@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders | Ayuta Health</title>
+    <link rel="icon" href="../Images/Logo/ayuta_favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../styles/site-base.css">
+    <link rel="stylesheet" href="../styles/styles-account.css">
+    <script src="../scripts/app-store.js" defer></script>
+    <script src="../scripts/nav-state.js" defer></script>
+    <script src="../scripts/account-modal.js" defer></script>
+    <script src="../scripts/include-nav.js" defer></script>
+    <script src="../scripts/orders-page.js" defer></script>
+</head>
+<body>
+    <div id="nav-placeholder"></div>
+
+    <main class="account-page">
+        <div class="container">
+            <div class="account-hero">
+                <span class="eyebrow">Orders</span>
+                <h1>Your orders</h1>
+                <p>View everything you have purchased and track status in one place.</p>
+            </div>
+            <div class="account-grid">
+                <div class="account-card card">
+                    <h2>Status</h2>
+                    <p class="account-status" id="orders-status">Sign in to view your orders.</p>
+                    <button class="btn btn-outline" type="button" data-login-trigger>Login</button>
+                </div>
+                <div class="account-card card">
+                    <h2>Recent orders</h2>
+                    <div id="orders-list" class="order-list"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2025 Ayuta Ltd. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

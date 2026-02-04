@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile | Ayuta Health</title>
+    <link rel="icon" href="../Images/Logo/ayuta_favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../styles/site-base.css">
+    <link rel="stylesheet" href="../styles/styles-account.css">
+    <script src="../scripts/app-store.js" defer></script>
+    <script src="../scripts/nav-state.js" defer></script>
+    <script src="../scripts/account-modal.js" defer></script>
+    <script src="../scripts/include-nav.js" defer></script>
+    <script src="../scripts/profile-page.js" defer></script>
+</head>
+<body>
+    <div id="nav-placeholder"></div>
+
+    <main class="account-page">
+        <div class="container">
+            <div class="account-hero">
+                <span class="eyebrow">Profile</span>
+                <h1>Your profile</h1>
+                <p>Update your details and manage your session.</p>
+            </div>
+            <div class="account-grid">
+                <div class="account-card card">
+                    <h2>Profile details</h2>
+                    <div class="profile-row">
+                        <span class="profile-label">Name</span>
+                        <span class="profile-value" id="profile-name">Not set</span>
+                    </div>
+                    <div class="profile-row">
+                        <span class="profile-label">Email</span>
+                        <span class="profile-value" id="profile-email">Not set</span>
+                    </div>
+                    <div class="profile-row">
+                        <span class="profile-label">Phone</span>
+                        <span class="profile-value" id="profile-phone">Not set</span>
+                    </div>
+                    <div class="profile-actions">
+                        <button class="btn btn-outline" type="button" data-login-trigger>Login</button>
+                        <button class="btn btn-ghost" type="button" id="logout-button">Sign out</button>
+                    </div>
+                </div>
+                <div class="account-card card">
+                    <h2>Update profile</h2>
+                    <form id="profile-form">
+                        <div class="form-row">
+                            <label for="profile-name-input">Full name</label>
+                            <input id="profile-name-input" type="text" autocomplete="name" placeholder="Alex Johnson">
+                        </div>
+                        <div class="form-row">
+                            <label for="profile-email-input">Email address</label>
+                            <input id="profile-email-input" type="email" autocomplete="email" placeholder="you@domain.com">
+                        </div>
+                        <div class="form-row">
+                            <label for="profile-phone-input">Phone number</label>
+                            <input id="profile-phone-input" type="tel" autocomplete="tel" placeholder="+44 7700 900000">
+                        </div>
+                        <button class="btn btn-primary" type="submit">Save changes</button>
+                        <div class="status" id="profile-status" role="status" aria-live="polite"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2025 Ayuta Ltd. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
