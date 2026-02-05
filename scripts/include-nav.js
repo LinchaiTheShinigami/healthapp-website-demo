@@ -41,6 +41,71 @@ function setActiveLink(navRoot) {
   }
 }
 
+const A11Y_STORAGE = {
+  text: 'ayuta_a11y_text',
+  contrast: 'ayuta_a11y_contrast'
+};
+
+const readA11yValue = (key, fallback) => {
+  try {
+    return localStorage.getItem(key) || fallback;
+  } catch (error) {
+    return fallback;
+  }
+};
+
+const writeA11yValue = (key, value) => {
+  try {
+    localStorage.setItem(key, value);
+  } catch (error) {
+    console.warn('A11y setting not saved', error);
+  }
+};
+
+const applyA11yState = (navRoot) => {
+  const textSize = readA11yValue(A11Y_STORAGE.text, 'normal');
+  const contrastEnabled = readA11yValue(A11Y_STORAGE.contrast, 'false') === 'true';
+  const root = document.documentElement;
+
+  root.classList.toggle('a11y-text-lg', textSize === 'large');
+  root.classList.toggle('a11y-contrast', contrastEnabled);
+
+  navRoot.querySelectorAll('[data-a11y-text]').forEach((button) => {
+    const isActive = button.getAttribute('data-a11y-text') === textSize;
+    button.setAttribute('aria-pressed', String(isActive));
+  });
+
+  const contrastButton = navRoot.querySelector('[data-a11y-contrast]');
+  if (contrastButton) contrastButton.setAttribute('aria-pressed', String(contrastEnabled));
+};
+
+let a11yBound = false;
+
+const wireA11yControls = (navRoot) => {
+  if (a11yBound || !navRoot) return;
+  const textButtons = navRoot.querySelectorAll('[data-a11y-text]');
+  const contrastButton = navRoot.querySelector('[data-a11y-contrast]');
+  if (!textButtons.length && !contrastButton) return;
+
+  textButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      writeA11yValue(A11Y_STORAGE.text, button.getAttribute('data-a11y-text') || 'normal');
+      applyA11yState(navRoot);
+    });
+  });
+
+  if (contrastButton) {
+    contrastButton.addEventListener('click', () => {
+      const current = readA11yValue(A11Y_STORAGE.contrast, 'false') === 'true';
+      writeA11yValue(A11Y_STORAGE.contrast, String(!current));
+      applyA11yState(navRoot);
+    });
+  }
+
+  applyA11yState(navRoot);
+  a11yBound = true;
+};
+
 function wireNavToggle(navRoot) {
   const toggle = navRoot.querySelector('[data-nav-toggle]');
   if (!toggle) return;
@@ -73,12 +138,14 @@ if (navPlaceholder) {
       setNavLinks(navRoot, basePath);
       setActiveLink(navRoot);
       wireNavToggle(navRoot);
+      wireA11yControls(navRoot);
       if (window.AyutaNav && typeof window.AyutaNav.init === 'function') {
         window.AyutaNav.init(navRoot);
       }
       if (window.AyutaAccount && typeof window.AyutaAccount.init === 'function') {
         window.AyutaAccount.init(navRoot);
       }
+      window.dispatchEvent(new CustomEvent('ayuta:nav-ready', { detail: { navRoot } }));
     })
     .catch(error => {
       navPlaceholder.innerHTML = '<!-- Navigation not found -->';

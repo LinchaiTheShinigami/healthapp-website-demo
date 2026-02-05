@@ -1,23 +1,33 @@
-<nav class="site-nav" aria-label="Primary">
+﻿<nav class="site-nav" aria-label="Primary">
     <div class="nav-shell">
-        <a class="profile-link" data-nav-link data-path="pages/profile.html" data-nav-key="profile" data-auth="required" hidden aria-label="User profile">
-            <span class="profile-avatar" data-profile-initial>U</span>
-        </a>
         <a class="brand" data-nav-link data-path="index.html">
-            <img class="brand-mark" data-asset="Images/Logo/ayuta_logo.svg" alt="Ayuta logo">
+            <img class="brand-mark" data-asset="Images/Logo/ayuta_logo_transparent_clean.png" alt="Ayuta logo">
             <span>Ayuta Health</span>
         </a>
-        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" data-nav-toggle>Menu</button>
         <div class="nav-links" id="primary-nav">
-            <a class="nav-link" data-nav-link data-path="index.html" data-nav-key="home">Home</a>
-            <a class="nav-link" data-nav-link data-path="pages/order.html" data-nav-key="order">Order</a>
-            <a class="nav-link" data-nav-link data-path="pages/webapp.html" data-nav-key="mobile">Mobile demo</a>
-            <a class="nav-link" data-nav-link data-path="pages/orders.html" data-nav-key="orders" data-auth="required" hidden>Orders</a>
-            <a class="nav-link" data-nav-link data-path="pages/results.html" data-nav-key="results" data-auth="required" hidden>Test results</a>
+            <a class="nav-link" data-nav-link data-path="pages/order.html" data-nav-key="order">Orders</a>
         </div>
         <div class="nav-actions">
-            <a class="btn btn-outline nav-order" data-nav-link data-path="pages/order.html">Order</a>
+            <div class="nav-accessibility" aria-label="Accessibility tools">
+                <button class="icon-button" type="button" data-accessibility="text" aria-pressed="false" aria-label="Toggle large text">A+</button>
+                <button class="icon-button" type="button" data-accessibility="contrast" aria-pressed="false" aria-label="Toggle high contrast">HC</button>
+            </div>
+            <a class="btn btn-outline nav-home-btn" data-nav-link data-path="index.html" hidden>Home</a>
+            <a class="btn btn-outline nav-mobile" data-nav-link data-path="pages/webapp.html">Mobile demo</a>
             <button class="btn btn-primary nav-login" type="button" data-login-trigger>Login</button>
+            <div class="nav-user" data-user-menu hidden>
+                <a class="profile-link" data-nav-link data-path="pages/profile.html" aria-label="User profile">
+                    <span class="profile-avatar" data-profile-initial>U</span>
+                </a>
+                <button class="icon-button nav-menu-toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="user-menu" data-user-menu-toggle>
+                    <span class="sr-only">Open user menu</span>
+                    <span class="menu-icon" aria-hidden="true"></span>
+                </button>
+                <div class="nav-menu" id="user-menu" role="menu">
+                    <a class="nav-menu-item" role="menuitem" data-nav-link data-path="pages/orders.html">Orders</a>
+                    <a class="nav-menu-item" role="menuitem" data-nav-link data-path="pages/results.html">Test results</a>
+                </div>
+            </div>
         </div>
     </div>
 </nav>
@@ -62,3 +72,4 @@
         </div>
     </div>
 </div>
+

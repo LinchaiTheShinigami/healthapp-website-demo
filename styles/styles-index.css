@@ -1,7 +1,7 @@
 body.home {
-    --page-bg: radial-gradient(circle at top left, rgba(240, 196, 90, 0.22), transparent 55%),
-        radial-gradient(circle at 85% 10%, rgba(31, 122, 110, 0.22), transparent 50%),
-        linear-gradient(180deg, #f7f3ea 0%, #f3efe7 45%, #f7f3ea 100%);
+    --page-bg: radial-gradient(circle at top left, rgba(73, 201, 181, 0.22), transparent 55%),
+        radial-gradient(circle at 85% 8%, rgba(26, 111, 163, 0.2), transparent 50%),
+        linear-gradient(180deg, #f5fbfb 0%, #eef5f6 45%, #f5fbfb 100%);
     position: relative;
     overflow-x: hidden;
 }
@@ -56,7 +56,7 @@ body.home footer {
 }
 
 .hero-pill {
-    background: rgba(31, 122, 110, 0.12);
+    background: rgba(26, 165, 154, 0.16);
     color: var(--accent-2);
     border-radius: 999px;
     padding: 6px 12px;
@@ -67,7 +67,7 @@ body.home footer {
 .hero-panel {
     display: grid;
     gap: 18px;
-    background: linear-gradient(145deg, #fffdf7 0%, #f5efe5 100%);
+    background: linear-gradient(145deg, #f7fbfb 0%, #eaf3f4 100%);
 }
 
 .hero-panel-title {
@@ -84,7 +84,7 @@ body.home footer {
     display: flex;
     justify-content: space-between;
     gap: 12px;
-    border-bottom: 1px dashed rgba(22, 28, 26, 0.12);
+    border-bottom: 1px dashed rgba(11, 31, 47, 0.12);
     padding-bottom: 6px;
 }
 
@@ -95,7 +95,7 @@ body.home footer {
     background: #fff;
     border-radius: var(--radius-md);
     padding: 16px;
-    border: 1px solid rgba(22, 28, 26, 0.08);
+    border: 1px solid rgba(11, 31, 47, 0.08);
 }
 
 .hero-summary-label {
@@ -129,12 +129,12 @@ body.home footer {
 
 .expectation-card {
     background: #fff;
-    border: 1px solid rgba(22, 28, 26, 0.08);
+    border: 1px solid rgba(11, 31, 47, 0.08);
     border-radius: var(--radius-md);
     padding: 22px;
     display: grid;
     gap: 8px;
-    box-shadow: 0 18px 40px rgba(22, 28, 26, 0.08);
+    box-shadow: 0 18px 40px rgba(7, 32, 47, 0.08);
 }
 
 .expectation-card h3 {
@@ -146,7 +146,7 @@ body.home footer {
 }
 
 .product-preview {
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.72);
 }
 
 .preview-grid {
@@ -159,11 +159,11 @@ body.home footer {
 .preview-card {
     background: #fff;
     border-radius: var(--radius-md);
-    border: 1px solid rgba(22, 28, 26, 0.08);
+    border: 1px solid rgba(11, 31, 47, 0.08);
     padding: 22px;
     display: grid;
     gap: 12px;
-    box-shadow: 0 18px 40px rgba(22, 28, 26, 0.08);
+    box-shadow: 0 18px 40px rgba(7, 32, 47, 0.08);
 }
 
 .preview-meta {
@@ -187,8 +187,8 @@ body.home footer {
 .flow-card {
     padding: 22px;
     border-radius: var(--radius-md);
-    border: 1px solid rgba(22, 28, 26, 0.1);
-    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(11, 31, 47, 0.1);
+    background: rgba(255, 255, 255, 0.85);
     min-height: 180px;
     display: flex;
     flex-direction: column;
@@ -204,7 +204,7 @@ body.home footer {
 
 .cta-band {
     padding: 72px 0;
-    background: linear-gradient(120deg, rgba(242, 88, 62, 0.12), rgba(31, 122, 110, 0.12));
+    background: linear-gradient(120deg, rgba(26, 165, 154, 0.16), rgba(26, 111, 163, 0.14));
 }
 
 .cta-band-inner {

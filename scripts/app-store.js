@@ -101,7 +101,10 @@
   };
 
   const getTotals = (cart, taxRate = 0.05, shipping = 0) => {
-    const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+    const subtotal = cart.reduce((sum, item) => {
+      const quantity = Number.isFinite(item.quantity) ? item.quantity : 1;
+      return sum + item.price * Math.max(0, quantity);
+    }, 0);
     const taxes = Math.round(subtotal * taxRate * 100) / 100;
     const total = Math.round((subtotal + taxes + shipping) * 100) / 100;
     return { subtotal, taxes, shipping, total };

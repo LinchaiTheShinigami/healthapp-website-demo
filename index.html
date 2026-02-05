@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Ayuta Health helps you order health products, pay securely, and track orders in one place.">
+    <meta name="description" content="Ayuta Health connects you with trusted medical testing labs so you can book checkups, pay securely, and track results in one place.">
     <title>Ayuta Health</title>
-    <link rel="icon" href="Images/Logo/ayuta_favicon.ico" type="image/x-icon">
+    <link rel="icon" href="Images/Logo/ayuta_favicon.png" type="image/png">
     <link rel="stylesheet" href="styles/site-base.css">
     <link rel="stylesheet" href="styles/styles-index.css">
     <script src="scripts/app-store.js" defer></script>
@@ -21,28 +21,28 @@
         <div class="container hero-grid">
             <div class="hero-copy">
                 <span class="eyebrow">Ayuta Health</span>
-                <h1 class="hero-title">Know what to expect before you order your health products.</h1>
+                <h1 class="hero-title">Book health checkups with trusted medical labs in minutes.</h1>
                 <p class="hero-lede">
-                    Explore our panels, see how the flow works, and jump straight into the guided order experience when
-                    you are ready.
+                    Ayuta matches you with certified testing labs, helps you choose panels, and keeps scheduling, payment,
+                    and results in one streamlined experience.
                 </p>
                 <div class="hero-actions">
-                    <a class="btn btn-primary" href="pages/order.html">Order now</a>
-                    <a class="btn btn-ghost" href="#product-preview">Browse kits</a>
+                    <a class="btn btn-primary" href="pages/order.html">Book a checkup</a>
+                    <a class="btn btn-ghost" href="#product-preview">Browse panels</a>
                 </div>
                 <div class="hero-note">
-                    <span class="hero-pill">Clinician-reviewed panels</span>
-                    <span class="hero-pill">Stripe-ready checkout</span>
-                    <span class="hero-pill">Email login anytime</span>
+                    <span class="hero-pill">Lab-verified panels</span>
+                    <span class="hero-pill">Secure payment flow</span>
+                    <span class="hero-pill">Results in one place</span>
                 </div>
             </div>
             <div class="hero-panel card">
-                <p class="eyebrow">Your basket</p>
-                <h2 class="hero-panel-title">Resume your order.</h2>
+                <p class="eyebrow">Your booking</p>
+                <h2 class="hero-panel-title">Resume your checkup.</h2>
                 <div class="hero-basket" id="home-basket-items"></div>
                 <div class="hero-summary">
                     <div>
-                        <p class="hero-summary-label">Items selected</p>
+                        <p class="hero-summary-label">Tests selected</p>
                         <p class="hero-summary-value" id="home-basket-count">0</p>
                     </div>
                     <div>
@@ -51,7 +51,7 @@
                     </div>
                 </div>
                 <div class="hero-actions hero-actions--compact">
-                    <a class="btn btn-outline" href="pages/order.html">Go to order page</a>
+                    <a class="btn btn-outline" href="pages/order.html">Go to booking page</a>
                     <button class="btn btn-ghost" type="button" data-login-trigger>Login</button>
                 </div>
                 <p class="hero-status" id="home-session-status">Not signed in yet.</p>
@@ -63,57 +63,57 @@
         <section class="section expectation-section">
             <div class="container">
                 <span class="eyebrow">What to expect</span>
-                <h2 class="section-title">A clear path from selection to results.</h2>
+                <h2 class="section-title">A clear path from booking to results.</h2>
                 <p class="section-subtitle">
-                    The web flow mirrors your mobile demo, with a guided menu, Stripe-backed checkout, and quick email login.
+                    Select a goal, match with a lab, and follow your results from appointment to report.
                 </p>
                 <div class="expectation-grid">
                     <article class="expectation-card">
-                        <h3>Guided menu</h3>
-                        <p>Choose a goal and build a kit without hunting through pages.</p>
+                        <h3>Guided selection</h3>
+                        <p>Choose a goal and see recommended panels instantly.</p>
                     </article>
                     <article class="expectation-card">
-                        <h3>Visible basket</h3>
-                        <p>Keep track of products and totals in a fixed basket panel.</p>
+                        <h3>Lab matching</h3>
+                        <p>Connect with verified labs based on location and availability.</p>
                     </article>
                     <article class="expectation-card">
-                        <h3>Stripe payment</h3>
-                        <p>Mocked Stripe intents show how card payment will feel.</p>
+                        <h3>Secure booking</h3>
+                        <p>Schedule your visit and pay in a single, secure flow.</p>
                     </article>
                     <article class="expectation-card">
-                        <h3>Orders and results</h3>
-                        <p>Log in with email to see order history and test results.</p>
+                        <h3>Results dashboard</h3>
+                        <p>Log in to access reports and revisit past checkups.</p>
                     </article>
                 </div>
                 <div class="section-cta">
-                    <a class="btn btn-primary" href="pages/order.html">Start an order</a>
+                    <a class="btn btn-primary" href="pages/order.html">Start a booking</a>
                 </div>
             </div>
         </section>
 
         <section class="section product-preview" id="product-preview">
             <div class="container">
-                <span class="eyebrow">Product offering</span>
-                <h2 class="section-title">Signature kits built for common goals.</h2>
-                <p class="section-subtitle">Pick a kit and jump directly into the order menu.</p>
+                <span class="eyebrow">Panel offering</span>
+                <h2 class="section-title">Lab panels built for common health goals.</h2>
+                <p class="section-subtitle">Pick a panel and jump directly into the booking flow.</p>
                 <div class="preview-grid">
                     <article class="preview-card">
                         <h3>Core Health Panel</h3>
-                        <p>Comprehensive biomarker scan and clinician review.</p>
+                        <p>Comprehensive biomarker scan with lab review.</p>
                         <div class="preview-meta">
                             <span>GBP 249</span>
                             <span>12 biomarkers</span>
                         </div>
-                        <a class="btn btn-outline" href="pages/order.html#menu-core">Order this kit</a>
+                        <a class="btn btn-outline" href="pages/order.html#menu-core">Book this panel</a>
                     </article>
                     <article class="preview-card">
-                        <h3>Metabolic Focus Kit</h3>
-                        <p>Track glucose, lipids, and inflammation with insight.</p>
+                        <h3>Metabolic Focus Panel</h3>
+                        <p>Track glucose, lipids, and inflammation with lab insight.</p>
                         <div class="preview-meta">
                             <span>GBP 189</span>
                             <span>8 biomarkers</span>
                         </div>
-                        <a class="btn btn-outline" href="pages/order.html#menu-metabolic">Order this kit</a>
+                        <a class="btn btn-outline" href="pages/order.html#menu-metabolic">Book this panel</a>
                     </article>
                     <article class="preview-card">
                         <h3>Energy and Sleep Panel</h3>
@@ -122,7 +122,7 @@
                             <span>GBP 159</span>
                             <span>6 biomarkers</span>
                         </div>
-                        <a class="btn btn-outline" href="pages/order.html#menu-energy">Order this kit</a>
+                        <a class="btn btn-outline" href="pages/order.html#menu-energy">Book this panel</a>
                     </article>
                 </div>
                 <div class="section-cta">
@@ -134,36 +134,36 @@
         <section class="section flow-section" id="flow">
             <div class="container">
                 <span class="eyebrow">Flow</span>
-                <h2 class="section-title">The same steps, now optimized for web.</h2>
+                <h2 class="section-title">The same steps, now optimized for booking labs.</h2>
                 <div class="flow-grid">
                     <article class="flow-card">
                         <p class="flow-step">01</p>
-                        <h3>Select goal</h3>
-                        <p>Answer one prompt to tailor the menu.</p>
+                        <h3>Select a goal</h3>
+                        <p>Tell us what you want to check and see recommended panels.</p>
                     </article>
                     <article class="flow-card">
                         <p class="flow-step">02</p>
-                        <h3>Build basket</h3>
-                        <p>Add panels and see totals in real time.</p>
+                        <h3>Match with a lab</h3>
+                        <p>Compare certified labs near you and pick a time.</p>
                     </article>
                     <article class="flow-card">
                         <p class="flow-step">03</p>
-                        <h3>Pay with Stripe</h3>
-                        <p>Card payment is mocked but mirrors Stripe flows.</p>
+                        <h3>Secure payment</h3>
+                        <p>Checkout is fast and keeps your booking confirmed.</p>
                     </article>
                     <article class="flow-card">
                         <p class="flow-step">04</p>
                         <h3>Register and login</h3>
-                        <p>Single-factor email login keeps momentum.</p>
+                        <p>Email login keeps you moving with zero friction.</p>
                     </article>
                     <article class="flow-card">
                         <p class="flow-step">05</p>
-                        <h3>Track orders</h3>
-                        <p>View orders and results after payment.</p>
+                        <h3>Track results</h3>
+                        <p>View reports and revisit previous checkups anytime.</p>
                     </article>
                 </div>
                 <div class="section-cta">
-                    <a class="btn btn-ghost" href="pages/order.html">Continue to order</a>
+                    <a class="btn btn-ghost" href="pages/order.html">Continue to booking</a>
                 </div>
             </div>
         </section>
@@ -171,10 +171,10 @@
         <section class="section cta-band">
             <div class="container cta-band-inner">
                 <div>
-                    <h2>Ready to build your order?</h2>
-                    <p>Jump into the guided menu and keep your basket visible at all times.</p>
+                    <h2>Ready to book your checkup?</h2>
+                    <p>Jump into the guided menu and keep your booking visible at all times.</p>
                 </div>
-                <a class="btn btn-primary" href="pages/order.html">Order now</a>
+                <a class="btn btn-primary" href="pages/order.html">Book now</a>
             </div>
         </section>
     </main>
@@ -183,7 +183,7 @@
         <div class="container footer-grid">
             <div>
                 <p class="footer-title">Ayuta Health</p>
-                <p>Health products, payment, and tracking in one flow.</p>
+                <p>Lab connections, booking, and results tracking in one flow.</p>
             </div>
             <div>
                 <p class="footer-title">Explore</p>
@@ -206,3 +206,4 @@
     </footer>
 </body>
 </html>
+
