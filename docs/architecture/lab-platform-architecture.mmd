@@ -1,0 +1,46 @@
+flowchart LR
+  subgraph Client
+    UI[Web App / Mobile]
+  end
+
+  subgraph Edge
+    CDN[CDN / Static Hosting]
+    API[Serverless API]
+  end
+
+  subgraph Platform
+    Auth[Auth Service]
+    DB[(Postgres)]
+    Storage[(Object Storage)]
+    Queue[Job Queue / Scheduler]
+    Audit[Audit Logs]
+  end
+
+  subgraph Integrations
+    Payments[Payment Processor]
+    Labs[Lab Systems / Instruments]
+    Notify[Email/SMS]
+    Analytics[Analytics / BI]
+  end
+
+  UI --> CDN
+  UI -->|Login| Auth
+  UI -->|Read/Write via API| API
+
+  API --> DB
+  API --> Storage
+  API --> Auth
+  API --> Queue
+  API --> Audit
+  API --> Payments
+  API --> Labs
+  API --> Notify
+
+  Queue --> Labs
+  Labs -->|Results| API
+  API -->|Results metadata| DB
+  API -->|Result files| Storage
+
+  DB --> Analytics
+
+  Auth --> DB

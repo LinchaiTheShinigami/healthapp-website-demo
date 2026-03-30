@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="../styles/site-base.css">
     <link rel="stylesheet" href="../styles/styles-contact.css">
     <script src="../scripts/app-store.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-app-compat.js" integrity="sha384-Znt+uHtXAdOhiGTGyIwmBNXlsc5TOAuAzcCG0eAE2dulpw9KiB0JhB34uEGwuHs8" crossorigin="anonymous" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-auth-compat.js" integrity="sha384-A6cYBBWGHa59uc1lMxnsMCEdmpRGH6sFBcvsp5iy586ULeLLZp7CTav7jH/SrDcr" crossorigin="anonymous" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore-compat.js" integrity="sha384-XfsHRWyIpDxqmBgRls8NyklJPVxNtAPTuASFjpt47tsNDKvc13Ibf1leNHrxGLax" crossorigin="anonymous" defer></script>
+    <script src="../scripts/auth-config.js" defer></script>
+    <script src="../scripts/firebase-auth.js" defer></script>
     <script src="../scripts/nav-state.js" defer></script>
     <script src="../scripts/account-modal.js" defer></script>
     <script src="../scripts/include-nav.js" defer></script>
@@ -16,32 +21,55 @@
 <body>
     <div id="nav-placeholder"></div>
     <main class="contact-page section">
-        <div class="container">
-            <span class="eyebrow">Contact</span>
-            <h1>Contact Us</h1>
-            <p class="contact-subtitle">Send a note and our team will get back to you with next steps.</p>
-            <form class="contact-form card" action="mailto:anuj.gupta@cryptopill.co.uk,aditya.gupta@cryptopill.co.uk" method="POST" data-mailto="anuj.gupta@cryptopill.co.uk,aditya.gupta@cryptopill.co.uk">
-                <div class="form-row">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" required autocomplete="name" placeholder="Your name">
-                </div>
-                <div class="form-row">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required autocomplete="email" placeholder="you@domain.com">
-                </div>
-                <div class="form-row">
-                    <label for="message">Message</label>
-                    <textarea id="message" name="message" rows="5" required autocomplete="off" placeholder="Type your message here"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Send message</button>
-            </form>
+        <div class="container contact-stack">
+            <section class="contact-hero">
+                <span class="eyebrow">Contact</span>
+                <h1>Ask a question, share feedback, or request a short consultation</h1>
+                <p class="contact-subtitle">Some people want a quick answer before ordering. Others want to suggest improvements. This page now supports both paths.</p>
+            </section>
+
+            <section class="contact-grid">
+                <article class="card contact-card">
+                    <span class="eyebrow">Consultation</span>
+                    <h2>Book a 15-minute intro call</h2>
+                    <p>Use this route if you want help choosing a test, understanding home-kit versus lab collection, or talking through the demo.</p>
+                    <div class="contact-actions">
+                        <a class="btn btn-primary" href="mailto:ayuta.info@gmail.com?subject=Ayuta%20intro%20call">Request a call</a>
+                        <p class="contact-note">We will reply by email to arrange a suitable slot.</p>
+                    </div>
+                </article>
+
+                <form class="contact-form card" action="mailto:ayuta.info@gmail.com" method="POST" data-mailto="ayuta.info@gmail.com">
+                    <div class="form-row">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required autocomplete="name" placeholder="Your name">
+                    </div>
+                    <div class="form-row">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required autocomplete="email" placeholder="you@domain.com">
+                    </div>
+                    <div class="form-row">
+                        <label for="reason">Reason for contacting us</label>
+                        <select id="reason" name="reason">
+                            <option value="Feedback">Feedback</option>
+                            <option value="Help choosing a test">Help choosing a test</option>
+                            <option value="Lab locations and collection">Lab locations and collection</option>
+                            <option value="Request an intro call">Request an intro call</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required autocomplete="off" placeholder="Share your question or feedback"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send message</button>
+                </form>
+            </section>
         </div>
     </main>
     <footer class="site-footer">
         <div class="container">
-            <p>&copy; 2025 Ayuta Ltd. All rights reserved.</p>
+            <p>&copy; 2026 Ayuta Ltd. All rights reserved.</p>
         </div>
     </footer>
 </body>
 </html>
-

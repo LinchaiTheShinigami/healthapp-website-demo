@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="../styles/site-base.css">
     <link rel="stylesheet" href="../styles/styles-account.css">
     <script src="../scripts/app-store.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-app-compat.js" integrity="sha384-Znt+uHtXAdOhiGTGyIwmBNXlsc5TOAuAzcCG0eAE2dulpw9KiB0JhB34uEGwuHs8" crossorigin="anonymous" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-auth-compat.js" integrity="sha384-A6cYBBWGHa59uc1lMxnsMCEdmpRGH6sFBcvsp5iy586ULeLLZp7CTav7jH/SrDcr" crossorigin="anonymous" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore-compat.js" integrity="sha384-XfsHRWyIpDxqmBgRls8NyklJPVxNtAPTuASFjpt47tsNDKvc13Ibf1leNHrxGLax" crossorigin="anonymous" defer></script>
+    <script src="../scripts/auth-config.js" defer></script>
+    <script src="../scripts/firebase-auth.js" defer></script>
     <script src="../scripts/nav-state.js" defer></script>
     <script src="../scripts/account-modal.js" defer></script>
     <script src="../scripts/include-nav.js" defer></script>
@@ -20,28 +25,69 @@
         <div class="container">
             <div class="account-hero">
                 <span class="eyebrow">Results</span>
-                <h1>Your test results</h1>
-                <p>Review biomarker summaries linked to your completed orders.</p>
+                <h1>Your biomarker results</h1>
+                <p>Review completed orders, flagged markers, and a simple trend chart instead of only reading a flat report.</p>
             </div>
-            <div class="account-grid">
+
+            <section class="account-card card account-lock" id="results-locked">
+                <h2>Sign in required</h2>
+                <p class="account-status" id="results-locked-status">Checking your session.</p>
+                <div class="account-lock-actions">
+                    <button class="btn btn-primary" type="button" data-login-trigger>Sign in</button>
+                    <a class="btn btn-ghost" href="../index.html">Back home</a>
+                </div>
+            </section>
+
+            <div class="account-grid" id="results-authenticated" hidden>
                 <div class="account-card card">
                     <h2>Status</h2>
                     <p class="account-status" id="results-status">Sign in to view your results.</p>
-                    <button class="btn btn-outline" type="button" data-login-trigger>Login</button>
                 </div>
                 <div class="account-card card">
-                    <h2>Latest results</h2>
-                    <div id="results-list" class="result-list"></div>
+                    <h2>How to read this page</h2>
+                    <p class="account-status">The left side lists completed result sets. The chart and metric cards below show the selected report in a clearer dashboard view.</p>
                 </div>
+            </div>
+
+            <div class="results-workbench" id="results-workbench" hidden>
+                <section class="account-card card">
+                    <div class="results-section-head">
+                        <div>
+                            <h2>Available reports</h2>
+                            <p class="account-status" id="results-heading">Select a result set to inspect the biomarkers.</p>
+                        </div>
+                    </div>
+                    <div id="results-list" class="result-list"></div>
+                </section>
+
+                <section class="results-detail-grid">
+                    <article class="account-card card">
+                        <div class="results-section-head">
+                            <div>
+                                <h2>Trend chart</h2>
+                                <p class="account-status" id="chart-caption">A simple multi-point trend for the selected report.</p>
+                            </div>
+                        </div>
+                        <div id="results-chart" class="results-chart"></div>
+                    </article>
+                    <article class="account-card card">
+                        <div class="results-section-head">
+                            <div>
+                                <h2>Biomarker summary</h2>
+                                <p class="account-status">Reference range, current value, and status at a glance.</p>
+                            </div>
+                        </div>
+                        <div id="results-metrics" class="metric-grid"></div>
+                    </article>
+                </section>
             </div>
         </div>
     </main>
 
     <footer class="site-footer">
         <div class="container">
-            <p>&copy; 2025 Ayuta Ltd. All rights reserved.</p>
+            <p>&copy; 2026 Ayuta Ltd. All rights reserved.</p>
         </div>
     </footer>
 </body>
 </html>
-

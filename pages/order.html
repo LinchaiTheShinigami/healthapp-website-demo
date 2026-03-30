@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="../styles/styles-order.css">
     <script src="https://js.stripe.com/v3/" defer></script>
     <script src="../scripts/app-store.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-app-compat.js" integrity="sha384-Znt+uHtXAdOhiGTGyIwmBNXlsc5TOAuAzcCG0eAE2dulpw9KiB0JhB34uEGwuHs8" crossorigin="anonymous" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-auth-compat.js" integrity="sha384-A6cYBBWGHa59uc1lMxnsMCEdmpRGH6sFBcvsp5iy586ULeLLZp7CTav7jH/SrDcr" crossorigin="anonymous" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore-compat.js" integrity="sha384-XfsHRWyIpDxqmBgRls8NyklJPVxNtAPTuASFjpt47tsNDKvc13Ibf1leNHrxGLax" crossorigin="anonymous" defer></script>
+    <script src="../scripts/auth-config.js" defer></script>
+    <script src="../scripts/firebase-auth.js" defer></script>
     <script src="../scripts/nav-state.js" defer></script>
     <script src="../scripts/account-modal.js" defer></script>
     <script src="../scripts/stripe-mock.js" defer></script>
@@ -22,7 +27,7 @@
         <div class="order-subnav-shell">
             <button class="order-subnav-step is-active" type="button" data-order-step="select" aria-current="step">
                 <span class="step-index">01</span>
-                <span>Choose kits</span>
+                <span>Choose test</span>
             </button>
             <button class="order-subnav-step" type="button" data-order-step="payment">
                 <span class="step-index">02</span>
@@ -30,7 +35,7 @@
             </button>
             <button class="order-subnav-step" type="button" data-order-step="post">
                 <span class="step-index">03</span>
-                <span>After payment</span>
+                <span>Access results</span>
             </button>
         </div>
     </nav>
@@ -41,75 +46,165 @@
                 <div class="order-panel is-active" data-order-panel="select">
                     <header class="order-panel-header">
                         <span class="eyebrow">Step 1</span>
-                        <h1>Choose your panel.</h1>
-                        <p>Select a focus, then review the details for the kit you pick.</p>
+                        <h1>Choose your blood test</h1>
+                        <p>Select a goal, use the guided recommender if needed, then review the biomarkers before adding a test to your order.</p>
                     </header>
+
+                    <div class="definition-strip">
+                        <article class="definition-pill card">
+                            <strong>Panel</strong>
+                            <span>A bundle of biomarkers grouped around one health question.</span>
+                        </article>
+                        <article class="definition-pill card">
+                            <strong>Biomarker</strong>
+                            <span>A measurable blood value like ferritin, testosterone, or HbA1c.</span>
+                        </article>
+                        <article class="definition-pill card">
+                            <strong>Certified lab</strong>
+                            <span>An accredited lab partner that processes the sample and report.</span>
+                        </article>
+                    </div>
+
+                    <div class="selection-top-grid">
+                        <section class="card recommendation-card" aria-labelledby="recommendation-title">
+                            <div>
+                                <span class="eyebrow">Need help choosing?</span>
+                                <h2 id="recommendation-title">Guided recommendation</h2>
+                                <p class="order-meta">A short selector narrows the test list before you browse the details.</p>
+                            </div>
+                            <div class="recommendation-grid">
+                                <div class="form-row">
+                                    <label for="quiz-sex">Sex</label>
+                                    <select id="quiz-sex">
+                                        <option value="any">Prefer not to filter</option>
+                                        <option value="female">Female</option>
+                                        <option value="male">Male</option>
+                                    </select>
+                                </div>
+                                <div class="form-row">
+                                    <label for="quiz-priority">Main concern</label>
+                                    <select id="quiz-priority">
+                                        <option value="general">General health check</option>
+                                        <option value="hormones">Hormones and cycle health</option>
+                                        <option value="sleep">Low energy or poor sleep</option>
+                                        <option value="metabolic">Glucose, cholesterol, or weight</option>
+                                        <option value="digestion">Digestion or food sensitivities</option>
+                                        <option value="performance">Performance and recovery</option>
+                                        <option value="glp1">Mounjaro or GLP-1 monitoring</option>
+                                    </select>
+                                </div>
+                                <button class="btn btn-outline" type="button" id="recommendation-button">Recommend a test</button>
+                            </div>
+                            <p class="status" id="recommendation-status" role="status" aria-live="polite"></p>
+                        </section>
+
+                        <section class="card collection-card" aria-labelledby="collection-title">
+                            <div>
+                                <span class="eyebrow">Collection</span>
+                                <h2 id="collection-title">Choose how the sample is taken</h2>
+                            </div>
+                            <div class="collection-toggle" role="radiogroup" aria-label="Choose collection method">
+                                <button class="collection-option is-active" type="button" data-collection="lab" aria-pressed="true">Partner lab visit</button>
+                                <button class="collection-option" type="button" data-collection="home" aria-pressed="false">Home kit</button>
+                            </div>
+                            <p class="collection-status" id="collection-status">Book a professional draw in London, Manchester, Birmingham, Bristol, Leeds, or Edinburgh with no shipping fee.</p>
+                        </section>
+                    </div>
+
                     <div class="goal-filter" role="radiogroup" aria-label="Filter products by goal">
-                        <button class="pill" data-goal="all" aria-pressed="true">All goals</button>
+                        <button class="pill" data-goal="all" aria-pressed="true">All tests</button>
                         <button class="pill" data-goal="wellness" aria-pressed="false">General wellness</button>
                         <button class="pill" data-goal="metabolic" aria-pressed="false">Metabolic health</button>
                         <button class="pill" data-goal="energy" aria-pressed="false">Energy and sleep</button>
-                        <button class="pill" data-goal="performance" aria-pressed="false">Performance focus</button>
+                        <button class="pill" data-goal="performance" aria-pressed="false">Performance</button>
+                        <button class="pill" data-goal="womens" aria-pressed="false">Women’s health</button>
+                        <button class="pill" data-goal="mens" aria-pressed="false">Men’s health</button>
+                        <button class="pill" data-goal="allergy" aria-pressed="false">Food sensitivity</button>
+                        <button class="pill" data-goal="glp1" aria-pressed="false">GLP-1 monitoring</button>
                     </div>
 
                     <div class="product-select-grid">
                         <div class="product-list-card card">
                             <div class="product-list-header">
-                                <h3>Available kits</h3>
-                                <span class="order-meta">Scroll to browse</span>
+                                <h3>Available tests</h3>
+                                <span class="order-meta">Tap or click to compare</span>
                             </div>
-                            <div class="product-list" role="listbox" aria-label="Available kits">
-                                <button class="product-list-item is-active" type="button" role="option" aria-selected="true"
+                            <div class="product-list" role="listbox" aria-label="Available tests">
+                                <button class="product-list-item is-active" id="menu-core" type="button" role="option" aria-selected="true"
                                     data-product-id="core" data-product-name="Core Health Panel" data-product-price="249"
-                                    data-product-description="Full biomarker scan with clinician review and fast turnaround."
+                                    data-product-description="Broad baseline blood test for annual screening and preventive monitoring."
                                     data-product-biomarkers="12 biomarkers" data-product-goals="wellness,metabolic">
                                     <span class="product-name">Core Health Panel</span>
                                     <span class="product-price">GBP 249</span>
                                 </button>
-                                <button class="product-list-item" type="button" role="option" aria-selected="false"
-                                    data-product-id="performance" data-product-name="Performance Builder Kit" data-product-price="219"
-                                    data-product-description="Measures recovery, cortisol, and key performance markers."
-                                    data-product-biomarkers="10 biomarkers" data-product-goals="performance,energy">
-                                    <span class="product-name">Performance Builder Kit</span>
-                                    <span class="product-price">GBP 219</span>
+                                <button class="product-list-item" id="menu-womens" type="button" role="option" aria-selected="false"
+                                    data-product-id="womens" data-product-name="Women’s Hormone Panel" data-product-price="229"
+                                    data-product-description="Hormone and nutrient testing to support cycle health, mood, and energy."
+                                    data-product-biomarkers="9 biomarkers" data-product-goals="womens,energy,wellness">
+                                    <span class="product-name">Women’s Hormone Panel</span>
+                                    <span class="product-price">GBP 229</span>
                                 </button>
-                                <button class="product-list-item" type="button" role="option" aria-selected="false"
+                                <button class="product-list-item" id="menu-mens" type="button" role="option" aria-selected="false"
+                                    data-product-id="mens" data-product-name="Men’s Health Panel" data-product-price="229"
+                                    data-product-description="Hormone, prostate, liver, and metabolic markers for men’s health monitoring."
+                                    data-product-biomarkers="9 biomarkers" data-product-goals="mens,wellness,metabolic">
+                                    <span class="product-name">Men’s Health Panel</span>
+                                    <span class="product-price">GBP 229</span>
+                                </button>
+                                <button class="product-list-item" id="menu-glp1" type="button" role="option" aria-selected="false"
+                                    data-product-id="glp1" data-product-name="GLP-1 / Mounjaro Monitoring" data-product-price="209"
+                                    data-product-description="Supports ongoing monitoring of metabolic, liver, and kidney markers during treatment."
+                                    data-product-biomarkers="8 biomarkers" data-product-goals="glp1,metabolic,wellness">
+                                    <span class="product-name">GLP-1 / Mounjaro Monitoring</span>
+                                    <span class="product-price">GBP 209</span>
+                                </button>
+                                <button class="product-list-item" id="menu-metabolic" type="button" role="option" aria-selected="false"
                                     data-product-id="metabolic" data-product-name="Metabolic Focus Kit" data-product-price="189"
-                                    data-product-description="Track glucose, lipids, and inflammation markers with insights."
+                                    data-product-description="Track glucose, lipids, and inflammation markers with clear follow-up."
                                     data-product-biomarkers="8 biomarkers" data-product-goals="metabolic,energy">
                                     <span class="product-name">Metabolic Focus Kit</span>
                                     <span class="product-price">GBP 189</span>
                                 </button>
-                                <button class="product-list-item" type="button" role="option" aria-selected="false"
-                                    data-product-id="recovery" data-product-name="Recovery Balance Panel" data-product-price="175"
-                                    data-product-description="Inflammation, gut health, and nutrient recovery markers."
-                                    data-product-biomarkers="7 biomarkers" data-product-goals="metabolic,wellness">
-                                    <span class="product-name">Recovery Balance Panel</span>
-                                    <span class="product-price">GBP 175</span>
+                                <button class="product-list-item" id="menu-allergy" type="button" role="option" aria-selected="false"
+                                    data-product-id="allergy" data-product-name="Food Sensitivity Review" data-product-price="199"
+                                    data-product-description="Digestive and inflammation-led markers for food sensitivity follow-up."
+                                    data-product-biomarkers="7 biomarkers" data-product-goals="allergy,wellness">
+                                    <span class="product-name">Food Sensitivity Review</span>
+                                    <span class="product-price">GBP 199</span>
                                 </button>
-                                <button class="product-list-item" type="button" role="option" aria-selected="false"
+                                <button class="product-list-item" id="menu-energy" type="button" role="option" aria-selected="false"
                                     data-product-id="energy" data-product-name="Energy and Sleep Panel" data-product-price="159"
-                                    data-product-description="Hormone and nutrient insights to support recovery and rest."
+                                    data-product-description="Useful when tiredness, stress, or sleep quality are the main issue."
                                     data-product-biomarkers="6 biomarkers" data-product-goals="energy,wellness">
                                     <span class="product-name">Energy and Sleep Panel</span>
                                     <span class="product-price">GBP 159</span>
                                 </button>
-                                <button class="product-list-item" type="button" role="option" aria-selected="false"
-                                    data-product-id="focus" data-product-name="Focus and Clarity Kit" data-product-price="145"
-                                    data-product-description="Micronutrient and hormone check for mental clarity."
-                                    data-product-biomarkers="5 biomarkers" data-product-goals="energy,performance">
-                                    <span class="product-name">Focus and Clarity Kit</span>
-                                    <span class="product-price">GBP 145</span>
+                                <button class="product-list-item" id="menu-performance" type="button" role="option" aria-selected="false"
+                                    data-product-id="performance" data-product-name="Performance Builder Kit" data-product-price="219"
+                                    data-product-description="Recovery, hormone, and stress markers for active customers."
+                                    data-product-biomarkers="10 biomarkers" data-product-goals="performance,energy">
+                                    <span class="product-name">Performance Builder Kit</span>
+                                    <span class="product-price">GBP 219</span>
                                 </button>
                             </div>
                         </div>
                         <div class="product-detail card" aria-live="polite">
-                            <span class="eyebrow">Selected kit</span>
+                            <span class="eyebrow">Selected test</span>
                             <h3 id="detail-name">Core Health Panel</h3>
-                            <p id="detail-description">Full biomarker scan with clinician review and fast turnaround.</p>
+                            <p id="detail-description">Broad baseline blood test for annual screening and preventive monitoring.</p>
                             <div class="detail-meta">
                                 <span id="detail-biomarkers">12 biomarkers</span>
                                 <span id="detail-goals">General wellness, Metabolic health</span>
+                                <span id="detail-turnaround">Results in 24 to 72 hours after processing</span>
+                            </div>
+                            <p class="detail-explainer" id="detail-why">A good starting point when you want a broad snapshot instead of chasing a single symptom.</p>
+                            <div class="detail-collection-note" id="detail-collection">Available as a partner lab visit or home kit.</div>
+                            <div class="biomarker-section">
+                                <div class="biomarker-head">
+                                    <h4>Biomarkers in this test</h4>
+                                    <span>Hover or focus the info icon for a quick explanation</span>
+                                </div>
+                                <div class="biomarker-grid" id="detail-biomarker-grid"></div>
                             </div>
                             <div class="detail-actions">
                                 <span id="detail-price">GBP 249</span>
@@ -117,6 +212,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="order-summary-inline card">
                         <div class="basket-header">
                             <h3>Order summary</h3>
@@ -128,7 +224,7 @@
                                 <span data-summary-subtotal>GBP 0.00</span>
                             </div>
                             <div class="summary-row">
-                                <span>Shipping</span>
+                                <span data-summary-shipping-label>Shipping / booking</span>
                                 <span data-summary-shipping>GBP 0.00</span>
                             </div>
                             <div class="summary-row">
@@ -140,7 +236,7 @@
                                 <span data-summary-total>GBP 0.00</span>
                             </div>
                         </div>
-                        <button class="btn basket-pay" type="button" data-step-next="payment">Order Now</button>
+                        <button class="btn basket-pay" type="button" data-step-next="payment">Continue to payment</button>
                     </div>
                 </div>
 
@@ -149,8 +245,8 @@
                         <div class="payment-content">
                             <header class="order-panel-header">
                                 <span class="eyebrow">Step 2</span>
-                                <h2>Pay securely with Stripe.</h2>
-                                <p>Use quick pay or enter card details below.</p>
+                                <h2>Pay securely with Stripe</h2>
+                                <p>Checkout stays the same, but now reflects the collection method you picked before payment.</p>
                             </header>
                             <div class="payment-stack">
                                 <div class="express-checkout card" id="express-checkout-card" hidden>
@@ -206,7 +302,7 @@
                                         <span data-summary-subtotal>GBP 0.00</span>
                                     </div>
                                     <div class="summary-row">
-                                        <span>Shipping</span>
+                                        <span data-summary-shipping-label>Shipping / booking</span>
                                         <span data-summary-shipping>GBP 0.00</span>
                                     </div>
                                     <div class="summary-row">
@@ -226,30 +322,23 @@
                 <div class="order-panel" data-order-panel="post">
                     <header class="order-panel-header">
                         <span class="eyebrow">Step 3</span>
-                        <h2>Finish registration.</h2>
-                        <p>You're all set on payment. Complete your profile to access results.</p>
+                        <h2>Finish registration and view results</h2>
+                        <p>Payment is complete. Register once so you can review your orders and the mock biomarker dashboard.</p>
                     </header>
                     <div class="card registration-card">
                         <div>
                             <p class="eyebrow">After payment</p>
-                            <h3>Finish registration</h3>
+                            <h3>Unlock your results area</h3>
                             <p id="registration-message">Payment comes first. You can register right after checkout.</p>
                         </div>
-                        <button class="btn btn-outline" type="button" data-register-trigger>Open registration</button>
+                        <div class="registration-actions">
+                            <button class="btn btn-outline" type="button" data-register-trigger>Open registration</button>
+                            <a class="btn btn-ghost" href="../pages/results.html">Open results demo</a>
+                        </div>
                     </div>
                 </div>
             </section>
-
-            
         </div>
     </main>
-
-    <footer class="site-footer">
-        <div class="container">
-            <p>&copy; 2025 Ayuta Ltd. All rights reserved.</p>
-        </div>
-    </footer>
 </body>
 </html>
-
-

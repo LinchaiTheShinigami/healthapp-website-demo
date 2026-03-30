@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="../styles/site-base.css">
     <link rel="stylesheet" href="../styles/styles-account.css">
     <script src="../scripts/app-store.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-app-compat.js" integrity="sha384-Znt+uHtXAdOhiGTGyIwmBNXlsc5TOAuAzcCG0eAE2dulpw9KiB0JhB34uEGwuHs8" crossorigin="anonymous" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-auth-compat.js" integrity="sha384-A6cYBBWGHa59uc1lMxnsMCEdmpRGH6sFBcvsp5iy586ULeLLZp7CTav7jH/SrDcr" crossorigin="anonymous" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore-compat.js" integrity="sha384-XfsHRWyIpDxqmBgRls8NyklJPVxNtAPTuASFjpt47tsNDKvc13Ibf1leNHrxGLax" crossorigin="anonymous" defer></script>
+    <script src="../scripts/auth-config.js" defer></script>
+    <script src="../scripts/firebase-auth.js" defer></script>
     <script src="../scripts/nav-state.js" defer></script>
     <script src="../scripts/account-modal.js" defer></script>
     <script src="../scripts/include-nav.js" defer></script>
@@ -23,7 +28,17 @@
                 <h1>Your orders</h1>
                 <p>View everything you have purchased and track status in one place.</p>
             </div>
-            <div class="account-grid">
+
+            <section class="account-card card account-lock" id="orders-locked">
+                <h2>Sign in required</h2>
+                <p class="account-status" id="orders-locked-status">Checking your session.</p>
+                <div class="account-lock-actions">
+                    <button class="btn btn-primary" type="button" data-login-trigger>Sign in</button>
+                    <a class="btn btn-ghost" href="../index.html">Back home</a>
+                </div>
+            </section>
+
+            <div class="account-grid" id="orders-authenticated" hidden>
                 <div class="account-card card">
                     <h2>Status</h2>
                     <p class="account-status" id="orders-status">Sign in to view your orders.</p>

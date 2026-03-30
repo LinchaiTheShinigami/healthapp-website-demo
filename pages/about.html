@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="../styles/site-base.css">
     <link rel="stylesheet" href="../styles/styles-about.css">
     <script src="../scripts/app-store.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-app-compat.js" integrity="sha384-Znt+uHtXAdOhiGTGyIwmBNXlsc5TOAuAzcCG0eAE2dulpw9KiB0JhB34uEGwuHs8" crossorigin="anonymous" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-auth-compat.js" integrity="sha384-A6cYBBWGHa59uc1lMxnsMCEdmpRGH6sFBcvsp5iy586ULeLLZp7CTav7jH/SrDcr" crossorigin="anonymous" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore-compat.js" integrity="sha384-XfsHRWyIpDxqmBgRls8NyklJPVxNtAPTuASFjpt47tsNDKvc13Ibf1leNHrxGLax" crossorigin="anonymous" defer></script>
+    <script src="../scripts/auth-config.js" defer></script>
+    <script src="../scripts/firebase-auth.js" defer></script>
     <script src="../scripts/nav-state.js" defer></script>
     <script src="../scripts/account-modal.js" defer></script>
     <script src="../scripts/include-nav.js" defer></script>
@@ -15,34 +20,77 @@
 <body>
     <div id="nav-placeholder"></div>
     <main class="about-page section">
-        <div class="container">
-            <span class="eyebrow">About</span>
-            <h1>About Ayuta Health</h1>
-            <p>Ayuta is dedicated to making health management simple and accessible for everyone. Our team is passionate about leveraging technology to improve well-being and empower individuals on their health journey.</p>
-            <div class="team-section">
-                <h2>Meet the Team</h2>
-                <div class="team-photos">
-                    <div class="team-card card">
-                        <img class="team-photo" width="120" height="120" loading="lazy" src="../Images/Anuj Gupta.jpg" alt="Anuj Gupta">
-                        <span class="photo-caption">Anuj Gupta</span>
-                    </div>
-                    <div class="team-card card">
-                        <img class="team-photo" width="120" height="120" loading="lazy" src="../Images/Aditya Gupta.jpg" alt="Aditya Gupta">
-                        <span class="photo-caption">Aditya Gupta</span>
-                    </div>
-                    <div class="team-card card">
-                        <img class="team-photo" width="120" height="120" loading="lazy" src="../Images/Archi Sharma.jpg" alt="Archi Sharma">
-                        <span class="photo-caption">Archi Sharma</span>
-                    </div>
+        <div class="container about-stack">
+            <section class="about-hero">
+                <span class="eyebrow">About</span>
+                <h1>Ayuta Health exists to make preventive testing easier to understand and easier to act on</h1>
+                <p>
+                    We are building a calmer, more human blood-testing experience for people who want clarity on their health
+                    without being forced to decode clinical jargon, confusing panel names, or flat PDF reports.
+                </p>
+            </section>
+
+            <section class="about-grid">
+                <article class="card about-card">
+                    <h2>Why this matters</h2>
+                    <p>Many people know they should check things like iron, vitamin D, cholesterol, or glucose, but they do not know which test to pick or what the result means afterwards.</p>
+                    <p>Ayuta is designed to reduce that friction by making selection, collection, payment, and results feel like one connected flow instead of four disconnected steps.</p>
+                </article>
+                <article class="card about-card">
+                    <h2>What Ayuta does for customers</h2>
+                    <ul class="about-list">
+                        <li>Helps people choose a suitable test using goals and guided recommendations.</li>
+                        <li>Makes the collection model explicit with both home-kit and partner-lab options.</li>
+                        <li>Shows biomarkers and plain-English explanations before checkout.</li>
+                        <li>Presents result data in a chart-led dashboard instead of only a static report.</li>
+                    </ul>
+                </article>
+            </section>
+
+            <section class="palette-section card">
+                <div>
+                    <span class="eyebrow">Brand Palette</span>
+                    <h2>Wellness-led colours with medical credibility</h2>
+                    <p>The visual direction now leans into calmer sage, oat, deep teal, and warm sand tones so the brand feels more grounded than a generic clinical interface.</p>
                 </div>
-            </div>
+                <div class="palette-grid" aria-label="Ayuta colour palette">
+                    <div class="palette-swatch palette-swatch--sage"><span>Sage</span><small>#6B8F71</small></div>
+                    <div class="palette-swatch palette-swatch--teal"><span>Deep teal</span><small>#2F6F63</small></div>
+                    <div class="palette-swatch palette-swatch--sand"><span>Warm sand</span><small>#DFC47B</small></div>
+                    <div class="palette-swatch palette-swatch--oat"><span>Soft oat</span><small>#FBF8F0</small></div>
+                </div>
+            </section>
+
+            <section class="team-section">
+                <div class="team-copy">
+                    <span class="eyebrow">Team</span>
+                    <h2>Who is building Ayuta</h2>
+                    <p>The people behind the project are not just listed by name. The page now explains what each person is focused on in the customer journey.</p>
+                </div>
+                <div class="team-photos">
+                    <article class="team-card card">
+                        <img class="team-photo" width="120" height="120" loading="lazy" src="../Images/Archi Sharma.jpg" alt="Archi Sharma">
+                        <h3>Archi Sharma</h3>
+                        <p>Focuses on brand, messaging, and making the service feel trusted and approachable from the first visit.</p>
+                    </article>
+                    <article class="team-card card">
+                        <img class="team-photo" width="120" height="120" loading="lazy" src="../Images/Anuj Gupta.jpg" alt="Anuj Gupta">
+                        <h3>Anuj Gupta</h3>
+                        <p>Works across the service model, tying together kits, lab operations, payments, and customer follow-up.</p>
+                    </article>
+                    <article class="team-card card">
+                        <img class="team-photo" width="120" height="120" loading="lazy" src="../Images/Aditya Gupta.jpg" alt="Aditya Gupta">
+                        <h3>Aditya Gupta</h3>
+                        <p>Builds the front-end experience and the reporting patterns that make biomarker data easier to scan.</p>
+                    </article>
+                </div>
+            </section>
         </div>
     </main>
     <footer class="site-footer">
         <div class="container">
-            <p>&copy; 2025 Ayuta Ltd. All rights reserved.</p>
+            <p>&copy; 2026 Ayuta Ltd. All rights reserved.</p>
         </div>
     </footer>
 </body>
 </html>
-

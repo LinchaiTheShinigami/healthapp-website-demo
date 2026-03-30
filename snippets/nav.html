@@ -4,8 +4,13 @@
             <img class="brand-mark" data-asset="Images/Logo/ayuta_logo_transparent_clean.png" alt="Ayuta logo">
             <span>Ayuta Health</span>
         </a>
+        <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation">
+            Menu
+        </button>
         <div class="nav-links" id="primary-nav">
-            <a class="nav-link" data-nav-link data-path="pages/order.html" data-nav-key="order">Orders</a>
+            <a class="nav-link" data-nav-link data-path="pages/order.html" data-nav-key="order">Book tests</a>
+            <a class="nav-link" data-nav-link data-path="pages/about.html" data-nav-key="about">About</a>
+            <a class="nav-link" data-nav-link data-path="pages/contact.html" data-nav-key="contact">Contact</a>
         </div>
         <div class="nav-actions">
             <div class="nav-accessibility" aria-label="Accessibility tools">
@@ -14,7 +19,7 @@
             </div>
             <a class="btn btn-outline nav-home-btn" data-nav-link data-path="index.html" hidden>Home</a>
             <a class="btn btn-outline nav-mobile" data-nav-link data-path="pages/webapp.html">Mobile demo</a>
-            <button class="btn btn-primary nav-login" type="button" data-login-trigger>Login</button>
+            <button class="btn btn-primary nav-login" type="button" data-login-trigger>Sign in</button>
             <div class="nav-user" data-user-menu hidden>
                 <a class="profile-link" data-nav-link data-path="pages/profile.html" aria-label="User profile">
                     <span class="profile-avatar" data-profile-initial>U</span>
@@ -24,8 +29,10 @@
                     <span class="menu-icon" aria-hidden="true"></span>
                 </button>
                 <div class="nav-menu" id="user-menu" role="menu">
+                    <a class="nav-menu-item" role="menuitem" data-nav-link data-path="pages/profile.html">Profile</a>
                     <a class="nav-menu-item" role="menuitem" data-nav-link data-path="pages/orders.html">Orders</a>
                     <a class="nav-menu-item" role="menuitem" data-nav-link data-path="pages/results.html">Test results</a>
+                    <button class="nav-menu-item nav-menu-item--button" type="button" role="menuitem" data-logout-trigger>Sign out</button>
                 </div>
             </div>
         </div>
@@ -40,7 +47,7 @@
             <h2 id="account-title">Login or register</h2>
         </div>
         <div class="account-tabs" role="tablist">
-            <button class="account-tab is-active" type="button" role="tab" aria-selected="true" data-account-tab="login">Login</button>
+            <button class="account-tab is-active" type="button" role="tab" aria-selected="true" data-account-tab="login">Sign in</button>
             <button class="account-tab" type="button" role="tab" aria-selected="false" data-account-tab="register">Register</button>
         </div>
         <div class="account-body">
@@ -49,8 +56,15 @@
                     <label for="account-login-email">Email address</label>
                     <input id="account-login-email" name="account-login-email" type="email" autocomplete="email" placeholder="you@domain.com" required>
                 </div>
-                <button class="btn btn-primary" type="submit">Send login link</button>
-                <p class="login-note">We mock the link and sign you in instantly.</p>
+                <div class="form-row">
+                    <label for="account-login-password">Password</label>
+                    <input id="account-login-password" name="account-login-password" type="password" autocomplete="current-password" placeholder="Enter your password" minlength="8" required>
+                </div>
+                <button class="btn btn-primary" type="submit">Sign in</button>
+                <div class="account-inline-actions">
+                    <button class="text-button" type="button" data-account-reset>Forgot your password?</button>
+                </div>
+                <p class="login-note">Use the email and password you registered with.</p>
                 <div class="status" data-account-status="login" role="status" aria-live="polite"></div>
             </form>
             <form class="account-pane" data-account-pane="register">
@@ -66,7 +80,12 @@
                     <label for="account-phone">Phone number</label>
                     <input id="account-phone" name="account-phone" type="tel" autocomplete="tel" placeholder="+44 7700 900000">
                 </div>
-                <button class="btn btn-primary" type="submit">Save profile</button>
+                <div class="form-row">
+                    <label for="account-password">Create password</label>
+                    <input id="account-password" name="account-password" type="password" autocomplete="new-password" placeholder="Use at least 8 characters" minlength="8" required>
+                </div>
+                <p class="login-note">We create the account, sign the user in, and send a verification email.</p>
+                <button class="btn btn-primary" type="submit">Create account</button>
                 <div class="status" data-account-status="register" role="status" aria-live="polite"></div>
             </form>
         </div>
