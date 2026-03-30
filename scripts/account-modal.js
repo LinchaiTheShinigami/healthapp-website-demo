@@ -1,45 +1,69 @@
 (function () {
-  const getStore = () => window.AyutaStore;
   let modalRoot = null;
+  let initialized = false;
+
+  const getStoreState = () => {
+    if (!window.AyutaStore || typeof window.AyutaStore.loadState !== 'function') return null;
+    return window.AyutaStore.loadState();
+  };
+
+  const getAuthSnapshot = () => {
+    if (!window.AyutaAuth || typeof window.AyutaAuth.getSnapshot !== 'function') return null;
+    return window.AyutaAuth.getSnapshot();
+  };
 
   const setStatus = (node, message, state) => {
     if (!node) return;
-    node.textContent = message;
+    node.textContent = message || '';
     node.classList.remove('is-success', 'is-error');
     if (state === 'success') node.classList.add('is-success');
     if (state === 'error') node.classList.add('is-error');
   };
 
+  const clearStatuses = () => {
+    if (!modalRoot) return;
+    modalRoot.querySelectorAll('[data-account-status]').forEach((node) => setStatus(node, ''));
+  };
+
   const setActiveTab = (tabName) => {
     if (!modalRoot) return;
+    const title = modalRoot.querySelector('#account-title');
     const tabs = modalRoot.querySelectorAll('[data-account-tab]');
     const panes = modalRoot.querySelectorAll('[data-account-pane]');
+
     tabs.forEach((tab) => {
       const isActive = tab.getAttribute('data-account-tab') === tabName;
       tab.classList.toggle('is-active', isActive);
       tab.setAttribute('aria-selected', String(isActive));
     });
+
     panes.forEach((pane) => {
       const isActive = pane.getAttribute('data-account-pane') === tabName;
       pane.classList.toggle('is-active', isActive);
     });
+
+    if (title) title.textContent = tabName === 'register' ? 'Create your account' : 'Sign in to your account';
+    clearStatuses();
   };
 
   const prefillFields = () => {
     if (!modalRoot) return;
-    const store = getStore();
-    if (!store) return;
-    const state = store.loadState();
+
+    const authSnapshot = getAuthSnapshot();
+    const storeState = getStoreState();
+    const email = authSnapshot?.profile?.email || authSnapshot?.user?.email || storeState?.session?.email || storeState?.user?.email || storeState?.paymentEmail || '';
+    const name = authSnapshot?.profile?.name || storeState?.user?.name || '';
+    const phone = authSnapshot?.profile?.phone || storeState?.user?.phone || '';
+
     const loginEmail = modalRoot.querySelector('#account-login-email');
     const registerEmail = modalRoot.querySelector('#account-email');
     const registerName = modalRoot.querySelector('#account-name');
     const registerPhone = modalRoot.querySelector('#account-phone');
-    const email = state.session?.email || state.user?.email || state.paymentEmail || '';
 
     if (loginEmail && !loginEmail.value) loginEmail.value = email;
     if (registerEmail && !registerEmail.value) registerEmail.value = email;
-    if (registerName && !registerName.value) registerName.value = state.user?.name || '';
-    if (registerPhone && !registerPhone.value) registerPhone.value = state.user?.phone || '';
+    if (registerName && !registerName.value) registerName.value = name;
+    if (registerPhone && !registerPhone.value) registerPhone.value = phone;
   };
 
   const openModal = (tabName) => {
@@ -56,11 +80,103 @@
     modalRoot.hidden = true;
     modalRoot.classList.remove('is-open');
     document.body.classList.remove('modal-open');
+    clearStatuses();
   };
 
-  const init = (navRoot) => {
+  const bindLoginForm = () => {
+    const auth = window.AyutaAuth;
+    const loginForm = modalRoot.querySelector('[data-account-pane="login"]');
+    const loginStatus = modalRoot.querySelector('[data-account-status="login"]');
+    const resetButton = modalRoot.querySelector('[data-account-reset]');
+
+    if (loginForm) {
+      loginForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const emailField = loginForm.querySelector('#account-login-email');
+        const passwordField = loginForm.querySelector('#account-login-password');
+        const email = emailField ? emailField.value.trim() : '';
+        const password = passwordField ? passwordField.value : '';
+
+        if (!email || !password) {
+          setStatus(loginStatus, 'Enter your email and password.', 'error');
+          return;
+        }
+
+        try {
+          setStatus(loginStatus, 'Signing in...');
+          await auth.whenReady();
+          await auth.login({ email, password });
+          setStatus(loginStatus, 'Signed in.', 'success');
+          closeModal();
+        } catch (error) {
+          setStatus(loginStatus, error.message, 'error');
+        }
+      });
+    }
+
+    if (resetButton) {
+      resetButton.addEventListener('click', async () => {
+        const emailField = modalRoot.querySelector('#account-login-email');
+        const loginEmail = emailField ? emailField.value.trim() : '';
+
+        try {
+          setStatus(loginStatus, 'Sending reset email...');
+          await auth.sendPasswordReset(loginEmail);
+          setStatus(loginStatus, 'Password reset email sent. Check your inbox.', 'success');
+        } catch (error) {
+          setStatus(loginStatus, error.message, 'error');
+        }
+      });
+    }
+  };
+
+  const bindRegisterForm = () => {
+    const auth = window.AyutaAuth;
+    const registerForm = modalRoot.querySelector('[data-account-pane="register"]');
+    const registerStatus = modalRoot.querySelector('[data-account-status="register"]');
+
+    if (!registerForm) return;
+
+    registerForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const nameField = registerForm.querySelector('#account-name');
+      const emailField = registerForm.querySelector('#account-email');
+      const phoneField = registerForm.querySelector('#account-phone');
+      const passwordField = registerForm.querySelector('#account-password');
+
+      const name = nameField ? nameField.value.trim() : '';
+      const email = emailField ? emailField.value.trim() : '';
+      const phone = phoneField ? phoneField.value.trim() : '';
+      const password = passwordField ? passwordField.value : '';
+
+      if (!name || !email || password.length < 8) {
+        setStatus(registerStatus, 'Enter your name, email, and a password with at least 8 characters.', 'error');
+        return;
+      }
+
+      try {
+        setStatus(registerStatus, 'Creating your account...');
+        await auth.whenReady();
+        const result = await auth.register({ name, email, phone, password });
+        setStatus(
+          registerStatus,
+          result.verificationSent
+            ? 'Account created. You are signed in and a verification email has been sent.'
+            : 'Account created. You are now signed in.',
+          'success'
+        );
+        closeModal();
+      } catch (error) {
+        setStatus(registerStatus, error.message, 'error');
+      }
+    });
+  };
+
+  const init = () => {
+    if (initialized) return;
     modalRoot = document.querySelector('[data-account-modal]');
-    if (!modalRoot) return;
+    if (!modalRoot || !window.AyutaAuth) return;
 
     modalRoot.querySelectorAll('[data-account-close]').forEach((button) => {
       button.addEventListener('click', closeModal);
@@ -76,69 +192,20 @@
       tab.addEventListener('click', () => setActiveTab(tab.getAttribute('data-account-tab')));
     });
 
-    const store = getStore();
-    if (!store) return;
-    const loginForm = modalRoot.querySelector('[data-account-pane="login"]');
-    const registerForm = modalRoot.querySelector('[data-account-pane="register"]');
-    const loginStatus = modalRoot.querySelector('[data-account-status="login"]');
-    const registerStatus = modalRoot.querySelector('[data-account-status="register"]');
-
+    bindLoginForm();
+    bindRegisterForm();
     prefillFields();
 
-    if (loginForm) {
-      loginForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const emailField = loginForm.querySelector('#account-login-email');
-        const email = emailField ? emailField.value.trim() : '';
-        if (!email) {
-          setStatus(loginStatus, 'Enter your email to continue.', 'error');
-          return;
-        }
-        const state = store.loadState();
-        const hasOrder = state.orders.some((order) => order.email === email);
-        const hasProfile = state.user && state.user.email === email;
-        if (!hasOrder && !hasProfile) {
-          setStatus(loginStatus, 'No order found for that email yet.', 'error');
-          return;
-        }
-
-        state.session = { email, loggedInAt: new Date().toISOString() };
-        store.saveState(state);
-        setStatus(loginStatus, 'Logged in. Your pages are updated.', 'success');
-        window.dispatchEvent(new CustomEvent('ayuta:auth-updated'));
-        window.dispatchEvent(new CustomEvent('ayuta:state-updated'));
+    window.addEventListener('ayuta:auth-updated', () => {
+      const snapshot = getAuthSnapshot();
+      if (snapshot && snapshot.user && modalRoot.classList.contains('is-open')) {
         closeModal();
-      });
-    }
+      } else {
+        prefillFields();
+      }
+    });
 
-    if (registerForm) {
-      registerForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const nameField = registerForm.querySelector('#account-name');
-        const emailField = registerForm.querySelector('#account-email');
-        const phoneField = registerForm.querySelector('#account-phone');
-        const name = nameField ? nameField.value.trim() : '';
-        const email = emailField ? emailField.value.trim() : '';
-        if (!name || !email) {
-          setStatus(registerStatus, 'Name and email are required.', 'error');
-          return;
-        }
-
-        const state = store.loadState();
-        state.user = {
-          name,
-          email,
-          phone: phoneField ? phoneField.value.trim() : '',
-          updatedAt: new Date().toISOString()
-        };
-        state.session = { email, loggedInAt: new Date().toISOString() };
-        store.saveState(state);
-        setStatus(registerStatus, 'Profile saved and signed in.', 'success');
-        window.dispatchEvent(new CustomEvent('ayuta:auth-updated'));
-        window.dispatchEvent(new CustomEvent('ayuta:state-updated'));
-        closeModal();
-      });
-    }
+    initialized = true;
   };
 
   window.AyutaAccount = {

@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="../styles/site-base.css">
     <link rel="stylesheet" href="../styles/styles-account.css">
     <script src="../scripts/app-store.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-auth-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore-compat.js" defer></script>
+    <script src="../scripts/auth-config.js" defer></script>
+    <script src="../scripts/firebase-auth.js" defer></script>
     <script src="../scripts/nav-state.js" defer></script>
     <script src="../scripts/account-modal.js" defer></script>
     <script src="../scripts/include-nav.js" defer></script>
@@ -23,7 +28,17 @@
                 <h1>Your profile</h1>
                 <p>Update your details and manage your session.</p>
             </div>
-            <div class="account-grid">
+
+            <section class="account-card card account-lock" id="profile-locked">
+                <h2>Sign in required</h2>
+                <p class="account-status" id="profile-locked-status">Checking your session.</p>
+                <div class="account-lock-actions">
+                    <button class="btn btn-primary" type="button" data-login-trigger>Sign in</button>
+                    <a class="btn btn-ghost" href="../index.html">Back home</a>
+                </div>
+            </section>
+
+            <div class="account-grid" id="profile-authenticated" hidden>
                 <div class="account-card card">
                     <h2>Profile details</h2>
                     <div class="profile-row">
@@ -38,8 +53,8 @@
                         <span class="profile-label">Phone</span>
                         <span class="profile-value" id="profile-phone">Not set</span>
                     </div>
+                    <p class="profile-note" id="profile-note">Keep your profile up to date so bookings and lab follow-up stay tied to the correct account.</p>
                     <div class="profile-actions">
-                        <button class="btn btn-outline" type="button" data-login-trigger>Login</button>
                         <button class="btn btn-ghost" type="button" id="logout-button">Sign out</button>
                     </div>
                 </div>
@@ -52,12 +67,13 @@
                         </div>
                         <div class="form-row">
                             <label for="profile-email-input">Email address</label>
-                            <input id="profile-email-input" type="email" autocomplete="email" placeholder="you@domain.com">
+                            <input id="profile-email-input" type="email" autocomplete="email" placeholder="you@domain.com" readonly>
                         </div>
                         <div class="form-row">
                             <label for="profile-phone-input">Phone number</label>
                             <input id="profile-phone-input" type="tel" autocomplete="tel" placeholder="+44 7700 900000">
                         </div>
+                        <p class="profile-note">Email is managed by the login account. Update name or phone here.</p>
                         <button class="btn btn-primary" type="submit">Save changes</button>
                         <div class="status" id="profile-status" role="status" aria-live="polite"></div>
                     </form>

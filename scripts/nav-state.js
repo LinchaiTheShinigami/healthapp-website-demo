@@ -27,7 +27,25 @@
     }
   };
 
+  const readAuthSnapshot = () => {
+    if (!window.AyutaAuth || typeof window.AyutaAuth.getSnapshot !== 'function') return null;
+    try {
+      return window.AyutaAuth.getSnapshot();
+    } catch (error) {
+      return null;
+    }
+  };
+
   const readSession = () => {
+    const snapshot = readAuthSnapshot();
+    if (snapshot && snapshot.user) {
+      return {
+        uid: snapshot.user.uid,
+        email: snapshot.profile?.email || snapshot.user.email || '',
+        emailVerified: Boolean(snapshot.user.emailVerified)
+      };
+    }
+
     if (window.AyutaStore) {
       const state = window.AyutaStore.loadState();
       return state.session;
@@ -40,6 +58,16 @@
   };
 
   const readUser = () => {
+    const snapshot = readAuthSnapshot();
+    if (snapshot && snapshot.user) {
+      return snapshot.profile || {
+        uid: snapshot.user.uid,
+        name: snapshot.user.displayName || '',
+        email: snapshot.user.email || '',
+        phone: ''
+      };
+    }
+
     if (window.AyutaStore) {
       const state = window.AyutaStore.loadState();
       return state.user;
@@ -111,6 +139,7 @@
   let loginBound = false;
   let accessibilityBound = false;
   let userMenuBound = false;
+  let logoutBound = false;
 
   const bindLoginButtons = (navRoot) => {
     if (loginBound) return;
@@ -178,10 +207,27 @@
     userMenuBound = true;
   };
 
+  const bindLogoutButtons = (navRoot) => {
+    if (logoutBound) return;
+    const root = navRoot || document;
+    root.querySelectorAll('[data-logout-trigger]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        if (!window.AyutaAuth || typeof window.AyutaAuth.logout !== 'function') return;
+        try {
+          await window.AyutaAuth.logout();
+        } catch (error) {
+          console.error(error);
+        }
+      });
+    });
+    logoutBound = true;
+  };
+
   const refresh = (navRoot) => {
+    const snapshot = readAuthSnapshot();
     const session = readSession();
     const user = readUser();
-    const isLoggedIn = Boolean(session && session.email);
+    const isLoggedIn = Boolean((snapshot && snapshot.user) || (session && session.email));
     toggleAuthItems(navRoot, isLoggedIn);
     updateProfileIcon(navRoot, user, session);
     toggleAuthControls(navRoot, isLoggedIn);
@@ -195,6 +241,7 @@
     bindLoginButtons(document);
     bindAccessibility(navRoot);
     bindUserMenu(navRoot);
+    bindLogoutButtons(document);
     refresh(navRoot);
     window.addEventListener('ayuta:auth-updated', () => refresh(navRoot));
   };

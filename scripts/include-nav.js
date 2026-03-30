@@ -29,6 +29,8 @@ function setActiveLink(navRoot) {
   if (page === '' || page === 'index.html') activeKey = 'home';
   if (page === 'order.html') activeKey = 'order';
   if (page === 'webapp.html') activeKey = 'mobile';
+  if (page === 'about.html') activeKey = 'about';
+  if (page === 'contact.html') activeKey = 'contact';
   if (page === 'orders.html') activeKey = 'orders';
   if (page === 'results.html') activeKey = 'results';
   if (page === 'profile.html') activeKey = 'profile';
@@ -114,7 +116,7 @@ function wireNavToggle(navRoot) {
     toggle.setAttribute('aria-expanded', String(isOpen));
   });
 
-  navRoot.querySelectorAll('.nav-link').forEach(link => {
+  navRoot.querySelectorAll('[data-nav-link], [data-login-trigger]').forEach(link => {
     link.addEventListener('click', () => {
       navRoot.classList.remove('is-open');
       toggle.setAttribute('aria-expanded', 'false');

@@ -6,7 +6,8 @@
     user: 'ayuta_user',
     session: 'ayuta_session',
     goal: 'ayuta_goal',
-    paymentEmail: 'ayuta_payment_email'
+    paymentEmail: 'ayuta_payment_email',
+    collectionMethod: 'ayuta_collection_method'
   };
 
   const readJson = (key, fallback) => {
@@ -61,7 +62,8 @@
       user: readJson(STORAGE_KEYS.user, null),
       session: readJson(STORAGE_KEYS.session, null),
       goal: readValue(STORAGE_KEYS.goal, 'all'),
-      paymentEmail: readValue(STORAGE_KEYS.paymentEmail, '')
+      paymentEmail: readValue(STORAGE_KEYS.paymentEmail, ''),
+      collectionMethod: readValue(STORAGE_KEYS.collectionMethod, 'lab')
     });
 
   const saveState = (state) => {
@@ -72,6 +74,7 @@
     writeJson(STORAGE_KEYS.session, state.session || null);
     writeValue(STORAGE_KEYS.goal, state.goal || 'all');
     writeValue(STORAGE_KEYS.paymentEmail, state.paymentEmail || '');
+    writeValue(STORAGE_KEYS.collectionMethod, state.collectionMethod || 'lab');
   };
 
   const clearState = () => {
