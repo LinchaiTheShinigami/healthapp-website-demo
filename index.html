@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Ayuta Health helps you choose a blood test, pick a home kit or partner lab visit, pay securely, and review biomarker results with simple charts.">
+    <meta name="description" content="Ayuta Health helps you choose a blood test, pick a home kit or clinic route, and return to a clearer biomarker dashboard.">
     <title>Ayuta Health</title>
     <link rel="icon" href="Images/Logo/ayuta_favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles/site-base.css">
@@ -25,396 +25,212 @@
     <header class="hero" id="home">
         <div class="container hero-grid">
             <div class="hero-copy">
-                <span class="eyebrow">Ayuta Health</span>
-                <h1 class="hero-title">Blood testing made clearer, from kit choice to biomarker results</h1>
+                <span class="eyebrow">Preventive Blood Testing, Clarified</span>
+                <h1 class="hero-title">A cleaner public entry point for a results-led health product.</h1>
                 <p class="hero-lede">
-                    Ayuta helps you choose the right blood test, decide between a home kit or partner lab visit,
-                    pay securely, and read your results in a plain-English dashboard.
+                    Ayuta starts in public mode with one clear promise: pick the right package quickly, choose the collection route early, and come back to a calmer dashboard once results exist.
                 </p>
                 <div class="hero-actions">
-                    <a class="btn btn-primary" href="pages/order.html">Book a blood test</a>
-                    <a class="btn btn-ghost" href="pages/results.html">See results demo</a>
+                    <a class="btn btn-primary" href="pages/order.html">Book tests</a>
+                    <a class="btn btn-ghost" href="#panels">Review packages</a>
                 </div>
-                <div class="hero-note">
-                    <span class="hero-pill">Home kits and lab visits</span>
-                    <span class="hero-pill">Women’s, men’s and GLP-1 monitoring</span>
-                    <span class="hero-pill">Biomarker charts with simple explanations</span>
+                <div class="hero-proof-row">
+                    <span class="hero-proof-chip">3 curated tiers</span>
+                    <span class="hero-proof-chip">Clinic or home-kit route</span>
+                    <span class="hero-proof-chip">Results-first dashboard</span>
                 </div>
+                <p class="hero-status" id="home-session-status">Sign in to turn Ayuta into your results dashboard.</p>
             </div>
-            <div class="hero-panel card">
-                <div class="hero-service-grid">
-                    <article class="hero-service-card">
-                        <p class="hero-service-label">Partner lab visit</p>
-                        <h2>Book a draw near you</h2>
-                        <p>Choose a time in London, Manchester, Birmingham, Bristol, Leeds, or Edinburgh.</p>
-                    </article>
-                    <article class="hero-service-card">
-                        <p class="hero-service-label">Home kit</p>
-                        <h2>Collect at home</h2>
-                        <p>Receive a kit in 24 to 48 hours with prepaid return packaging and clear instructions.</p>
-                    </article>
-                </div>
-                <div>
-                    <p class="eyebrow">Your basket</p>
-                    <h2 class="hero-panel-title">Resume your selection</h2>
-                </div>
-                <div class="hero-basket" id="home-basket-items"></div>
-                <div class="hero-summary">
+
+            <div class="hero-stage">
+                <div class="hero-stage-head">
                     <div>
-                        <p class="hero-summary-label">Tests selected</p>
-                        <p class="hero-summary-value" id="home-basket-count">0</p>
+                        <p class="hero-service-label">Public mode</p>
+                        <h2 class="hero-panel-title">Show the path, not the whole back office.</h2>
                     </div>
+                    <a class="text-button text-button--light" href="pages/about.html">About Ayuta</a>
+                </div>
+
+                <div class="hero-stage-grid">
+                    <article class="route-card">
+                        <span class="route-index">01</span>
+                        <h3>Choose one tier</h3>
+                        <p>Foundation, Performance, and Elite keep the public choice set tight.</p>
+                    </article>
+                    <article class="route-card">
+                        <span class="route-index">02</span>
+                        <h3>Pick collection</h3>
+                        <p>Home kit and clinic appointments stay visible from the start.</p>
+                    </article>
+                    <article class="route-card">
+                        <span class="route-index">03</span>
+                        <h3>Return to results</h3>
+                        <p>Once signed in, the default view becomes the dashboard, not the landing page.</p>
+                    </article>
+                </div>
+
+                <div class="hero-note-card">
                     <div>
-                        <p class="hero-summary-label">Current total</p>
-                        <p class="hero-summary-value" id="home-basket-total">GBP 0.00</p>
+                        <p class="hero-summary-label">Current demo model</p>
+                        <h3>Thin Stripe checkout now, verified payments next.</h3>
                     </div>
+                    <p>The public site stays light. The next iteration tightens payment confirmation through Firebase-backed verification rather than browser-only assumptions.</p>
                 </div>
-                <div class="hero-actions hero-actions--compact">
-                    <a class="btn btn-outline" href="pages/order.html">Go to booking page</a>
-                    <button class="btn btn-ghost" type="button" data-login-trigger>Login</button>
-                </div>
-                <p class="hero-status" id="home-session-status">Not signed in yet.</p>
             </div>
         </div>
     </header>
 
-    <div class="home-rail-wrap">
-        <div class="container">
-            <nav class="home-rail" aria-label="Jump to sections">
-                <a href="#about-preview">What Ayuta does</a>
-                <a href="#journey">How it works</a>
-                <a href="#explainer">Common terms</a>
-                <a href="#tests">Test menu</a>
-                <a href="#collection">Collection and labs</a>
-                <a href="#faq">FAQs</a>
-            </nav>
-        </div>
-    </div>
-
     <main>
-        <section class="section statement-section" id="about-preview">
-            <div class="container statement-grid">
-                <div class="statement-copy">
-                    <span class="eyebrow">What Ayuta Does</span>
-                    <h2 class="section-title">This is a blood testing and monitoring service, not just a generic medical booking page</h2>
-                    <p class="section-subtitle">
-                        The product helps people order a blood test, choose where the sample is taken, understand what each biomarker means,
-                        and review the result in a cleaner follow-up experience.
-                    </p>
-                </div>
-                <div class="statement-card card">
-                    <div class="statement-point">
-                        <strong>Choose a test</strong>
-                        <span>Core health, hormones, men’s and women’s health, food sensitivity, or GLP-1 monitoring.</span>
-                    </div>
-                    <div class="statement-point">
-                        <strong>Pick collection</strong>
-                        <span>Attend a partner lab or request an at-home kit depending on what works for you.</span>
-                    </div>
-                    <div class="statement-point">
-                        <strong>Track results</strong>
-                        <span>See biomarker changes and flagged markers in a chart-led dashboard after checkout.</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="section founder-section">
-            <div class="container founder-grid">
-                <div class="founder-copy">
-                    <span class="eyebrow">About Ayuta</span>
-                    <h2 class="section-title">Built to make preventive testing feel more human and less clinical</h2>
-                    <p class="section-subtitle">
-                        We heard the same pain points repeatedly: people want clearer blood test choices, less jargon,
-                        faster access to labs, and better follow-up than a PDF with unexplained numbers.
-                    </p>
-                    <p class="founder-text">
-                        Ayuta is designed around that gap by combining calm wellness-led branding with medically credible structure,
-                        so people can act on results instead of guessing what a panel or biomarker means.
-                    </p>
-                </div>
-                <div class="founder-people">
-                    <article class="founder-card card">
-                        <img src="Images/Archi Sharma.jpg" alt="Archi Sharma" class="founder-photo" loading="lazy" width="120" height="120">
-                        <h3>Archi Sharma</h3>
-                        <p>Focuses on shaping a clearer customer journey so the service feels approachable from first visit to final report.</p>
-                    </article>
-                    <article class="founder-card card">
-                        <img src="Images/Anuj Gupta.jpg" alt="Anuj Gupta" class="founder-photo" loading="lazy" width="120" height="120">
-                        <h3>Anuj Gupta</h3>
-                        <p>Works on the product and operations layer that connects kits, partner labs, payments, and reporting into one flow.</p>
-                    </article>
-                    <article class="founder-card card">
-                        <img src="Images/Aditya Gupta.jpg" alt="Aditya Gupta" class="founder-photo" loading="lazy" width="120" height="120">
-                        <h3>Aditya Gupta</h3>
-                        <p>Builds the front-end experience and dashboard patterns that make health data easier to scan and revisit.</p>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <section class="section journey-section" id="journey">
+        <section class="section pan-section" id="path">
             <div class="container">
-                <span class="eyebrow">How It Works</span>
-                <h2 class="section-title">One streamlined path from choosing a test to reading the result</h2>
-                <p class="section-subtitle">
-                    The earlier duplicate flow sections are combined here into a single journey so the process is visible higher on the page.
-                </p>
-                <div class="journey-flow" aria-label="Ayuta journey">
-                    <article class="journey-step">
+                <div class="pan-header">
+                    <div>
+                        <span class="eyebrow">How It Works</span>
+                        <h2 class="section-title">Pan across the public journey instead of scrolling through a brochure.</h2>
+                    </div>
+                    <p class="pan-note">Swipe or scroll sideways</p>
+                </div>
+                <div class="pan-track pan-track--process">
+                    <article class="pan-card card">
                         <span class="journey-index">01</span>
-                        <h3>Choose a test</h3>
-                        <p>Filter by goal or use the guided recommender to pick the most suitable kit.</p>
+                        <h3>Start with intent</h3>
+                        <p>Users should choose depth of testing before reading every biomarker name.</p>
                     </article>
-                    <article class="journey-step">
+                    <article class="pan-card card">
                         <span class="journey-index">02</span>
-                        <h3>Choose collection</h3>
-                        <p>Select a home kit or a partner lab draw based on convenience and timing.</p>
+                        <h3>Keep routes explicit</h3>
+                        <p>Clinic and home-kit options sit alongside the package choice, not after it.</p>
                     </article>
-                    <article class="journey-step">
+                    <article class="pan-card card">
                         <span class="journey-index">03</span>
-                        <h3>Pay securely</h3>
-                        <p>Complete checkout with Stripe and keep your booking details in one place.</p>
+                        <h3>Show where clinics exist</h3>
+                        <p>The network is visible early so location fit is not left to guesswork.</p>
                     </article>
-                    <article class="journey-step">
+                    <article class="pan-card card pan-card--dark">
                         <span class="journey-index">04</span>
-                        <h3>Review results</h3>
-                        <p>See charts, status flags, and plain-English notes for your biomarkers after the sample is processed.</p>
+                        <h3>Shift to dashboard mode after sign-in</h3>
+                        <p>Authenticated users land on results first, with app navigation on the side.</p>
+                    </article>
+                    <article class="pan-card card">
+                        <span class="journey-index">05</span>
+                        <h3>Keep payment verification honest</h3>
+                        <p>Public checkout is thin today. Confirmation becomes stricter in the next backend iteration.</p>
                     </article>
                 </div>
             </div>
         </section>
 
-        <section class="section explainer-section" id="explainer">
+        <section class="section pan-section" id="panels">
             <div class="container">
-                <span class="eyebrow">Plain English</span>
-                <h2 class="section-title">Common terms explained before people hit the booking flow</h2>
-                <div class="explainer-grid">
-                    <article class="explainer-card card">
-                        <h3>What is a panel?</h3>
-                        <p>A panel is simply a group of biomarkers bundled together around one theme such as energy, hormones, or metabolic health.</p>
+                <div class="pan-header">
+                    <div>
+                        <span class="eyebrow">Packages</span>
+                        <h2 class="section-title">Three bundles:</h2>
+                    </div>
+                    <a class="btn btn-outline" href="pages/order.html">Open booking flow</a>
+                </div>
+                <div class="pan-track pan-track--packages">
+                    <article class="tier-card tier-card--foundation">
+                        <h3>Foundation</h3>
+                        <p>Baseline reset for nutrients, iron, lipids, and glucose context.</p>
+                        <div class="tier-tags">
+                            <span>5 source tests</span>
+                            <span>Home or clinic</span>
+                        </div>
+                        <div class="tier-meta">
+                            <strong>GBP 149 to GBP 199</strong>
+                            <span>Full Blood Count, Vitamins, Iron, Lipids, HbA1c</span>
+                        </div>
                     </article>
-                    <article class="explainer-card card">
-                        <h3>What is a biomarker?</h3>
-                        <p>A biomarker is a measurable value in your blood, like ferritin, vitamin D, HbA1c, or cholesterol, that helps explain what is happening in your body.</p>
+                    <article class="tier-card tier-card--performance">
+                        <h3>Performance</h3>
+                        <p>Built for regular training blocks with deeper recovery, hormone, and inflammation coverage.</p>
+                        <div class="tier-tags">
+                            <span>11 source tests</span>
+                            <span>Training-focused</span>
+                        </div>
+                        <div class="tier-meta">
+                            <strong>GBP 249 to GBP 299</strong>
+                            <span>Foundation plus Testosterone, Cortisol, CRP, Apo A/B, Zinc</span>
+                        </div>
                     </article>
-                    <article class="explainer-card card">
-                        <h3>What is a certified testing lab?</h3>
-                        <p>It means the sample is processed by an accredited laboratory partner rather than by Ayuta directly, helping maintain testing quality and traceability.</p>
+                    <article class="tier-card tier-card--elite">
+                        <h3>Elite</h3>
+                        <p>Deeper longitudinal review for clients who want thyroid and endocrine visibility layered on top.</p>
+                        <div class="tier-tags">
+                            <span>15 source tests</span>
+                            <span>Highest-depth tier</span>
+                        </div>
+                        <div class="tier-meta">
+                            <strong>GBP 399 to GBP 499</strong>
+                            <span>Performance plus Thyroid, Oestradiol, Prolactin, Folic Acid</span>
+                        </div>
                     </article>
                 </div>
-            </div>
-        </section>
-
-        <section class="section product-preview" id="tests">
-            <div class="container">
-                <span class="eyebrow">Test Menu</span>
-                <h2 class="section-title">Panels built for common goals and newer monitoring needs</h2>
-                <p class="section-subtitle">The demo now includes more specific options requested in feedback, including men’s health, women’s health, food sensitivity, and GLP-1 support.</p>
-                <div class="preview-grid">
-                    <article class="preview-card">
-                        <h3>Core Health Panel</h3>
-                        <p>Broad baseline screening for people who want an annual check-in.</p>
-                        <div class="preview-tags">
-                            <span>Ferritin</span>
-                            <span>HbA1c</span>
-                            <span>Lipids</span>
-                        </div>
-                        <div class="preview-meta">
-                            <span>GBP 249</span>
-                            <span>12 biomarkers</span>
-                        </div>
-                        <a class="btn btn-outline" href="pages/order.html#menu-core">Book this panel</a>
-                    </article>
-                    <article class="preview-card">
-                        <h3>Women’s Hormone Panel</h3>
-                        <p>Hormonal and nutrient insight for cycle health, energy, and wellbeing.</p>
-                        <div class="preview-tags">
-                            <span>FSH</span>
-                            <span>Oestradiol</span>
-                            <span>Ferritin</span>
-                        </div>
-                        <div class="preview-meta">
-                            <span>GBP 229</span>
-                            <span>9 biomarkers</span>
-                        </div>
-                        <a class="btn btn-outline" href="pages/order.html#menu-womens">Book this panel</a>
-                    </article>
-                    <article class="preview-card">
-                        <h3>Men’s Health Panel</h3>
-                        <p>Focus on testosterone, lipids, liver health, and long-term energy markers.</p>
-                        <div class="preview-tags">
-                            <span>Testosterone</span>
-                            <span>PSA</span>
-                            <span>HbA1c</span>
-                        </div>
-                        <div class="preview-meta">
-                            <span>GBP 229</span>
-                            <span>9 biomarkers</span>
-                        </div>
-                        <a class="btn btn-outline" href="pages/order.html#menu-mens">Book this panel</a>
-                    </article>
-                    <article class="preview-card">
-                        <h3>Energy and Sleep Panel</h3>
-                        <p>Useful when people feel flat, restless, or under-recovered.</p>
-                        <div class="preview-tags">
-                            <span>Cortisol</span>
-                            <span>Vitamin B12</span>
-                            <span>Vitamin D</span>
-                        </div>
-                        <div class="preview-meta">
-                            <span>GBP 159</span>
-                            <span>6 biomarkers</span>
-                        </div>
-                        <a class="btn btn-outline" href="pages/order.html#menu-energy">Book this panel</a>
-                    </article>
-                    <article class="preview-card">
-                        <h3>Food Sensitivity Review</h3>
-                        <p>Built for customers trying to understand digestion-related triggers and inflammation context.</p>
-                        <div class="preview-tags">
-                            <span>Total IgE</span>
-                            <span>CRP</span>
-                            <span>Coeliac screen</span>
-                        </div>
-                        <div class="preview-meta">
-                            <span>GBP 199</span>
-                            <span>7 biomarkers</span>
-                        </div>
-                        <a class="btn btn-outline" href="pages/order.html#menu-allergy">Book this panel</a>
-                    </article>
-                    <article class="preview-card">
-                        <h3>GLP-1 / Mounjaro Monitoring</h3>
-                        <p>Support safer monitoring of metabolic markers during weight-management treatment.</p>
-                        <div class="preview-tags">
-                            <span>HbA1c</span>
-                            <span>LFTs</span>
-                            <span>Kidney function</span>
-                        </div>
-                        <div class="preview-meta">
-                            <span>GBP 209</span>
-                            <span>8 biomarkers</span>
-                        </div>
-                        <a class="btn btn-outline" href="pages/order.html#menu-glp1">Book this panel</a>
-                    </article>
-                </div>
-                <div class="section-cta">
-                    <a class="btn btn-primary" href="pages/order.html">See full booking flow</a>
-                </div>
-            </div>
-        </section>
-
-        <section class="section collection-section" id="collection">
-            <div class="container collection-grid">
-                <div>
-                    <span class="eyebrow">Collection Options</span>
-                    <h2 class="section-title">Let people choose between convenience at home and speed at a partner lab</h2>
-                    <p class="section-subtitle">
-                        The updated flow now makes the collection model explicit, instead of leaving people unsure whether Ayuta is selling kits, appointments, or both.
-                    </p>
-                    <div class="collection-cards">
-                        <article class="collection-card card">
-                            <h3>Partner lab appointment</h3>
-                            <p>Best for people who want a professional sample draw and the fastest route to processing.</p>
-                            <ul class="collection-list">
-                                <li>Same-week availability in key UK cities</li>
-                                <li>No shipping fee</li>
-                                <li>Results typically in 24 to 72 hours</li>
-                            </ul>
-                        </article>
-                        <article class="collection-card card">
-                            <h3>At-home kit</h3>
-                            <p>Best for people who want convenience, privacy, and a lower-friction first step.</p>
-                            <ul class="collection-list">
-                                <li>Dispatch in 24 to 48 hours</li>
-                                <li>Prepaid return packaging included</li>
-                                <li>Clear instructions and support notes</li>
-                            </ul>
-                        </article>
+                <div class="source-strip">
+                    <p>Source basis: Sussex Pathology B2B menu. The public site presents those ingredients as Ayuta bundles for clinic or home-kit collection.</p>
+                    <div class="preview-tags">
+                        <span>Home kit</span>
+                        <span>Clinic appointment</span>
+                        <span>Fixed Stripe links</span>
                     </div>
                 </div>
-                <aside class="location-card card">
-                    <p class="eyebrow">UK Lab Network</p>
-                    <h3>Current demo coverage</h3>
-                    <p>Visible locations give visitors a faster sense of convenience before they start ordering.</p>
-                    <div class="location-grid">
-                        <span>London</span>
-                        <span>Manchester</span>
-                        <span>Birmingham</span>
-                        <span>Bristol</span>
-                        <span>Leeds</span>
-                        <span>Edinburgh</span>
-                    </div>
-                    <p class="location-note">More partner sites can be added as the lab network grows.</p>
-                </aside>
             </div>
         </section>
 
-        <section class="section results-preview-section">
-            <div class="container results-preview-grid">
-                <div>
-                    <span class="eyebrow">Results Demo</span>
-                    <h2 class="section-title">Show the lab data instead of only describing it</h2>
-                    <p class="section-subtitle">
-                        A chart-led preview makes the dashboard easier to imagine and gives the site a stronger sense of what happens after the booking.
-                    </p>
+        <section class="section pan-section" id="evidence">
+            <div class="container">
+                <div class="pan-header">
+                    <div>
+                        <span class="eyebrow">Dashboard Preview</span>
+                        <h2 class="section-title">The authenticated mode should care about results first.</h2>
+                    </div>
                     <a class="btn btn-outline" href="pages/results.html">Open results page</a>
                 </div>
-                <div class="results-demo card" aria-label="Sample biomarker trend chart">
-                    <div class="results-demo-head">
-                        <strong>Sample biomarker trend</strong>
-                        <span>Vitamin D</span>
-                    </div>
-                    <div class="results-demo-chart">
-                        <span style="height: 42%"></span>
-                        <span style="height: 58%"></span>
-                        <span style="height: 76%"></span>
-                        <span style="height: 88%"></span>
-                    </div>
-                    <div class="results-demo-axis">
-                        <span>Jan</span>
-                        <span>Mar</span>
-                        <span>May</span>
-                        <span>Jul</span>
-                    </div>
-                    <div class="results-demo-stats">
-                        <div>
-                            <small>Current value</small>
-                            <strong>54 nmol/L</strong>
+                <div class="pan-track pan-track--results">
+                    <article class="results-demo results-demo--dark">
+                        <div class="results-demo-head">
+                            <strong>Vitamin D trend</strong>
+                            <span>Sample view</span>
                         </div>
-                        <div>
-                            <small>Status</small>
-                            <strong>Improving</strong>
+                        <div class="results-demo-chart">
+                            <span style="height: 42%"></span>
+                            <span style="height: 58%"></span>
+                            <span style="height: 76%"></span>
+                            <span style="height: 88%"></span>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="section faq-section" id="faq">
-            <div class="container">
-                <span class="eyebrow">FAQs</span>
-                <h2 class="section-title">Questions people usually ask before buying</h2>
-                <div class="faq-grid">
-                    <details class="faq-item card" open>
-                        <summary>Do you offer home kits, lab visits, or both?</summary>
-                        <p>The updated demo shows both: at-home kits for convenience and partner lab visits for people who prefer an in-person draw.</p>
-                    </details>
-                    <details class="faq-item card">
-                        <summary>How quickly do results come back?</summary>
-                        <p>Partner lab appointments can return results in roughly 24 to 72 hours after the sample is processed, while home kits add delivery and return time.</p>
-                    </details>
-                    <details class="faq-item card">
-                        <summary>What does a panel include?</summary>
-                        <p>Each panel is a bundle of biomarkers around a specific health question. The booking page now shows the exact markers and a short explanation of why each matters.</p>
-                    </details>
-                    <details class="faq-item card">
-                        <summary>Can I see where labs are located before ordering?</summary>
-                        <p>Yes. The home page now lists the current UK demo coverage so people can judge convenience immediately.</p>
-                    </details>
-                    <details class="faq-item card">
-                        <summary>Can I speak to someone before ordering?</summary>
-                        <p>Yes. The contact page now includes a consultation option for people who want help choosing a test or understanding the process.</p>
-                    </details>
+                        <div class="results-demo-axis">
+                            <span>Jan</span>
+                            <span>Mar</span>
+                            <span>May</span>
+                            <span>Jul</span>
+                        </div>
+                        <div class="results-demo-stats">
+                            <div>
+                                <small>Current value</small>
+                                <strong>54 nmol/L</strong>
+                            </div>
+                            <div>
+                                <small>Status</small>
+                                <strong>Improving</strong>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="pan-card card">
+                        <span class="eyebrow">Results dashboard</span>
+                        <h3>Latest reports should lead the screen.</h3>
+                        <p>The logged-in base page should open on the latest biomarker context rather than marketing copy.</p>
+                    </article>
+                    <article class="pan-card card">
+                        <span class="eyebrow">Sidebar navigation</span>
+                        <h3>Results, orders, profile, and booking stay in one app shell.</h3>
+                        <p>Once authenticated, the site behaves more like a dashboard with persistent navigation.</p>
+                    </article>
+                    <article class="pan-card card">
+                        <span class="eyebrow">Order continuity</span>
+                        <h3>Pending, paid, and report-ready states should read as one timeline.</h3>
+                        <p>The account mode keeps payment state, fulfilment, and result access in one place.</p>
+                    </article>
                 </div>
             </div>
         </section>
@@ -422,8 +238,8 @@
         <section class="section cta-band">
             <div class="container cta-band-inner">
                 <div>
-                    <h2>Ready to explore the updated flow?</h2>
-                    <p>Start with the guided booking page and review the sample results experience afterwards.</p>
+                    <h2>Start with the booking flow.</h2>
+                    <p>Choose a package, confirm the collection route, and move into the demo checkout without wading through repeated content first.</p>
                 </div>
                 <a class="btn btn-primary" href="pages/order.html">Book now</a>
             </div>
@@ -434,13 +250,15 @@
         <div class="container footer-grid">
             <div>
                 <p class="footer-title">Ayuta Health</p>
-                <p>Blood testing, collection options, and results tracking in one flow.</p>
+                <p>Public mode stays concise. Authenticated mode turns into a results-led dashboard.</p>
             </div>
             <div>
                 <p class="footer-title">Explore</p>
                 <div class="footer-links">
+                    <a href="#path">How it works</a>
+                    <a href="#panels">Packages</a>
+                    <a href="pages/clinics.html">Clinics</a>
                     <a href="pages/order.html">Book tests</a>
-                    <a href="pages/results.html">Results demo</a>
                 </div>
             </div>
             <div>
@@ -448,6 +266,14 @@
                 <div class="footer-links">
                     <a href="pages/about.html">About</a>
                     <a href="pages/contact.html">Contact</a>
+                </div>
+            </div>
+            <div>
+                <p class="footer-title">Account</p>
+                <div class="footer-links">
+                    <a href="pages/results.html">Results dashboard</a>
+                    <a href="pages/orders.html">Orders</a>
+                    <a href="pages/profile.html">Profile</a>
                 </div>
             </div>
         </div>

@@ -1,6 +1,6 @@
-﻿<nav class="site-nav" aria-label="Primary">
+<nav class="site-nav" aria-label="Primary">
     <div class="nav-shell">
-        <a class="brand" data-nav-link data-path="index.html">
+        <a class="brand" data-nav-link data-path="index.html" data-auth-path="pages/results.html">
             <img class="brand-mark" data-asset="Images/Logo/ayuta_logo_transparent_clean.png" alt="Ayuta logo">
             <span>Ayuta Health</span>
         </a>
@@ -8,36 +8,121 @@
             Menu
         </button>
         <div class="nav-links" id="primary-nav">
-            <a class="nav-link" data-nav-link data-path="pages/order.html" data-nav-key="order">Book tests</a>
-            <a class="nav-link" data-nav-link data-path="pages/about.html" data-nav-key="about">About</a>
-            <a class="nav-link" data-nav-link data-path="pages/contact.html" data-nav-key="contact">Contact</a>
+            <a class="nav-link" data-nav-link data-path="index.html#path" data-nav-key="home">How it works</a>
+            <a class="nav-link" data-nav-link data-path="index.html#panels" data-nav-key="packages">Packages</a>
+            <a class="nav-link" data-nav-link data-path="pages/clinics.html" data-nav-key="clinics">Clinics</a>
         </div>
         <div class="nav-actions">
             <div class="nav-accessibility" aria-label="Accessibility tools">
                 <button class="icon-button" type="button" data-accessibility="text" aria-pressed="false" aria-label="Toggle large text">A+</button>
                 <button class="icon-button" type="button" data-accessibility="contrast" aria-pressed="false" aria-label="Toggle high contrast">HC</button>
             </div>
-            <a class="btn btn-outline nav-home-btn" data-nav-link data-path="index.html" hidden>Home</a>
-            <a class="btn btn-outline nav-mobile" data-nav-link data-path="pages/webapp.html">Mobile demo</a>
-            <button class="btn btn-primary nav-login" type="button" data-login-trigger>Sign in</button>
+            <a class="nav-cart" data-nav-link data-path="pages/order.html" data-nav-key="cart" aria-label="Open cart">
+                <span class="nav-cart-icon fa-solid fa-bag-shopping" aria-hidden="true"></span>
+                <span class="nav-cart-label">Cart</span>
+                <span class="nav-cart-count" data-cart-count>0</span>
+            </a>
+            <a class="btn btn-primary nav-cta" data-nav-link data-path="pages/order.html" data-nav-key="order">Book tests</a>
+            <button class="btn btn-ghost nav-login" type="button" data-login-trigger>Sign in</button>
             <div class="nav-user" data-user-menu hidden>
                 <a class="profile-link" data-nav-link data-path="pages/profile.html" aria-label="User profile">
                     <span class="profile-avatar" data-profile-initial>U</span>
                 </a>
                 <button class="icon-button nav-menu-toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="user-menu" data-user-menu-toggle>
                     <span class="sr-only">Open user menu</span>
-                    <span class="menu-icon" aria-hidden="true"></span>
+                    <span class="menu-icon fa-solid fa-bars" aria-hidden="true"></span>
                 </button>
                 <div class="nav-menu" id="user-menu" role="menu">
-                    <a class="nav-menu-item" role="menuitem" data-nav-link data-path="pages/profile.html">Profile</a>
-                    <a class="nav-menu-item" role="menuitem" data-nav-link data-path="pages/orders.html">Orders</a>
-                    <a class="nav-menu-item" role="menuitem" data-nav-link data-path="pages/results.html">Test results</a>
+                    <a class="nav-menu-item" role="menuitem" data-nav-link data-path="pages/results.html" data-nav-key="results">Results dashboard</a>
+                    <a class="nav-menu-item" role="menuitem" data-nav-link data-path="pages/orders.html" data-nav-key="orders">Orders</a>
+                    <a class="nav-menu-item" role="menuitem" data-nav-link data-path="pages/profile.html" data-nav-key="profile">Profile</a>
                     <button class="nav-menu-item nav-menu-item--button" type="button" role="menuitem" data-logout-trigger>Sign out</button>
                 </div>
             </div>
         </div>
     </div>
 </nav>
+<aside class="app-sidebar" data-app-sidebar hidden>
+    <div class="app-sidebar-shell">
+        <div class="app-sidebar-head">
+            <a class="app-sidebar-brand" data-nav-link data-path="pages/results.html" data-nav-key="results">
+                <img class="app-sidebar-mark" data-asset="Images/Logo/ayuta_logo_transparent_clean.png" alt="Ayuta logo">
+                <div class="app-sidebar-brand-copy">
+                    <p class="app-sidebar-kicker">Ayuta account</p>
+                    <h2 data-sidebar-name>Account holder</h2>
+                </div>
+            </a>
+        </div>
+        <nav class="app-sidebar-nav" aria-label="Account navigation">
+            <a class="app-sidebar-link" data-nav-link data-path="pages/results.html" data-nav-key="results">
+                <span class="app-sidebar-link-main"><span class="app-sidebar-icon fa-solid fa-chart-line" aria-hidden="true"></span><span>Results dashboard</span></span>
+            </a>
+            <a class="app-sidebar-link" data-nav-link data-path="pages/orders.html" data-nav-key="orders">
+                <span class="app-sidebar-link-main"><span class="app-sidebar-icon fa-solid fa-clipboard-list" aria-hidden="true"></span><span>Orders</span></span>
+            </a>
+            <a class="app-sidebar-link" data-nav-link data-path="pages/order.html" data-nav-key="order">
+                <span class="app-sidebar-link-main"><span class="app-sidebar-icon fa-solid fa-vial" aria-hidden="true"></span><span>Book tests</span></span>
+            </a>
+            <a class="app-sidebar-link" data-nav-link data-path="pages/profile.html" data-nav-key="profile">
+                <span class="app-sidebar-link-main"><span class="app-sidebar-icon fa-solid fa-user" aria-hidden="true"></span><span>Profile</span></span>
+            </a>
+        </nav>
+        <div class="app-sidebar-foot">
+            <a class="app-sidebar-action" data-nav-link data-path="pages/contact.html">
+                <span class="app-sidebar-icon fa-solid fa-circle-question" aria-hidden="true"></span>
+                <span>Support</span>
+            </a>
+            <button class="app-sidebar-action app-sidebar-action--button" type="button" data-logout-trigger>
+                <span class="app-sidebar-icon fa-solid fa-right-from-bracket" aria-hidden="true"></span>
+                <span>Sign out</span>
+            </button>
+        </div>
+    </div>
+</aside>
+<a class="nav-cart app-cart" data-nav-link data-path="pages/order.html" data-nav-key="cart" aria-label="Open cart" hidden>
+    <span class="nav-cart-icon fa-solid fa-bag-shopping" aria-hidden="true"></span>
+    <span class="nav-cart-label">Cart</span>
+    <span class="nav-cart-count" data-cart-count>0</span>
+</a>
+<div class="cart-drawer-backdrop" data-cart-dismiss hidden></div>
+<aside class="cart-drawer" data-cart-drawer hidden aria-label="Cart summary">
+    <div class="cart-drawer-shell">
+        <div class="cart-drawer-head">
+            <div>
+                <p class="app-sidebar-kicker">Order basket</p>
+                <h2>Ready to order</h2>
+            </div>
+            <button class="icon-button" type="button" data-cart-dismiss aria-label="Close cart"><span class="fa-solid fa-xmark" aria-hidden="true"></span></button>
+        </div>
+        <div class="cart-drawer-items" data-cart-drawer-items></div>
+        <div class="cart-drawer-foot">
+            <div class="cart-drawer-total">
+                <span>Total</span>
+                <strong data-cart-drawer-total>GBP 0.00</strong>
+            </div>
+            <button class="btn btn-primary cart-drawer-order" type="button" data-cart-order>Continue to payment</button>
+        </div>
+    </div>
+</aside>
+<div class="confirm-modal" data-logout-modal hidden>
+    <div class="confirm-backdrop" data-logout-cancel></div>
+    <div class="confirm-panel" role="dialog" aria-modal="true" aria-labelledby="logout-confirm-title">
+        <p class="eyebrow">Sign out</p>
+        <h2 id="logout-confirm-title">Leave your Ayuta account?</h2>
+        <p>You will be returned to the public site and the dashboard pages will lock until you sign in again.</p>
+        <div class="confirm-actions">
+            <button class="btn btn-ghost" type="button" data-logout-cancel>Stay signed in</button>
+            <button class="btn btn-primary" type="button" data-logout-confirm>Sign out</button>
+        </div>
+        <div class="status" data-logout-status role="status" aria-live="polite"></div>
+    </div>
+</div>
+<div class="page-transition" data-page-transition hidden aria-hidden="true">
+    <div class="page-transition-panel">
+        <span class="page-transition-mark"></span>
+        <p data-page-transition-label>Loading page</p>
+    </div>
+</div>
 <div class="account-modal" data-account-modal hidden>
     <div class="account-backdrop" data-account-close></div>
     <div class="account-panel" role="dialog" aria-modal="true" aria-labelledby="account-title">
@@ -91,4 +176,3 @@
         </div>
     </div>
 </div>
-

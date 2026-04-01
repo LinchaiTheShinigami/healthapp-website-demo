@@ -20,26 +20,72 @@
 </head>
 <body>
     <div id="nav-placeholder"></div>
-    <main class="contact-page section">
-        <div class="container contact-stack">
-            <section class="contact-hero">
-                <span class="eyebrow">Contact</span>
-                <h1>Ask a question, share feedback, or request a short consultation</h1>
-                <p class="contact-subtitle">Some people want a quick answer before ordering. Others want to suggest improvements. This page now supports both paths.</p>
-            </section>
 
-            <section class="contact-grid">
-                <article class="card contact-card">
-                    <span class="eyebrow">Consultation</span>
-                    <h2>Book a 15-minute intro call</h2>
-                    <p>Use this route if you want help choosing a test, understanding home-kit versus lab collection, or talking through the demo.</p>
-                    <div class="contact-actions">
-                        <a class="btn btn-primary" href="mailto:ayuta.info@gmail.com?subject=Ayuta%20intro%20call">Request a call</a>
-                        <p class="contact-note">We will reply by email to arrange a suitable slot.</p>
+    <main class="contact-page">
+        <section class="contact-hero section">
+            <div class="container contact-hero-shell">
+                <div class="contact-copy">
+                    <span class="eyebrow">Contact</span>
+                    <h1>Keep the questions direct and the response path obvious.</h1>
+                    <p class="section-subtitle">This page handles the practical conversations: choosing a package, confirming a clinic route, or asking for a short introduction before booking.</p>
+                    <div class="contact-proof">
+                        <span>Intro call</span>
+                        <span>Booking questions</span>
+                        <span>Feedback</span>
+                    </div>
+                    <div class="contact-hero-actions">
+                        <a class="btn btn-primary" href="mailto:ayuta.info@gmail.com?subject=Ayuta%20booking%20question">Email Ayuta</a>
+                        <a class="btn btn-ghost" href="../pages/order.html">Open booking flow</a>
+                    </div>
+                </div>
+
+                <aside class="contact-sidecard">
+                    <span class="eyebrow">Two routes</span>
+                    <h2>Use email for depth, use the call route for quick alignment.</h2>
+                    <div class="contact-sidegrid">
+                        <article>
+                            <strong>Intro call</strong>
+                            <p>Useful when a client wants help choosing between Foundation, Performance, and Elite.</p>
+                        </article>
+                        <article>
+                            <strong>Message form</strong>
+                            <p>Best for feedback, clinic questions, or details that do not need live discussion.</p>
+                        </article>
+                    </div>
+                    <a class="text-button text-button--light" href="mailto:ayuta.info@gmail.com?subject=Ayuta%20intro%20call">Request a 15-minute intro call</a>
+                </aside>
+            </div>
+        </section>
+
+        <section class="contact-content section">
+            <div class="container contact-grid">
+                <article class="contact-panel card">
+                    <span class="eyebrow">Before you message</span>
+                    <h2>Most questions land in one of three buckets.</h2>
+                    <div class="contact-panel-grid">
+                        <article>
+                            <strong>Package fit</strong>
+                            <p>Which tier matches a client goal, and whether home kit or clinic collection makes more sense.</p>
+                        </article>
+                        <article>
+                            <strong>Clinic logistics</strong>
+                            <p>Where appointments can happen and whether a local route is available in the current network.</p>
+                        </article>
+                        <article>
+                            <strong>Demo feedback</strong>
+                            <p>Suggestions on the booking, payment, account, or results flow as the product matures.</p>
+                        </article>
                     </div>
                 </article>
 
                 <form class="contact-form card" action="mailto:ayuta.info@gmail.com" method="POST" data-mailto="ayuta.info@gmail.com">
+                    <div class="contact-form-head">
+                        <div>
+                            <span class="eyebrow">Send a message</span>
+                            <h2>Tell us what you need.</h2>
+                        </div>
+                        <p class="contact-note">The current demo opens your email client with the details filled in.</p>
+                    </div>
                     <div class="form-row">
                         <label for="name">Name</label>
                         <input type="text" id="name" name="name" required autocomplete="name" placeholder="Your name">
@@ -52,8 +98,8 @@
                         <label for="reason">Reason for contacting us</label>
                         <select id="reason" name="reason">
                             <option value="Feedback">Feedback</option>
-                            <option value="Help choosing a test">Help choosing a test</option>
-                            <option value="Lab locations and collection">Lab locations and collection</option>
+                            <option value="Help choosing a test">Help choosing a package</option>
+                            <option value="Lab locations and collection">Clinic locations and collection</option>
                             <option value="Request an intro call">Request an intro call</option>
                         </select>
                     </div>
@@ -63,9 +109,10 @@
                     </div>
                     <button type="submit" class="btn btn-primary">Send message</button>
                 </form>
-            </section>
-        </div>
+            </div>
+        </section>
     </main>
+
     <footer class="site-footer">
         <div class="container">
             <p>&copy; 2026 Ayuta Ltd. All rights reserved.</p>
