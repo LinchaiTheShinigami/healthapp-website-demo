@@ -9,7 +9,7 @@ This document shows the current basic architecture of the Ayuta demo website aft
 - Frontend: static HTML, CSS, and JavaScript
 - Authentication: Firebase Authentication
 - Private user data: Cloud Firestore
-- Payments: Stripe frontend flow
+- Payments: fixed Stripe Payment Links demo flow
 - Browser-only temporary state: local storage for basket and demo fallback data
 
 ## High-Level Diagram
@@ -33,7 +33,7 @@ flowchart LR
     DB[(Cloud Firestore)]
   end
 
-  Stripe[Stripe]
+  Stripe[Stripe Payment Links]
 
   User --> DNS
   DNS --> Pages
@@ -73,8 +73,9 @@ These pages are still served as static HTML, but the private content is only loa
 3. GitHub Pages serves the static frontend.
 4. The frontend opens login and registration flows through Firebase Authentication.
 5. After sign-in, the frontend reads and writes the signed-in user's profile, orders, and results in Firestore.
-6. The orders and results pages only show account data that belongs to the authenticated Firebase user.
-7. Local storage still keeps non-sensitive browser state such as basket progress and local fallback demo data.
+6. When the customer continues to payment, the frontend stores a pending order record and redirects to a fixed Stripe Payment Link.
+7. The orders page shows the pending order record for the authenticated user, while results remain locked until payment is confirmed outside the browser.
+8. Local storage still keeps non-sensitive browser state such as basket progress and local fallback demo data.
 
 ## Firestore Structure
 
@@ -88,7 +89,8 @@ users/{uid}/results/{orderId}
 
 - GitHub Pages cannot truly secure files placed directly in the website output.
 - Sensitive user data must stay in Firestore behind security rules, not in static JSON or HTML files.
-- The current Stripe flow is still frontend/demo-oriented. Real payment confirmation should eventually move behind a backend or serverless function.
+- Fixed Stripe Payment Links avoid a custom backend for the first demo, but they do not verify payment inside the site.
+- Real payment confirmation should move behind Firebase-hosted serverless logic plus Stripe webhooks in a later iteration.
 
 ## Current Responsibility Split
 
@@ -96,4 +98,5 @@ users/{uid}/results/{orderId}
 - GoDaddy: domain and DNS only
 - Firebase Auth: registration, sign-in, password reset, session state
 - Firestore: per-user private records
-- Frontend JS: page gating, rendering, and client-side state
+- Stripe Payment Links: hosted checkout pages for the demo flow
+- Frontend JS: page gating, pending-order capture, and client-side state
