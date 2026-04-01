@@ -7,7 +7,8 @@
     session: 'ayuta_session',
     goal: 'ayuta_goal',
     paymentEmail: 'ayuta_payment_email',
-    collectionMethod: 'ayuta_collection_method'
+    collectionMethod: 'ayuta_collection_method',
+    collectionMethodChosen: 'ayuta_collection_method_chosen'
   };
 
   const readJson = (key, fallback) => {
@@ -51,6 +52,7 @@
     if (!Array.isArray(safe.cart)) safe.cart = [];
     if (!Array.isArray(safe.orders)) safe.orders = [];
     if (!Array.isArray(safe.results)) safe.results = [];
+    if (typeof safe.collectionMethodChosen !== 'boolean') safe.collectionMethodChosen = null;
     return safe;
   };
 
@@ -63,7 +65,8 @@
       session: readJson(STORAGE_KEYS.session, null),
       goal: readValue(STORAGE_KEYS.goal, 'all'),
       paymentEmail: readValue(STORAGE_KEYS.paymentEmail, ''),
-      collectionMethod: readValue(STORAGE_KEYS.collectionMethod, 'lab')
+      collectionMethod: readValue(STORAGE_KEYS.collectionMethod, 'lab'),
+      collectionMethodChosen: readJson(STORAGE_KEYS.collectionMethodChosen, null)
     });
 
   const saveState = (state) => {
@@ -75,6 +78,7 @@
     writeValue(STORAGE_KEYS.goal, state.goal || 'all');
     writeValue(STORAGE_KEYS.paymentEmail, state.paymentEmail || '');
     writeValue(STORAGE_KEYS.collectionMethod, state.collectionMethod || 'lab');
+    writeJson(STORAGE_KEYS.collectionMethodChosen, typeof state.collectionMethodChosen === 'boolean' ? state.collectionMethodChosen : null);
   };
 
   const clearState = () => {
