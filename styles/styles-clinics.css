@@ -181,7 +181,7 @@ body.clinic-modal-open {
 
 .clinic-card-link::after {
     content: '\f061';
-    font-family: 'Font Awesome 6 Free';
+    font-family: 'Font Awesome 6 Free', sans-serif;
     font-weight: 900;
     font-size: 0.78rem;
 }
