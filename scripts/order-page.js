@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const store = window.AyutaStore;
+  const root = globalThis;
+  const store = root.AyutaStore;
   if (!store) return;
 
   const TAX_RATE = 0;
@@ -17,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
       basketLabel: 'Clinic appointment'
     }
   };
-  const stripePaymentLinks = window.AYUTA_STRIPE_PAYMENT_LINKS || {};
+  const stripePaymentLinks = root.AYUTA_STRIPE_PAYMENT_LINKS || {};
 
   // Package basis now comes from the Sussex Pathology B2B menu. The Ayuta tiers
   // are commercial bundles built from those listed panels and biomarkers.
@@ -157,11 +158,11 @@ document.addEventListener('DOMContentLoaded', function () {
   let state = store.loadState();
   let currentStep = 'select';
   let selectedProductId = null;
-  let requestedStep = new URLSearchParams(window.location.search).get('step');
+  let requestedStep = new URLSearchParams(root.location.search).get('step');
 
   const getAuthSnapshot = () =>
-    window.AyutaAuth && typeof window.AyutaAuth.getSnapshot === 'function'
-      ? window.AyutaAuth.getSnapshot()
+    root.AyutaAuth && typeof root.AyutaAuth.getSnapshot === 'function'
+      ? root.AyutaAuth.getSnapshot()
       : null;
 
   const getCatalogItem = (id) => catalog[id] || null;
@@ -210,11 +211,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const saveState = () => {
     store.saveState(state);
-    window.dispatchEvent(new CustomEvent('ayuta:state-updated'));
+    root.dispatchEvent(new CustomEvent('ayuta:state-updated'));
   };
 
   const openLoginForCurrentOrderFlow = () => {
-    window.AyutaAccount?.open?.('login', { returnTo: window.location.href });
+    root.AyutaAccount?.open?.('login', { returnTo: root.location.href });
   };
 
   const normalizeState = () => {
@@ -279,7 +280,7 @@ document.addEventListener('DOMContentLoaded', function () {
       elements.detailRoutePicker.classList.add('is-required');
       void elements.detailRoutePicker.offsetWidth;
       elements.detailRoutePicker.classList.add('is-shaking');
-      window.setTimeout(() => elements.detailRoutePicker?.classList.remove('is-shaking'), 420);
+      root.setTimeout(() => elements.detailRoutePicker?.classList.remove('is-shaking'), 420);
     }
     if (navigator.vibrate) navigator.vibrate([60, 40, 60]);
   };
@@ -511,7 +512,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (requestedStep && isStepEnabled(requestedStep)) {
       currentStep = requestedStep;
       requestedStep = null;
-      window.history.replaceState({}, '', window.location.pathname);
+      root.history.replaceState({}, '', root.location.pathname);
     }
     if (!isStepEnabled(currentStep)) currentStep = 'select';
 
@@ -648,13 +649,13 @@ document.addEventListener('DOMContentLoaded', function () {
         saveState();
 
         try {
-          await window.AyutaAuth.saveOrder(order);
+          await root.AyutaAuth.saveOrder(order);
         } catch (syncError) {
           console.warn(syncError);
         }
 
-        window.dispatchEvent(new CustomEvent('ayuta:auth-updated'));
-        window.location.assign(paymentLinkUrl);
+        root.dispatchEvent(new CustomEvent('ayuta:auth-updated'));
+        root.location.assign(paymentLinkUrl);
       } catch (error) {
         console.error(error);
         setStatus(
@@ -669,7 +670,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  window.addEventListener('ayuta:state-updated', refresh);
-  window.addEventListener('ayuta:auth-updated', refresh);
+  root.addEventListener('ayuta:state-updated', refresh);
+  root.addEventListener('ayuta:auth-updated', refresh);
   refresh();
 });

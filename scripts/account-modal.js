@@ -1,20 +1,21 @@
 (function () {
+  const root = globalThis;
   let modalRoot = null;
   let initialized = false;
   const POST_AUTH_TARGET_KEY = 'ayuta_post_auth_target';
 
   const getStoreState = () => {
-    if (!window.AyutaStore || typeof window.AyutaStore.loadState !== 'function') return null;
-    return window.AyutaStore.loadState();
+    if (!root.AyutaStore || typeof root.AyutaStore.loadState !== 'function') return null;
+    return root.AyutaStore.loadState();
   };
 
   const getAuthSnapshot = () => {
-    if (!window.AyutaAuth || typeof window.AyutaAuth.getSnapshot !== 'function') return null;
-    return window.AyutaAuth.getSnapshot();
+    if (!root.AyutaAuth || typeof root.AyutaAuth.getSnapshot !== 'function') return null;
+    return root.AyutaAuth.getSnapshot();
   };
 
   const getResultsHref = () => {
-    const page = window.location.pathname || '';
+    const page = root.location.pathname || '';
     if (page.endsWith('/results.html')) return null;
     return page.includes('/pages/') ? 'results.html' : 'pages/results.html';
   };
@@ -22,7 +23,7 @@
   const writePostAuthTarget = (href) => {
     if (!href) return;
     try {
-      sessionStorage.setItem(POST_AUTH_TARGET_KEY, href);
+      root.sessionStorage.setItem(POST_AUTH_TARGET_KEY, href);
     } catch (error) {
       console.warn(error);
     }
@@ -30,7 +31,7 @@
 
   const readPostAuthTarget = () => {
     try {
-      return sessionStorage.getItem(POST_AUTH_TARGET_KEY);
+      return root.sessionStorage.getItem(POST_AUTH_TARGET_KEY);
     } catch (error) {
       console.warn(error);
       return null;
@@ -39,7 +40,7 @@
 
   const clearPostAuthTarget = () => {
     try {
-      sessionStorage.removeItem(POST_AUTH_TARGET_KEY);
+      root.sessionStorage.removeItem(POST_AUTH_TARGET_KEY);
     } catch (error) {
       console.warn(error);
     }
@@ -50,14 +51,14 @@
     if (target) {
       clearPostAuthTarget();
       try {
-        const nextUrl = new URL(target, window.location.href);
-        const currentUrl = new URL(window.location.href);
+        const nextUrl = new URL(target, root.location.href);
+        const currentUrl = new URL(root.location.href);
         const isCurrentView =
           nextUrl.pathname === currentUrl.pathname &&
           nextUrl.search === currentUrl.search &&
           nextUrl.hash === currentUrl.hash;
         if (!isCurrentView) {
-          window.location.assign(nextUrl.href);
+          root.location.assign(nextUrl.href);
         }
         return;
       } catch (error) {
@@ -67,7 +68,7 @@
 
     const href = getResultsHref();
     if (!href) return;
-    window.location.assign(href);
+    root.location.assign(href);
   };
 
   const setStatus = (node, message, state) => {
@@ -160,7 +161,7 @@
   };
 
   const bindLoginForm = () => {
-    const auth = window.AyutaAuth;
+    const auth = root.AyutaAuth;
     const loginForm = modalRoot.querySelector('[data-account-pane="login"]');
     const loginStatus = modalRoot.querySelector('[data-account-status="login"]');
     const resetButton = modalRoot.querySelector('[data-account-reset]');
@@ -215,7 +216,7 @@
   };
 
   const bindRegisterForm = () => {
-    const auth = window.AyutaAuth;
+    const auth = root.AyutaAuth;
     const registerForm = modalRoot.querySelector('[data-account-pane="register"]');
     const registerStatus = modalRoot.querySelector('[data-account-status="register"]');
 
@@ -265,7 +266,7 @@
   const init = () => {
     if (initialized) return;
     modalRoot = document.querySelector('[data-account-modal]');
-    if (!modalRoot || !window.AyutaAuth) return;
+    if (!modalRoot || !root.AyutaAuth) return;
 
     modalRoot.querySelectorAll('[data-account-close]').forEach((button) => {
       button.addEventListener('click', closeModal);
@@ -285,7 +286,7 @@
     bindRegisterForm();
     prefillFields();
 
-    window.addEventListener('ayuta:auth-updated', () => {
+    root.addEventListener('ayuta:auth-updated', () => {
       const snapshot = getAuthSnapshot();
       if (snapshot && snapshot.user && modalRoot.classList.contains('is-open')) {
         closeModal();
@@ -297,7 +298,7 @@
     initialized = true;
   };
 
-  window.AyutaAccount = {
+  root.AyutaAccount = {
     init,
     open: openModal,
     close: closeModal
