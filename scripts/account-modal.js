@@ -12,12 +12,39 @@
     return window.AyutaAuth.getSnapshot();
   };
 
+  const getResultsHref = () => {
+    const page = window.location.pathname || '';
+    if (page.endsWith('/results.html')) return null;
+    return page.includes('/pages/') ? 'results.html' : 'pages/results.html';
+  };
+
+  const redirectToResults = () => {
+    const href = getResultsHref();
+    if (!href) return;
+    window.location.assign(href);
+  };
+
   const setStatus = (node, message, state) => {
     if (!node) return;
     node.textContent = message || '';
-    node.classList.remove('is-success', 'is-error');
+    node.classList.remove('is-success', 'is-error', 'is-loading');
     if (state === 'success') node.classList.add('is-success');
     if (state === 'error') node.classList.add('is-error');
+    if (state === 'loading') node.classList.add('is-loading');
+  };
+
+  const setButtonLoading = (button, isLoading) => {
+    if (!button) return;
+    if (isLoading) {
+      if (!button.dataset.originalLabel) button.dataset.originalLabel = button.textContent;
+      button.disabled = true;
+      button.classList.add('is-loading');
+      return;
+    }
+
+    button.disabled = false;
+    button.classList.remove('is-loading');
+    if (button.dataset.originalLabel) button.textContent = button.dataset.originalLabel;
   };
 
   const clearStatuses = () => {
@@ -102,14 +129,19 @@
           return;
         }
 
+        const submitButton = loginForm.querySelector('button[type="submit"]');
         try {
-          setStatus(loginStatus, 'Signing in...');
+          setButtonLoading(submitButton, true);
+          setStatus(loginStatus, 'Signing in...', 'loading');
           await auth.whenReady();
           await auth.login({ email, password });
           setStatus(loginStatus, 'Signed in.', 'success');
           closeModal();
+          redirectToResults();
         } catch (error) {
           setStatus(loginStatus, error.message, 'error');
+        } finally {
+          setButtonLoading(submitButton, false);
         }
       });
     }
@@ -120,11 +152,14 @@
         const loginEmail = emailField ? emailField.value.trim() : '';
 
         try {
-          setStatus(loginStatus, 'Sending reset email...');
+          setButtonLoading(resetButton, true);
+          setStatus(loginStatus, 'Sending reset email...', 'loading');
           await auth.sendPasswordReset(loginEmail);
           setStatus(loginStatus, 'Password reset email sent. Check your inbox.', 'success');
         } catch (error) {
           setStatus(loginStatus, error.message, 'error');
+        } finally {
+          setButtonLoading(resetButton, false);
         }
       });
     }
@@ -155,8 +190,10 @@
         return;
       }
 
+      const submitButton = registerForm.querySelector('button[type="submit"]');
       try {
-        setStatus(registerStatus, 'Creating your account...');
+        setButtonLoading(submitButton, true);
+        setStatus(registerStatus, 'Creating your account...', 'loading');
         await auth.whenReady();
         const result = await auth.register({ name, email, phone, password });
         setStatus(
@@ -167,8 +204,11 @@
           'success'
         );
         closeModal();
+        redirectToResults();
       } catch (error) {
         setStatus(registerStatus, error.message, 'error');
+      } finally {
+        setButtonLoading(submitButton, false);
       }
     });
   };

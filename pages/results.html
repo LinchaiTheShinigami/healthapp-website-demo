@@ -18,71 +18,119 @@
     <script src="../scripts/include-nav.js" defer></script>
     <script src="../scripts/results-page.js" defer></script>
 </head>
-<body>
+<body class="app-page">
     <div id="nav-placeholder"></div>
 
     <main class="account-page">
         <div class="container">
-            <div class="account-hero">
-                <span class="eyebrow">Results</span>
-                <h1>Your biomarker results</h1>
-                <p>Review completed orders, flagged markers, and a simple trend chart instead of only reading a flat report.</p>
-            </div>
-
-            <section class="account-card card account-lock" id="results-locked">
-                <h2>Sign in required</h2>
-                <p class="account-status" id="results-locked-status">Checking your session.</p>
-                <div class="account-lock-actions">
-                    <button class="btn btn-primary" type="button" data-login-trigger>Sign in</button>
-                    <a class="btn btn-ghost" href="../index.html">Back home</a>
-                </div>
-            </section>
-
-            <div class="account-grid" id="results-authenticated" hidden>
-                <div class="account-card card">
-                    <h2>Status</h2>
-                    <p class="account-status" id="results-status">Sign in to view your results.</p>
-                </div>
-                <div class="account-card card">
-                    <h2>How to read this page</h2>
-                    <p class="account-status">The left side lists completed result sets. The chart and metric cards below show the selected report in a clearer dashboard view.</p>
-                </div>
-            </div>
-
-            <div class="results-workbench" id="results-workbench" hidden>
-                <section class="account-card card">
-                    <div class="results-section-head">
-                        <div>
-                            <h2>Available reports</h2>
-                            <p class="account-status" id="results-heading">Select a result set to inspect the biomarkers.</p>
-                        </div>
+            <div class="account-shell">
+                <section class="account-hero-shell">
+                    <div class="account-hero">
+                        <span class="eyebrow">Results</span>
+                        <h1>Your biomarker results should read like insight, not a file dump.</h1>
+                        <p>Completed reports, flagged markers, and trend movement should sit in one analytical surface instead of forcing users to decode a flat export.</p>
                     </div>
-                    <div id="results-list" class="result-list"></div>
+
+                    <aside class="account-sidecard">
+                        <span class="eyebrow">How this view works</span>
+                        <h2>Pick a report, then read the pattern.</h2>
+                        <div class="account-sidegrid">
+                            <article>
+                                <strong>Report list</strong>
+                                <p>Move between completed result sets without losing the surrounding context.</p>
+                            </article>
+                            <article>
+                                <strong>Trend chart</strong>
+                                <p>Use the chart to see movement before diving into each marker line by line.</p>
+                            </article>
+                        </div>
+                        <div class="account-side-list">
+                            <article>
+                                <strong>Summary cards</strong>
+                                <p>Reference range, current value, and status sit together so the next action is easier to spot.</p>
+                            </article>
+                        </div>
+                    </aside>
                 </section>
 
-                <section class="results-detail-grid">
-                    <article class="account-card card">
+                <section class="account-card card account-lock" id="results-locked">
+                    <h2>Sign in required</h2>
+                    <p class="account-status status is-loading" id="results-locked-status">Checking your session.</p>
+                    <div class="account-lock-actions">
+                        <button class="btn btn-primary" type="button" data-login-trigger>Sign in</button>
+                        <a class="btn btn-ghost" href="../index.html">Back home</a>
+                    </div>
+                </section>
+
+                <div class="results-dashboard" id="results-authenticated" hidden>
+                    <article class="account-card card account-card--soft results-chart-card">
                         <div class="results-section-head">
-                            <div>
-                                <h2>Trend chart</h2>
-                                <p class="account-status" id="chart-caption">A simple multi-point trend for the selected report.</p>
+                            <h2>Trend line</h2>
+                            <div class="chart-info" data-chart-info>
+                                <button class="chart-info-trigger" type="button" aria-expanded="false" aria-label="What this chart shows">i</button>
+                                <div class="chart-info-popover" id="chart-caption" role="tooltip">Track repeated biomarkers across reports, hide lines from the legend, and hover near any point for the reported lab value. Each marker keeps its own scale.</div>
                             </div>
                         </div>
                         <div id="results-chart" class="results-chart"></div>
                     </article>
-                    <article class="account-card card">
+                </div>
+
+                <div class="results-workbench" id="results-workbench" hidden>
+                    <section class="account-card card account-card--soft results-list-card">
+                        <div class="results-section-head">
+                            <div>
+                                <h2>Available reports</h2>
+                                <p class="account-status" id="results-heading">Select a result set to inspect the biomarkers.</p>
+                            </div>
+                        </div>
+                        <div id="results-list" class="result-list"></div>
+                    </section>
+                    <article class="account-card card account-card--soft results-metrics-card" id="results-metrics-card" hidden>
+                        <div class="results-selected-block">
+                            <span class="eyebrow">Selected report</span>
+                            <h2 id="results-selected-panel">Awaiting report</h2>
+                            <p class="account-status" id="results-selected-summary">Choose a report to inspect the chart and biomarker status.</p>
+                        </div>
                         <div class="results-section-head">
                             <div>
                                 <h2>Biomarker summary</h2>
-                                <p class="account-status">Reference range, current value, and status at a glance.</p>
+                                <p class="account-status">Open any biomarker for clinical context, range meaning, and interpretation notes.</p>
                             </div>
                         </div>
                         <div id="results-metrics" class="metric-grid"></div>
                     </article>
-                </section>
+                </div>
             </div>
         </div>
     </main>
+
+    <div class="metric-modal" data-metric-modal hidden>
+        <div class="metric-modal-backdrop" data-metric-close></div>
+        <div class="metric-modal-panel" role="dialog" aria-modal="true" aria-labelledby="metric-modal-title">
+            <button class="metric-modal-close" type="button" data-metric-close aria-label="Close biomarker detail">&times;</button>
+            <p class="eyebrow">Biomarker detail</p>
+            <h2 id="metric-modal-title">Biomarker</h2>
+            <p class="metric-modal-lead" id="metric-modal-summary"></p>
+            <div class="metric-modal-grid">
+                <article>
+                    <strong>What it measures</strong>
+                    <p id="metric-modal-measure"></p>
+                </article>
+                <article>
+                    <strong>Why clinicians look at it</strong>
+                    <p id="metric-modal-clinical"></p>
+                </article>
+                <article>
+                    <strong>Context that can shift it</strong>
+                    <p id="metric-modal-context"></p>
+                </article>
+                <article>
+                    <strong>Reference note</strong>
+                    <p id="metric-modal-range"></p>
+                </article>
+            </div>
+        </div>
+    </div>
 
     <footer class="site-footer">
         <div class="container">

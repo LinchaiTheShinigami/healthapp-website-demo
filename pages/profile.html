@@ -18,75 +18,95 @@
     <script src="../scripts/include-nav.js" defer></script>
     <script src="../scripts/profile-page.js" defer></script>
 </head>
-<body>
+<body class="app-page">
     <div id="nav-placeholder"></div>
 
     <main class="account-page">
         <div class="container">
-            <div class="account-hero">
-                <span class="eyebrow">Profile</span>
-                <h1>Your profile</h1>
-                <p>Update your details and manage your session.</p>
-            </div>
+            <div class="account-shell">
+                <section class="account-hero-shell">
+                    <div class="account-hero">
+                        <span class="eyebrow">Profile</span>
+                        <h1>Your profile should keep the operational details tidy.</h1>
+                        <p>This is the account layer that keeps bookings, payment follow-up, and result release tied to the right person without asking them to repeat details later.</p>
+                    </div>
 
-            <section class="account-card card account-lock" id="profile-locked">
-                <h2>Sign in required</h2>
-                <p class="account-status" id="profile-locked-status">Checking your session.</p>
-                <div class="account-lock-actions">
-                    <button class="btn btn-primary" type="button" data-login-trigger>Sign in</button>
-                    <a class="btn btn-ghost" href="../index.html">Back home</a>
-                </div>
-            </section>
+                    <aside class="account-sidecard">
+                        <span class="eyebrow">Why it matters</span>
+                        <h2>Small account data, cleaner fulfilment.</h2>
+                        <div class="account-sidegrid">
+                            <article>
+                                <strong>Name</strong>
+                                <p>Used to keep booking records and lab follow-up aligned to the same user.</p>
+                            </article>
+                            <article>
+                                <strong>Phone</strong>
+                                <p>Useful when a collection route or report handoff needs a direct update.</p>
+                            </article>
+                        </div>
+                        <div class="account-side-list">
+                            <article>
+                                <strong>Session note</strong>
+                                <p>Email stays owned by the login account. This page only updates the supporting profile fields.</p>
+                            </article>
+                        </div>
+                    </aside>
+                </section>
 
-            <div class="account-grid" id="profile-authenticated" hidden>
-                <div class="account-card card">
-                    <h2>Profile details</h2>
-                    <div class="profile-row">
-                        <span class="profile-label">Name</span>
-                        <span class="profile-value" id="profile-name">Not set</span>
+                <section class="account-card card account-lock" id="profile-locked">
+                    <h2>Sign in required</h2>
+                    <p class="account-status status is-loading" id="profile-locked-status">Checking your session.</p>
+                    <div class="account-lock-actions">
+                        <button class="btn btn-primary" type="button" data-login-trigger>Sign in</button>
+                        <a class="btn btn-ghost" href="../index.html">Back home</a>
                     </div>
-                    <div class="profile-row">
-                        <span class="profile-label">Email</span>
-                        <span class="profile-value" id="profile-email">Not set</span>
-                    </div>
-                    <div class="profile-row">
-                        <span class="profile-label">Phone</span>
-                        <span class="profile-value" id="profile-phone">Not set</span>
-                    </div>
-                    <p class="profile-note" id="profile-note">Keep your profile up to date so bookings and lab follow-up stay tied to the correct account.</p>
-                    <div class="profile-actions">
-                        <button class="btn btn-ghost" type="button" id="logout-button">Sign out</button>
-                    </div>
-                </div>
-                <div class="account-card card">
-                    <h2>Update profile</h2>
-                    <form id="profile-form">
-                        <div class="form-row">
-                            <label for="profile-name-input">Full name</label>
-                            <input id="profile-name-input" type="text" autocomplete="name" placeholder="Alex Johnson">
+                </section>
+
+                <section class="account-card card account-card--soft profile-panel" id="profile-authenticated" hidden>
+                    <div class="profile-panel-head">
+                        <div class="profile-panel-copy">
+                            <span class="eyebrow">Ayuta account</span>
+                            <h2 id="profile-display-name">Account holder</h2>
+                            <p class="profile-note profile-note-rich" id="profile-note">Keep your profile up to date so bookings and lab follow-up stay tied to the correct account.</p>
                         </div>
-                        <div class="form-row">
-                            <label for="profile-email-input">Email address</label>
-                            <input id="profile-email-input" type="email" autocomplete="email" placeholder="you@domain.com" readonly>
+                        <button class="icon-button profile-edit-toggle" id="profile-edit-toggle" type="button" aria-label="Edit profile" aria-pressed="false">
+                            <span class="fa-solid fa-pen-to-square" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    <form class="profile-form" id="profile-form">
+                        <div class="profile-form-grid">
+                            <div class="form-row profile-field">
+                                <label for="profile-name-input">Full name</label>
+                                <input class="is-readonly" id="profile-name-input" type="text" autocomplete="name" placeholder="Alex Johnson" readonly>
+                            </div>
+                            <div class="form-row profile-field profile-field--full">
+                                <label for="profile-email-input">Email address</label>
+                                <input class="is-readonly" id="profile-email-input" type="email" autocomplete="email" placeholder="you@domain.com" readonly>
+                            </div>
+                            <div class="form-row profile-field">
+                                <label for="profile-phone-input">Phone number</label>
+                                <input class="is-readonly" id="profile-phone-input" type="tel" autocomplete="tel" placeholder="+44 7700 900000" readonly>
+                            </div>
                         </div>
-                        <div class="form-row">
-                            <label for="profile-phone-input">Phone number</label>
-                            <input id="profile-phone-input" type="tel" autocomplete="tel" placeholder="+44 7700 900000">
+                        <p class="profile-note profile-note-rich" id="profile-email-note">Email is managed by the login account. Use edit mode to update name or phone.</p>
+                        <div class="profile-form-footer">
+                            <div class="status" id="profile-status" role="status" aria-live="polite"></div>
+                            <div class="profile-actions">
+                                <button class="btn btn-ghost" id="profile-cancel" type="button" hidden>Cancel</button>
+                                <button class="btn btn-primary" id="profile-save" type="submit" hidden>Save changes</button>
+                                <button class="btn btn-ghost" type="button" data-logout-trigger>Sign out</button>
+                            </div>
                         </div>
-                        <p class="profile-note">Email is managed by the login account. Update name or phone here.</p>
-                        <button class="btn btn-primary" type="submit">Save changes</button>
-                        <div class="status" id="profile-status" role="status" aria-live="polite"></div>
                     </form>
-                </div>
+                </section>
             </div>
         </div>
     </main>
 
     <footer class="site-footer">
         <div class="container">
-            <p>&copy; 2025 Ayuta Ltd. All rights reserved.</p>
+            <p>&copy; 2026 Ayuta Ltd. All rights reserved.</p>
         </div>
     </footer>
 </body>
 </html>
-

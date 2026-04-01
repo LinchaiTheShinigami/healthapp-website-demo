@@ -9,6 +9,8 @@
   };
 
   window.AYUTA_AUTH_SETTINGS = window.AYUTA_AUTH_SETTINGS || {
-    enableEmailVerification: true
+    enableEmailVerification: true,
+    emailVerificationContinueUrl: "https://ayuta.co.uk/pages/profile.html",
+    passwordResetContinueUrl: "https://ayuta.co.uk/"
   };
 })();
