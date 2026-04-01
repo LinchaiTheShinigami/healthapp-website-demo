@@ -7,7 +7,7 @@ This folder contains architecture notes and diagrams.
 - current-website-architecture.md: Current-state architecture for the GitHub Pages + Firebase website.
 
 ## Overview
-- Current website: static GitHub Pages frontend, Firebase Authentication, Firestore for private user data, Stripe for payment UI, and GoDaddy-managed DNS.
+- Current website: static GitHub Pages frontend, Firebase Authentication, Firestore for private user data, fixed Stripe Payment Links for demo checkout, and GoDaddy-managed DNS.
 - Client: web or mobile UI used by patients and admins.
 - Edge: CDN for static hosting and a serverless API for secure operations.
 - Platform: auth, Postgres, object storage, job scheduling, and audit logs.

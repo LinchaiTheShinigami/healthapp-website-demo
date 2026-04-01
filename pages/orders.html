@@ -18,34 +18,86 @@
     <script src="../scripts/include-nav.js" defer></script>
     <script src="../scripts/orders-page.js" defer></script>
 </head>
-<body>
+<body class="app-page">
     <div id="nav-placeholder"></div>
 
     <main class="account-page">
         <div class="container">
-            <div class="account-hero">
-                <span class="eyebrow">Orders</span>
-                <h1>Your orders</h1>
-                <p>View everything you have purchased and track status in one place.</p>
-            </div>
+            <div class="account-shell">
+                <section class="account-hero-shell">
+                    <div class="account-hero">
+                        <span class="eyebrow">Orders</span>
+                        <h1>Your orders, status, and payment state in one place.</h1>
+                        <p>Pending bookings, confirmed purchases, and future follow-up should all read like one joined-up timeline.</p>
+                    </div>
 
-            <section class="account-card card account-lock" id="orders-locked">
-                <h2>Sign in required</h2>
-                <p class="account-status" id="orders-locked-status">Checking your session.</p>
-                <div class="account-lock-actions">
-                    <button class="btn btn-primary" type="button" data-login-trigger>Sign in</button>
-                    <a class="btn btn-ghost" href="../index.html">Back home</a>
-                </div>
-            </section>
+                    <aside class="account-sidecard">
+                        <span class="eyebrow">What appears here</span>
+                        <h2>Order tracking without the admin noise.</h2>
+                        <div class="account-sidegrid">
+                            <article>
+                                <strong>Pending</strong>
+                                <p>Created before payment confirmation lands.</p>
+                            </article>
+                            <article>
+                                <strong>Paid</strong>
+                                <p>Ready to move into fulfilment and reporting.</p>
+                            </article>
+                        </div>
+                        <div class="account-side-list">
+                            <article>
+                                <strong>Current limitation</strong>
+                                <p>Fixed Stripe Payment Links still need manual confirmation before results are unlocked.</p>
+                            </article>
+                        </div>
+                    </aside>
+                </section>
 
-            <div class="account-grid" id="orders-authenticated" hidden>
-                <div class="account-card card">
-                    <h2>Status</h2>
-                    <p class="account-status" id="orders-status">Sign in to view your orders.</p>
-                </div>
-                <div class="account-card card">
-                    <h2>Recent orders</h2>
-                    <div id="orders-list" class="order-list"></div>
+                <section class="account-card card account-lock" id="orders-locked">
+                    <h2>Sign in required</h2>
+                    <p class="account-status status is-loading" id="orders-locked-status">Checking your session.</p>
+                    <div class="account-lock-actions">
+                        <button class="btn btn-primary" type="button" data-login-trigger>Sign in</button>
+                        <a class="btn btn-ghost" href="../index.html">Back home</a>
+                    </div>
+                </section>
+
+                <div class="orders-workbench orders-workbench--list-only" id="orders-authenticated" hidden>
+                    <section class="account-card card account-card--soft orders-list-card">
+                        <div class="results-section-head">
+                            <div>
+                                <h2>Available orders</h2>
+                                <p class="account-status" id="orders-heading">Select an order to inspect fulfilment and location details.</p>
+                            </div>
+                        </div>
+                        <div id="orders-list" class="order-list"></div>
+                    </section>
+                    <article class="account-card card account-card--soft orders-detail-card" id="orders-detail-card" hidden>
+                        <div class="orders-selected-block">
+                            <div class="orders-selected-head">
+                                <div class="orders-selected-copy">
+                                    <span class="eyebrow">Selected order</span>
+                                    <h2 id="orders-selected-title">Choose an order</h2>
+                                    <p class="account-status" id="orders-selected-summary">Select an order from the list to review status, process, and route details.</p>
+                                </div>
+                                <span class="metric-status metric-status--pending" id="orders-selected-status">Awaiting selection</span>
+                            </div>
+                            <div class="orders-selected-meta" id="orders-selected-meta" hidden></div>
+                        </div>
+                        <div class="orders-progress" id="orders-progress"></div>
+                        <div class="orders-detail-grid">
+                            <div class="orders-detail-stack" id="orders-detail-stack"></div>
+                            <section class="orders-map-card">
+                                <div class="orders-map-head">
+                                    <span class="eyebrow" id="orders-map-kicker">Route map</span>
+                                    <p class="account-status" id="orders-map-caption">Select an order to load the clinic or postal destination.</p>
+                                </div>
+                                <div class="orders-map-frame" id="orders-map-frame">
+                                    <div class="empty-state">Select an order to view the related location.</div>
+                                </div>
+                            </section>
+                        </div>
+                    </article>
                 </div>
             </div>
         </div>
@@ -53,7 +105,7 @@
 
     <footer class="site-footer">
         <div class="container">
-            <p>&copy; 2025 Ayuta Ltd. All rights reserved.</p>
+            <p>&copy; 2026 Ayuta Ltd. All rights reserved.</p>
         </div>
     </footer>
 </body>

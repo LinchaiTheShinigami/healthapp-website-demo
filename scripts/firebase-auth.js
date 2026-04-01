@@ -15,6 +15,8 @@
     profile: null,
     error: null
   };
+  const CACHE_TTL_MS = 5 * 60 * 1000;
+  const CACHE_PREFIX = 'ayuta_cache_v1';
 
   let auth = null;
   let db = null;
@@ -27,6 +29,86 @@
 
   const clone = (value) => JSON.parse(JSON.stringify(value));
   const normalizeText = (value) => String(value || '').trim();
+  const normalizeUrl = (value) => {
+    const input = normalizeText(value);
+    if (!input) return '';
+    try {
+      return new URL(input, window.location.origin).toString();
+    } catch (error) {
+      return '';
+    }
+  };
+  const resolveDefaultContinueUrl = () => {
+    if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+      return normalizeUrl(`${window.location.origin}/`);
+    }
+    return '';
+  };
+  const buildEmailActionSettings = (purpose) => {
+    const purposeUrl =
+      purpose === 'verifyEmail'
+        ? settings.emailVerificationContinueUrl
+        : purpose === 'resetPassword'
+          ? settings.passwordResetContinueUrl
+          : '';
+    const url = normalizeUrl(purposeUrl || settings.emailContinueUrl || resolveDefaultContinueUrl());
+    if (!url) return undefined;
+    return {
+      url,
+      handleCodeInApp: false
+    };
+  };
+  const cacheStorage = (() => {
+    try {
+      return window.sessionStorage;
+    } catch (error) {
+      return null;
+    }
+  })();
+
+  const getCacheKey = (scope, uid) => `${CACHE_PREFIX}:${scope}:${uid}`;
+
+  const readCache = (scope, uid) => {
+    if (!cacheStorage || !uid) return null;
+    try {
+      const raw = cacheStorage.getItem(getCacheKey(scope, uid));
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      if (!parsed || parsed.expiresAt < Date.now()) {
+        cacheStorage.removeItem(getCacheKey(scope, uid));
+        return null;
+      }
+      return parsed.data;
+    } catch (error) {
+      return null;
+    }
+  };
+
+  const writeCache = (scope, uid, data, ttl = CACHE_TTL_MS) => {
+    if (!cacheStorage || !uid) return;
+    try {
+      cacheStorage.setItem(
+        getCacheKey(scope, uid),
+        JSON.stringify({
+          expiresAt: Date.now() + ttl,
+          data
+        })
+      );
+    } catch (error) {
+      return;
+    }
+  };
+
+  const clearUserCache = (uid) => {
+    if (!cacheStorage || !uid) return;
+    ['profile', 'orders', 'results'].forEach((scope) => {
+      try {
+        cacheStorage.removeItem(getCacheKey(scope, uid));
+      } catch (error) {
+        return;
+      }
+    });
+  };
 
   const getSerializableUser = (user) =>
     user
@@ -137,6 +219,10 @@
 
   const loadProfile = async (user) => {
     const ref = getProfileRef(user.uid);
+    const cached = readCache('profile', user.uid);
+    if (cached) {
+      return buildProfilePayload(user, cached);
+    }
     const snapshot = await ref.get();
 
     if (snapshot.exists) {
@@ -148,6 +234,7 @@
         phone: saved.phone || ''
       });
       await ref.set(profile, { merge: true });
+      writeCache('profile', user.uid, profile);
       return profile;
     }
 
@@ -157,6 +244,7 @@
       phone: ''
     });
     await ref.set(profile, { merge: true });
+    writeCache('profile', user.uid, profile);
     return profile;
   };
 
@@ -196,6 +284,7 @@
       auth.setPersistence(window.firebase.auth.Auth.Persistence.LOCAL).catch(() => {});
 
       auth.onAuthStateChanged(async (firebaseUser) => {
+        const previousUid = state.user && state.user.uid;
         state.user = firebaseUser;
         state.error = null;
 
@@ -212,6 +301,7 @@
             state.error = 'Your account loaded, but the profile store could not be reached.';
           }
         } else {
+          if (previousUid) clearUserCache(previousUid);
           state.profile = null;
         }
 
@@ -257,11 +347,17 @@
       });
 
       await getProfileRef(credential.user.uid).set(profile, { merge: true });
+      writeCache('profile', credential.user.uid, profile);
 
       let verificationSent = false;
       if (settings.enableEmailVerification !== false && credential.user && !credential.user.emailVerified) {
         try {
-          await credential.user.sendEmailVerification();
+          const emailActionSettings = buildEmailActionSettings('verifyEmail');
+          if (emailActionSettings) {
+            await credential.user.sendEmailVerification(emailActionSettings);
+          } else {
+            await credential.user.sendEmailVerification();
+          }
           verificationSent = true;
         } catch (error) {
           console.warn('Verification email failed', error);
@@ -318,7 +414,12 @@
     }
 
     try {
-      await auth.sendPasswordResetEmail(safeEmail);
+      const emailActionSettings = buildEmailActionSettings('resetPassword');
+      if (emailActionSettings) {
+        await auth.sendPasswordResetEmail(safeEmail, emailActionSettings);
+      } else {
+        await auth.sendPasswordResetEmail(safeEmail);
+      }
     } catch (error) {
       throw new Error(mapAuthError(error));
     }
@@ -346,6 +447,7 @@
 
       await getProfileRef(user.uid).set(nextProfile, { merge: true });
       state.profile = nextProfile;
+      writeCache('profile', user.uid, nextProfile);
       dispatchAuthUpdate();
       return nextProfile;
     } catch (error) {
@@ -357,6 +459,7 @@
     const user = assertUser();
 
     try {
+      clearUserCache(user.uid);
       await user.reload();
       state.user = auth.currentUser;
       state.profile = await loadProfile(auth.currentUser);
@@ -378,6 +481,8 @@
 
     try {
       await getOrdersRef(user.uid).doc(payload.id).set(payload, { merge: true });
+      const cachedOrders = readCache('orders', user.uid) || [];
+      writeCache('orders', user.uid, mergeUnique([payload, ...cachedOrders], 'id'));
       return payload;
     } catch (error) {
       throw new Error('The order was created, but it could not be synced to the account store yet.');
@@ -395,6 +500,8 @@
 
     try {
       await getResultsRef(user.uid).doc(payload.orderId).set(payload, { merge: true });
+      const cachedResults = readCache('results', user.uid) || [];
+      writeCache('results', user.uid, mergeUnique([payload, ...cachedResults], 'orderId'));
       return payload;
     } catch (error) {
       throw new Error('The test result could not be synced to the account store yet.');
@@ -404,10 +511,13 @@
   const listOrders = async () => {
     await whenReady();
     const user = assertUser();
+    const cached = readCache('orders', user.uid);
+    if (cached) return mergeUnique(cached, 'id');
 
     try {
       const snapshot = await getOrdersRef(user.uid).orderBy('createdAt', 'desc').get();
       const orders = snapshot.docs.map((doc) => doc.data());
+      writeCache('orders', user.uid, orders);
       return mergeUnique(orders, 'id');
     } catch (error) {
       throw new Error('Your orders could not be loaded from the account store.');
@@ -417,10 +527,13 @@
   const listResults = async () => {
     await whenReady();
     const user = assertUser();
+    const cached = readCache('results', user.uid);
+    if (cached) return mergeUnique(cached, 'orderId');
 
     try {
       const snapshot = await getResultsRef(user.uid).orderBy('createdAt', 'desc').get();
       const results = snapshot.docs.map((doc) => doc.data());
+      writeCache('results', user.uid, results);
       return mergeUnique(results, 'orderId');
     } catch (error) {
       throw new Error('Your test results could not be loaded from the account store.');

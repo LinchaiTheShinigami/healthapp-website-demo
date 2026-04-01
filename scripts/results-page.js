@@ -1,234 +1,59 @@
-(function () {
-  const store = window.AyutaStore;
-  const auth = window.AyutaAuth;
-  if (!store || !auth) return;
-
-  const elements = {
-    locked: document.getElementById('results-locked'),
-    lockedStatus: document.getElementById('results-locked-status'),
-    authenticated: document.getElementById('results-authenticated'),
-    workbench: document.getElementById('results-workbench'),
-    status: document.getElementById('results-status'),
-    heading: document.getElementById('results-heading'),
-    caption: document.getElementById('chart-caption'),
-    list: document.getElementById('results-list'),
-    chart: document.getElementById('results-chart'),
-    metrics: document.getElementById('results-metrics')
-  };
-
-  let activeKey = null;
-
-  const mergeUnique = (items, key) => {
-    const seen = new Map();
-    items.forEach((item) => {
-      const id = item && item[key];
-      if (!id || seen.has(id)) return;
-      seen.set(id, item);
-    });
-    return Array.from(seen.values());
-  };
-
-  const normalizeEntry = (entry) => {
-    const items = Array.isArray(entry.results) ? entry.results : [];
-    const results = items.map((item, index) => {
-      if (Array.isArray(item.history) && item.history.length) return item;
-
-      const numeric = parseFloat(String(item.value || item.displayValue || '0').replace(/[^\d.]/g, '')) || 0;
-      return {
-        ...item,
-        displayValue: item.displayValue || item.value || 'Pending',
-        range: item.range || 'Reference range pending',
-        history: [
-          { label: 'Jan', value: Math.max(1, numeric * 0.82) },
-          { label: 'Mar', value: Math.max(1, numeric * 0.9) },
-          { label: 'May', value: Math.max(1, numeric * 0.96) },
-          { label: 'Jul', value: Math.max(1, numeric || index + 1) }
-        ]
-      };
-    });
-
-    return { ...entry, results };
-  };
-
-  const setLockedState = (snapshot) => {
-    if (elements.locked) elements.locked.hidden = false;
-    if (elements.authenticated) elements.authenticated.hidden = true;
-    if (elements.workbench) elements.workbench.hidden = true;
-
-    if (!elements.lockedStatus) return;
-    if (snapshot.loading) {
-      elements.lockedStatus.textContent = 'Checking your session.';
-      return;
-    }
-    if (!snapshot.configured) {
-      elements.lockedStatus.textContent = 'Authentication is not configured yet. Add your Firebase project values in scripts/auth-config.js.';
-      return;
-    }
-    elements.lockedStatus.textContent = 'Sign in to view your saved results.';
-  };
-
-  const buildEmptyState = (message) => {
-    return `<div class="empty-state">${message}</div>`;
-  };
-
-  const buildChart = (entry) => {
-    if (!elements.chart) return;
-    const metrics = (entry.results || []).slice(0, 3);
-    const allValues = metrics.flatMap((item) => item.history.map((point) => point.value));
-    const maxValue = Math.max(...allValues, 1);
-    const width = 640;
-    const height = 240;
-    const left = 36;
-    const bottom = 30;
-    const top = 16;
-    const stepX = (width - left - 24) / Math.max((metrics[0]?.history.length || 2) - 1, 1);
-    const colors = ['#6b8f71', '#2f6f63', '#d29e4c'];
-
-    const lines = metrics
-      .map((metric, metricIndex) => {
-        const points = metric.history
-          .map((point, pointIndex) => {
-            const x = left + pointIndex * stepX;
-            const y = height - bottom - (point.value / maxValue) * (height - top - bottom);
-            return `${x},${y}`;
-          })
-          .join(' ');
-
-        const labels = metric.history
-          .map((point, pointIndex) => {
-            const x = left + pointIndex * stepX;
-            const y = height - bottom - (point.value / maxValue) * (height - top - bottom);
-            return `<circle cx="${x}" cy="${y}" r="4" fill="${colors[metricIndex]}" />`;
-          })
-          .join('');
-
-        return `<polyline fill="none" stroke="${colors[metricIndex]}" stroke-width="3" points="${points}" />${labels}`;
-      })
-      .join('');
-
-    const axis = (metrics[0]?.history || [])
-      .map((point, index) => {
-        const x = left + index * stepX;
-        return `<text x="${x}" y="${height - 8}" text-anchor="middle" fill="#596a62" font-size="12">${point.label}</text>`;
-      })
-      .join('');
-
-    const legend = metrics
-      .map(
-        (metric, index) =>
-          `<g transform="translate(${left + index * 170}, ${height - bottom + 2})"><rect width="12" height="12" rx="6" fill="${colors[index]}" /><text x="18" y="10" fill="#203129" font-size="12">${metric.name}</text></g>`
-      )
-      .join('');
-
-    elements.chart.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Biomarker trend chart"><line x1="${left}" y1="${height - bottom}" x2="${width - 12}" y2="${height - bottom}" stroke="rgba(32,49,41,0.18)" /><line x1="${left}" y1="${top}" x2="${left}" y2="${height - bottom}" stroke="rgba(32,49,41,0.18)" />${lines}${axis}${legend}</svg>`;
-  };
-
-  const buildMetrics = (entry) => {
-    if (!elements.metrics) return;
-    elements.metrics.innerHTML = '';
-
-    (entry.results || []).forEach((item) => {
-      const card = document.createElement('div');
-      card.className = 'metric-card';
-      card.innerHTML = `<div class="metric-card-head"><h3>${item.name}</h3><span class="metric-status">${item.status}</span></div><div class="metric-card-meta"><strong class="metric-value">${item.displayValue || item.value || 'Pending'}</strong><span class="metric-range">${item.range || 'Reference range pending'}</span></div>`;
-      elements.metrics.appendChild(card);
-    });
-  };
-
-  const clearResultsView = (message) => {
-    if (elements.heading) elements.heading.textContent = 'Results will appear here once a lab report is published.';
-    if (elements.caption) elements.caption.textContent = 'Trend charts appear after a report is attached to your account.';
-    if (elements.chart) elements.chart.innerHTML = buildEmptyState(message);
-    if (elements.metrics) elements.metrics.innerHTML = buildEmptyState('No biomarker details are available yet.');
-    if (elements.list) elements.list.innerHTML = '';
-  };
-
-  const selectEntry = (entries, key) => {
-    const entry = entries.find((item) => item.orderId === key) || entries[0];
-    if (!entry) return;
-
-    activeKey = entry.orderId;
-
-    if (elements.heading) {
-      elements.heading.textContent = `${entry.panelName || 'Selected report'} • ${entry.orderId}`;
-    }
-    if (elements.caption) {
-      elements.caption.textContent = `Trend view for ${entry.panelName || 'the selected report'} collected via ${entry.collectionMethod || 'lab'}.`;
-    }
-
-    buildChart(entry);
-    buildMetrics(entry);
-
-    Array.from(elements.list?.children || []).forEach((node) => {
-      node.classList.toggle('is-active', node.getAttribute('data-order-id') === entry.orderId);
-    });
-  };
-
-  const render = async () => {
-    await auth.whenReady();
-    const snapshot = auth.getSnapshot();
-
-    if (!snapshot.user) {
-      setLockedState(snapshot);
-      return;
-    }
-
-    if (elements.locked) elements.locked.hidden = true;
-    if (elements.authenticated) elements.authenticated.hidden = false;
-    if (elements.workbench) elements.workbench.hidden = false;
-    if (!elements.status || !elements.list) return;
-
-    const accountEmail = snapshot.profile?.email || snapshot.user.email || '';
-    const localEntries = store
-      .loadState()
-      .results.filter((entry) => entry.email === accountEmail)
-      .map(normalizeEntry);
-
-    let remoteEntries = [];
-    let cloudLoadFailed = false;
-
-    try {
-      remoteEntries = (await auth.listResults()).map(normalizeEntry);
-    } catch (error) {
-      cloudLoadFailed = true;
-      console.error(error);
-    }
-
-    const entries = mergeUnique([...remoteEntries, ...localEntries], 'orderId').sort((left, right) => {
-      return new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime();
-    });
-
-    elements.list.innerHTML = '';
-
-    if (entries.length === 0) {
-      elements.status.textContent = `Signed in as ${accountEmail}. No result sets have been attached to this account yet.`;
-      clearResultsView('Your completed biomarker reports will appear here after processing.');
-      return;
-    }
-
-    elements.status.textContent = cloudLoadFailed
-      ? `Signed in as ${accountEmail}. Showing the result sets saved on this device because cloud sync is currently unavailable.`
-      : `Signed in as ${accountEmail}.`;
-
-    entries.forEach((entry) => {
-      const card = document.createElement('button');
-      card.type = 'button';
-      card.className = 'result-item';
-      card.setAttribute('data-order-id', entry.orderId);
-
-      const tags = (entry.results || [])
-        .map((item) => `<span class="result-tag">${item.name}: ${item.status}</span>`)
-        .join('');
-
-      card.innerHTML = `<h3>${entry.panelName || 'Results'} • ${entry.orderId}</h3><p class="result-meta">${store.formatDate(entry.createdAt)} | ${entry.status}</p><div class="result-tags">${tags}</div>`;
-      card.addEventListener('click', () => selectEntry(entries, entry.orderId));
-      elements.list.appendChild(card);
-    });
-
-    selectEntry(entries, activeKey || entries[0]?.orderId);
-  };
-
-  window.addEventListener('ayuta:auth-updated', render);
-  window.addEventListener('ayuta:state-updated', render);
-  render();
+(function(){
+const store=window.AyutaStore,auth=window.AyutaAuth;if(!store||!auth)return;
+const el={locked:document.getElementById('results-locked'),lockedStatus:document.getElementById('results-locked-status'),authenticated:document.getElementById('results-authenticated'),workbench:document.getElementById('results-workbench'),heading:document.getElementById('results-heading'),caption:document.getElementById('chart-caption'),list:document.getElementById('results-list'),chart:document.getElementById('results-chart'),metrics:document.getElementById('results-metrics'),metricsCard:document.getElementById('results-metrics-card'),selectedPanel:document.getElementById('results-selected-panel'),selectedSummary:document.getElementById('results-selected-summary'),metricModal:document.querySelector('[data-metric-modal]'),metricModalTitle:document.getElementById('metric-modal-title'),metricModalSummary:document.getElementById('metric-modal-summary'),metricModalMeasure:document.getElementById('metric-modal-measure'),metricModalClinical:document.getElementById('metric-modal-clinical'),metricModalContext:document.getElementById('metric-modal-context'),metricModalRange:document.getElementById('metric-modal-range')};
+const COLORS=['#55755e','#162538','#d29e4c','#9f5d4e','#6b7280','#447c85'];
+const LIB={
+ hba1c:{key:'hba1c',name:'HbA1c',unit:'%',dec:1,rangeLabel:'4.0 to 5.6%',bounds:[4,5.6],measure:'HbA1c reflects average glucose exposure over the previous 8 to 12 weeks.',clinical:'Clinicians use it to judge background metabolic control rather than one isolated day of food intake.',context:'Weight change, sleep loss, insulin resistance, some medications, and red-cell turnover can shift the value.',rangeNote:'Reference intervals differ slightly by lab and should be read alongside any haematology context.'},
+ ferritin:{key:'ferritin',name:'Ferritin',unit:'ug/L',dec:0,rangeLabel:'30 to 400 ug/L',bounds:[30,400],measure:'Ferritin is the main blood marker used to estimate stored iron.',clinical:'Low ferritin can sit behind fatigue, poor recovery, reduced endurance, restless legs, or hair shedding.',context:'Blood loss, diet, inflammation, infection, supplementation, and hard training can all move ferritin.',rangeNote:'Ferritin is an acute-phase reactant, so inflammation can push it up even when iron status is not optimal.'},
+ vitamin_d:{key:'vitamin_d',name:'Vitamin D',unit:'nmol/L',dec:0,rangeLabel:'50 to 125 nmol/L',bounds:[50,125],measure:'25-hydroxy vitamin D is the standard blood marker used to estimate vitamin D status.',clinical:'It matters for bone health, muscle function, immune regulation, and overall recovery context.',context:'Season, sunlight exposure, skin coverage, supplementation, body composition, and malabsorption can all affect the value.',rangeNote:'The wording used for deficiency and sufficiency varies by lab and clinical context.'},
+ hs_crp:{key:'hs_crp',name:'hs-CRP',unit:'mg/L',dec:1,rangeLabel:'0.0 to 3.0 mg/L',bounds:[0,3],measure:'High-sensitivity CRP is a non-specific marker of systemic inflammatory activity.',clinical:'It gives context around inflammatory load, infection, injury, or cardio-metabolic risk but is not diagnostic on its own.',context:'Recent illness, sleep disruption, smoking, hard training, dental issues, and visceral fat can all raise hs-CRP.',rangeNote:'A raised result usually needs repeat testing or wider clinical context before it is interpreted heavily.'},
+ apo_b:{key:'apo_b',name:'ApoB',unit:'g/L',dec:2,rangeLabel:'Under 0.90 g/L',bounds:[0,0.9],measure:'ApoB estimates the number of atherogenic lipoprotein particles in circulation.',clinical:'It often refines cardiovascular risk better than cholesterol concentration alone because it speaks to particle number.',context:'Dietary pattern, genetics, insulin resistance, thyroid status, and lipid-lowering treatment can all influence ApoB.',rangeNote:'Desired targets vary with overall cardiovascular risk and family history.'},
+ tsh:{key:'tsh',name:'TSH',unit:'mIU/L',dec:1,rangeLabel:'0.27 to 4.20 mIU/L',bounds:[0.27,4.2],measure:'TSH is the pituitary signal that tells the thyroid gland how much hormone to make.',clinical:'It is a useful thyroid screening marker, especially when paired with free thyroid hormones and symptoms.',context:'Illness, biotin, thyroid medication timing, pregnancy context, and circadian variation can alter the result.',rangeNote:'TSH is best interpreted alongside free T4, free T3 when appropriate, and the symptom picture.'}
+};
+const ALIAS={hba1c:'hba1c',ferritin:'ferritin',vitamin_d:'vitamin_d',crp:'hs_crp',hs_crp:'hs_crp',c_reactive_protein:'hs_crp',apob:'apo_b',apo_b:'apo_b',tsh:'tsh'};
+let activeKey=null,hiddenSeries=new Set(),tooltip=null,selectedSeriesKey=null,multiSeriesMode=false;
+const isLocalPreview=['127.0.0.1','localhost'].includes(window.location.hostname);
+const mergeUnique=(items,key)=>{const seen=new Map();items.forEach(item=>{const id=item&&item[key];if(!id||seen.has(id))return;seen.set(id,item);});return Array.from(seen.values());};
+const slug=v=>String(v||'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
+const metricKey=v=>ALIAS[slug(v)]||slug(v);
+const num=v=>{const n=parseFloat(String(v??'').replace(/[^0-9.-]/g,''));return Number.isFinite(n)?n:null;};
+const fmt=(n,d)=>new Intl.NumberFormat('en-GB',{minimumFractionDigits:d,maximumFractionDigits:d}).format(n);
+const axisFmt=(n,d=1)=>new Intl.NumberFormat('en-GB',{maximumFractionDigits:Math.min(d,2)}).format(n);
+const shortDate=v=>new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short'}).format(new Date(v));
+const tone=v=>{const s=String(v||'').toLowerCase();if(/above|below|outside|high|low|flag|border/.test(s))return'alert';if(/pending|await|process/.test(s))return'pending';return'ok';};
+const setStatus=(node,msg,state)=>{if(!node)return;node.textContent=msg||'';node.classList.add('status');node.classList.remove('is-success','is-error','is-loading');if(state==='success')node.classList.add('is-success');if(state==='error')node.classList.add('is-error');if(state==='loading')node.classList.add('is-loading');};
+const empty=(msg,loading)=>`<div class="empty-state${loading?' is-loading':''}">${msg}</div>`;
+const collection=v=>v==='home'?'Home kit':'Clinic appointment';
+const metricValue=item=>Number.isFinite(item.numericValue)?`${fmt(item.numericValue,item.dec??1)}${item.unit?` ${item.unit}`:''}`:item.displayValue||'Pending';
+const metricStatus=(item,val)=>{if(item.status)return item.status;if(!Array.isArray(item.bounds))return'Reported';if(val<item.bounds[0])return'Below range';if(val>item.bounds[1])return'Above range';return'In range';};
+const closeMetricModal=()=>{if(!el.metricModal)return;el.metricModal.hidden=true;document.body.classList.remove('modal-open');};
+const openMetricModal=item=>{if(!el.metricModal)return;el.metricModalTitle.textContent=item.name;el.metricModalSummary.textContent=item.summary;el.metricModalMeasure.textContent=item.measure;el.metricModalClinical.textContent=item.clinical;el.metricModalContext.textContent=item.context;el.metricModalRange.textContent=`${item.rangeLabel}. ${item.rangeNote}`;el.metricModal.hidden=false;document.body.classList.add('modal-open');};
+const clearActiveCards=()=>Array.from(el.list?.children||[]).forEach(node=>{node.classList.remove('is-active');node.setAttribute('aria-pressed','false');});
+const toggleMetricsState=selected=>{if(el.metricsCard)el.metricsCard.hidden=!selected;if(el.workbench)el.workbench.classList.toggle('results-workbench--reports-only',!selected);};
+const demo=()=>[
+ {orderId:'AYU-251118-18',panelName:'Foundation',createdAt:'2025-11-18T08:10:00Z',status:'Reported',collectionMethod:'lab',clinicianSummary:'Initial intake shows low ferritin and vitamin D with a mildly raised inflammatory signal. This is the least settled report in the sequence.',isDemo:true,results:[{key:'hba1c',value:5.9},{key:'ferritin',value:22},{key:'vitamin_d',value:28},{key:'hs_crp',value:4.8},{key:'apo_b',value:1.12},{key:'tsh',value:2.6}]},
+ {orderId:'AYU-251215-26',panelName:'Foundation',createdAt:'2025-12-15T08:25:00Z',status:'Reported',collectionMethod:'home',clinicianSummary:'Early recheck shows a small improvement in inflammatory burden, but vitamin D, ferritin, and ApoB still sit outside the preferred range.',isDemo:true,results:[{key:'hba1c',value:5.9},{key:'ferritin',value:24},{key:'vitamin_d',value:31},{key:'hs_crp',value:4.5},{key:'apo_b',value:1.1},{key:'tsh',value:2.5}]},
+ {orderId:'AYU-260112-41',panelName:'Foundation',createdAt:'2026-01-12T08:30:00Z',status:'Reported',collectionMethod:'home',clinicianSummary:'Baseline report shows low vitamin D and ferritin, with mildly raised HbA1c, hs-CRP, and ApoB.',isDemo:true,results:[{key:'hba1c',value:5.8},{key:'ferritin',value:27},{key:'vitamin_d',value:34},{key:'hs_crp',value:4.2},{key:'apo_b',value:1.08},{key:'tsh',value:2.4}]},
+ {orderId:'AYU-260128-49',panelName:'Performance',createdAt:'2026-01-28T09:00:00Z',status:'Reported',collectionMethod:'lab',clinicianSummary:'Recovery markers are moving in the right direction, but the cardio-metabolic profile still needs attention and repeat testing.',isDemo:true,results:[{key:'hba1c',value:5.7},{key:'ferritin',value:33},{key:'vitamin_d',value:39},{key:'hs_crp',value:3.6},{key:'apo_b',value:1.02},{key:'tsh',value:2.3}]},
+ {orderId:'AYU-260220-57',panelName:'Performance',createdAt:'2026-02-20T09:15:00Z',status:'Reported',collectionMethod:'lab',clinicianSummary:'Ferritin and vitamin D are recovering and inflammatory load has fallen, but ApoB still sits above the preferred band.',isDemo:true,results:[{key:'hba1c',value:5.6},{key:'ferritin',value:41},{key:'vitamin_d',value:47},{key:'hs_crp',value:2.8},{key:'apo_b',value:0.97},{key:'tsh',value:2.2}]},
+ {orderId:'AYU-260310-61',panelName:'Performance',createdAt:'2026-03-10T07:40:00Z',status:'Reported',collectionMethod:'home',clinicianSummary:'The midpoint review shows a steadier inflammatory picture and continued nutrient recovery, with ApoB now trending towards range.',isDemo:true,results:[{key:'hba1c',value:5.5},{key:'ferritin',value:49},{key:'vitamin_d',value:56},{key:'hs_crp',value:2.2},{key:'apo_b',value:0.93},{key:'tsh',value:2.0}]},
+ {orderId:'AYU-260324-63',panelName:'Elite',createdAt:'2026-03-24T07:50:00Z',status:'Reported',collectionMethod:'lab',clinicianSummary:'Vitamin D is now inside range, ferritin is improving, and HbA1c has normalised. ApoB is close to target but still worth follow-up.',isDemo:true,results:[{key:'hba1c',value:5.4},{key:'ferritin',value:58},{key:'vitamin_d',value:63},{key:'hs_crp',value:1.9},{key:'apo_b',value:0.89},{key:'tsh',value:1.9}]},
+ {orderId:'AYU-260331-72',panelName:'Elite',createdAt:'2026-03-31T08:10:00Z',status:'Reported',collectionMethod:'home',clinicianSummary:'Most markers are now inside range. ApoB remains the main cardio-metabolic watch point, but the overall direction of travel is materially better than baseline.',isDemo:true,results:[{key:'hba1c',value:5.3},{key:'ferritin',value:64},{key:'vitamin_d',value:74},{key:'hs_crp',value:1.4},{key:'apo_b',value:0.84},{key:'tsh',value:1.8}]}
+];
+const normalizeItem=raw=>{const key=metricKey(raw.key||raw.name),base=LIB[key]||{key,name:raw.name||key.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase()),unit:raw.unit||'',dec:1,rangeLabel:raw.range||'Reference range pending',bounds:null,measure:'This biomarker is available in the report but does not yet have extended guidance attached.',clinical:'Clinical interpretation depends on the wider symptom, medication, and training picture.',context:'Hydration, illness, training load, sleep, medication, and sampling conditions can influence the result.',rangeNote:'Reference ranges vary by lab, method, age, and clinical context.'};const v=num(raw.numericValue)??num(raw.value)??num(raw.displayValue);const item={...base,numericValue:v,status:raw.status||''};item.status=metricStatus(item,v);item.displayValue=raw.displayValue||metricValue(item);item.summary=raw.summary||`${item.name} is currently reported as ${item.displayValue}. ${item.status==='In range'?'The latest value sits inside the quoted lab band.':'The latest value sits outside the quoted lab band and needs context.'}`;return item;};
+const normalizeEntry=entry=>({orderId:entry.orderId||entry.id||store.buildOrderId(),panelName:entry.panelName||entry.name||'Results report',createdAt:entry.createdAt||new Date().toISOString(),status:entry.status||'Reported',collectionMethod:entry.collectionMethod||'lab',clinicianSummary:entry.clinicianSummary||'Clinical interpretation should be based on the full pattern, not any one isolated marker.',isDemo:Boolean(entry.isDemo),results:(Array.isArray(entry.results)?entry.results:[]).map(normalizeItem)});
+const flagged=entry=>(entry.results||[]).filter(item=>tone(item.status)==='alert').length;
+const setLocked=snap=>{if(el.locked)el.locked.hidden=false;if(el.authenticated)el.authenticated.hidden=true;if(el.workbench)el.workbench.hidden=true;if(!el.lockedStatus)return;if(snap.loading){setStatus(el.lockedStatus,'Checking your session.','loading');return;}if(!snap.configured){setStatus(el.lockedStatus,'Authentication is not configured yet. Add your Firebase project values in scripts/auth-config.js.');return;}setStatus(el.lockedStatus,'Sign in to view your saved results.');};
+const clearView=msg=>{if(el.heading)el.heading.textContent='Results will appear here once a lab report is published.';if(el.caption)el.caption.textContent='Track repeated biomarkers across reports, hide lines from the legend, and hover near any point for the reported lab value. Each marker keeps its own scale.';if(el.selectedPanel)el.selectedPanel.textContent='Awaiting report';if(el.selectedSummary)el.selectedSummary.textContent='Choose a report to inspect the chart and biomarker status.';if(el.chart)el.chart.innerHTML=empty(msg);if(el.metrics)el.metrics.innerHTML=empty('No biomarker details are available yet.');toggleMetricsState(false);clearActiveCards();};
+const clearSelection=entries=>{activeKey=null;if(el.selectedPanel)el.selectedPanel.textContent='Please select a report';if(el.selectedSummary)el.selectedSummary.textContent='Select a report from the stack below to review the selected biomarker summary.';if(el.metrics)el.metrics.innerHTML='';toggleMetricsState(false);clearActiveCards();if(entries?.length)drawChart(entries,null);};
+const updateOverview=(entries,meta)=>{if(!el.heading)return;el.heading.textContent=meta.previewDemo?`Local preview • ${entries.length} reports in stack.`:meta.usedDemo?`Demo dataset • ${entries.length} reports in stack.`:meta.cloudLoadFailed?`Cached view • ${entries.length} reports available.`:`${entries.length} reports in stack.`;};
+const buildMetrics=entry=>{if(!el.metrics)return;el.metrics.innerHTML='';(entry.results||[]).forEach(item=>{const t=tone(item.status),card=document.createElement('button');card.type='button';card.className=`metric-card metric-card--${t}`;card.innerHTML=`<div class="metric-card-head"><h3>${item.name}</h3><span class="metric-status metric-status--${t}">${item.status}</span></div><div class="metric-card-meta"><strong class="metric-value">${item.displayValue}</strong><span class="metric-range">${item.rangeLabel}</span></div><p class="metric-card-copy">${item.summary}</p>`;card.addEventListener('click',()=>openMetricModal(item));el.metrics.appendChild(card);});};
+const chart=entries=>{const rows=[...entries].sort((a,b)=>new Date(a.createdAt)-new Date(b.createdAt));const keys=[...new Set(rows.flatMap(entry=>entry.results.map(item=>item.key)))].filter(key=>rows.some(entry=>{const item=entry.results.find(result=>result.key===key);return item&&Number.isFinite(item.numericValue)&&Array.isArray(item.bounds);})).slice(0,6);return{rows,keys};};
+const drawChart=(entries,selected)=>{if(!el.chart)return;const data=chart(entries),rows=data.rows,keys=data.keys;if(!keys.length){el.chart.innerHTML=empty('No chart data is available yet. Reports will appear here once numeric biomarker results are released.');return;}if(!selectedSeriesKey||!keys.includes(selectedSeriesKey))selectedSeriesKey=keys[0];const visible=multiSeriesMode?(()=>{const v=keys.filter(key=>!hiddenSeries.has(key));return v.length?v:[selectedSeriesKey];})():[selectedSeriesKey];const plotted=visible,width=760,left=108,right=28,top=24,bottom=42,plotWidth=width-left-right,step=rows.length>1?plotWidth/(rows.length-1):0,laneGap=18,laneHeight=210,height=top+bottom+(plotted.length*laneHeight)+((plotted.length-1)*laneGap),activeIndex=selected?rows.findIndex(entry=>entry.orderId===selected.orderId):-1,x=i=>left+step*i;const tickEvery=Math.max(1,Math.ceil(rows.length/5));const labels=rows.map((entry,i)=>{const show=i===0||i===rows.length-1||i%tickEvery===0;return show?`<g><line class="chart-grid-line" x1="${x(i)}" y1="${height-bottom}" x2="${x(i)}" y2="${height-bottom+8}" /><text class="chart-axis-label" x="${x(i)}" y="${height-8}" text-anchor="middle">${shortDate(entry.createdAt)}</text></g>`:'';}).join('');const guide=activeIndex>=0?`<line class="chart-guide" x1="${x(activeIndex)}" y1="${top}" x2="${x(activeIndex)}" y2="${height-bottom}" />`:'';const series=plotted.map((key,i)=>{const color=COLORS[keys.indexOf(key)%COLORS.length];const rowY=top+i*(laneHeight+laneGap);const laneTop=rowY,laneBottom=rowY+laneHeight;const items=rows.map((entry,index)=>{const item=entry.results.find(result=>result.key===key);if(!item||!Number.isFinite(item.numericValue))return null;return{entryId:entry.orderId,item,index};}).filter(Boolean);if(!items.length)return'';const bounds=items[0].item.bounds||null;const values=items.map(point=>point.item.numericValue);const floor=bounds?Math.min(bounds[0],...values):Math.min(...values);const ceil=bounds?Math.max(bounds[1],...values):Math.max(...values);const span=Math.max(ceil-floor,Math.abs(ceil||1)*0.12,1);const min=floor-(span*0.08);const max=ceil+(span*0.08);const y=value=>laneBottom-(((value-min)/(max-min))*laneHeight);const bandHeight=laneHeight/5;const boundaries=Array.from({length:6},(_,index)=>({value:max-(((max-min)/5)*index),y:laneTop+(bandHeight*index)}));const bands=['chart-range-band--extreme','chart-range-band--amber','chart-range-band--normal','chart-range-band--amber','chart-range-band--extreme'].map((klass,index)=>{const bandY=laneTop+(bandHeight*index);const heightValue=index===4?laneBottom-bandY:bandHeight;return`<rect class="chart-range-band ${klass}" x="${left}" y="${bandY}" width="${plotWidth}" height="${heightValue}" />`;}).join('');const laneGrid=boundaries.slice(0,5).map(boundary=>`<line class="chart-grid-line" x1="${left}" y1="${boundary.y}" x2="${width-right}" y2="${boundary.y}" />`).join('');const boundaryLabels=boundaries.map((boundary,index)=>`<text class="chart-axis-label" x="${left-14}" y="${index===0?boundary.y+5:index===boundaries.length-1?boundary.y-5:boundary.y}" text-anchor="end">${axisFmt(boundary.value,items[0].item.dec)}</text>`).join('');const points=items.map(({entryId,item,index})=>({id:`${key}-${entryId}`,entryId,metric:item.name,x:x(index),y:y(item.numericValue),value:item.displayValue,status:item.status,date:store.formatDate(rows[index].createdAt),color}));const line=points.length>1?`<polyline class="chart-series" stroke="${color}" points="${points.map(point=>`${point.x},${point.y}`).join(' ')}" />`:'';return`<g>${bands}${laneGrid}<line class="chart-lane-axis" x1="${left}" y1="${laneBottom}" x2="${width-right}" y2="${laneBottom}" /><text class="chart-series-label" x="10" y="${laneTop+14}">${items[0].item.name}</text><text class="chart-series-unit" x="10" y="${laneTop+28}">${items[0].item.unit||'Reported value'}</text>${boundaryLabels}${line}${points.map(point=>`<circle class="chart-point${selected&&point.entryId===selected.orderId?' is-active':''}" data-chart-visible-point="${point.id}" cx="${point.x}" cy="${point.y}" r="${selected&&point.entryId===selected.orderId?5:4}" fill="${point.color}" tabindex="-1" />`).join('')}${points.map(point=>`<circle class="chart-hit-area" data-chart-point="${point.id}" data-target-point="${point.id}" data-metric-name="${point.metric}" data-value="${point.value}" data-status="${point.status}" data-date="${point.date}" data-x="${point.x}" data-y="${point.y}" cx="${point.x}" cy="${point.y}" r="12" tabindex="0" />`).join('')}</g>`;}).join('');const legend=keys.map((key,i)=>`<button class="chart-legend-button${(!multiSeriesMode&&selectedSeriesKey!==key)||(multiSeriesMode&&hiddenSeries.has(key))?' is-muted':''}" type="button" data-chart-toggle="${key}"><span class="chart-legend-swatch" style="background:${COLORS[i%COLORS.length]}"></span><span>${LIB[key]?LIB[key].name:key}</span></button>`).join('');el.chart.innerHTML=`<div class="results-chart-shell"><div class="results-chart-frame"><svg viewBox="0 0 ${width} ${height}" style="height:${height}px" role="img" aria-label="Biomarker trend chart with separate value scales for each marker">${guide}${series}${labels}<line class="chart-axis" x1="${left}" y1="${height-bottom}" x2="${width-right}" y2="${height-bottom}" /></svg><div class="chart-tooltip" data-chart-tooltip hidden></div></div><div class="chart-toolbar"><div class="chart-legend">${legend}</div><button class="chart-mode-toggle${multiSeriesMode?' is-active':''}" type="button" data-chart-mode-toggle aria-pressed="${multiSeriesMode?'true':'false'}"><span class="chart-mode-toggle-track"><span class="chart-mode-toggle-thumb"></span></span><span class="chart-mode-toggle-label">Multi-chart</span></button></div><p class="chart-note">Five equal bands show very low, below normal, normal, above normal, and very high zones.</p></div>`;tooltip=el.chart.querySelector('[data-chart-tooltip]');const visibleNow=keys.filter(key=>multiSeriesMode?!hiddenSeries.has(key):selectedSeriesKey===key);el.chart.querySelectorAll('[data-chart-toggle]').forEach(button=>button.addEventListener('click',()=>{const key=button.getAttribute('data-chart-toggle');if(!key)return;if(!multiSeriesMode){selectedSeriesKey=key;drawChart(entries,selected);return;}const currentVisible=keys.filter(seriesKey=>!hiddenSeries.has(seriesKey));if(hiddenSeries.has(key)){hiddenSeries.delete(key);}else if(currentVisible.length>1){hiddenSeries.add(key);}selectedSeriesKey=key;drawChart(entries,selected);}));const modeToggle=el.chart.querySelector('[data-chart-mode-toggle]');if(modeToggle)modeToggle.addEventListener('click',()=>{multiSeriesMode=!multiSeriesMode;if(multiSeriesMode){hiddenSeries.clear();selectedSeriesKey=selectedSeriesKey||keys[0];}else{selectedSeriesKey=selectedSeriesKey||visibleNow[0]||keys[0];hiddenSeries.clear();}drawChart(entries,selected);});const setHighlight=(id,on)=>{const node=el.chart.querySelector(`[data-chart-visible-point="${id}"]`);if(node)node.classList.toggle('is-highlighted',on);};el.chart.querySelectorAll('[data-chart-point]').forEach(point=>{const id=point.getAttribute('data-target-point');const show=()=>{if(!tooltip)return;setHighlight(id,true);tooltip.hidden=false;tooltip.style.left=`${point.getAttribute('data-x')}px`;tooltip.style.top=`${point.getAttribute('data-y')}px`;tooltip.innerHTML=`<strong>${point.getAttribute('data-metric-name')}</strong><span>${point.getAttribute('data-value')}</span><span>${point.getAttribute('data-status')} • ${point.getAttribute('data-date')}</span>`;};const hide=()=>{setHighlight(id,false);if(tooltip)tooltip.hidden=true;};point.addEventListener('mouseenter',show);point.addEventListener('focus',show);point.addEventListener('mouseleave',hide);point.addEventListener('blur',hide);});};
+const selectEntry=(entries,key)=>{const entry=entries.find(item=>item.orderId===key)||entries[entries.length-1];if(!entry)return;activeKey=entry.orderId;toggleMetricsState(true);if(el.caption)el.caption.textContent='Track repeated biomarkers across reports, hide lines from the legend, and hover near any point for the reported lab value. Each marker keeps its own scale.';if(el.selectedPanel)el.selectedPanel.textContent=`${entry.panelName} • ${entry.orderId}`;if(el.selectedSummary)el.selectedSummary.textContent=entry.clinicianSummary;drawChart(entries,entry);buildMetrics(entry);Array.from(el.list?.children||[]).forEach(node=>{const active=node.getAttribute('data-order-id')===entry.orderId;node.classList.toggle('is-active',active);node.setAttribute('aria-pressed',active?'true':'false');});};
+const resultCard=(entry,entries)=>{const n=flagged(entry),pending=tone(entry.status)==='pending',state=pending?'pending':n?'alert':'ok',label=pending?entry.status:n?`${n} flagged`:'In range',card=document.createElement('button');card.type='button';card.className='result-item';card.setAttribute('data-order-id',entry.orderId);card.setAttribute('aria-pressed','false');card.innerHTML=`<div class="result-item-top"><div class="result-item-title"><h3>${entry.panelName}</h3><p class="result-item-kicker">${store.formatDate(entry.createdAt)}</p></div><div class="result-item-chips"><span class="metric-status metric-status--${state}">${label}</span></div></div>`;card.addEventListener('click',()=>{if(activeKey===entry.orderId){clearSelection(entries);return;}selectEntry(entries,entry.orderId);});return card;};
+const render=async()=>{await auth.whenReady();const snap=auth.getSnapshot();if(!snap.user){setLocked(snap);return;}if(el.locked)el.locked.hidden=true;if(el.authenticated)el.authenticated.hidden=false;if(el.workbench)el.workbench.hidden=false;if(!el.list)return;el.list.innerHTML=empty('Loading your reports.',true);if(el.chart)el.chart.innerHTML=empty('Loading trend data.',true);if(el.metrics)el.metrics.innerHTML=empty('Loading biomarker summary.',true);const email=snap.profile?.email||snap.user.email||'';const local=store.loadState().results.filter(entry=>entry.email===email).map(normalizeEntry);let remote=[],cloudLoadFailed=false;try{remote=(await auth.listResults()).map(normalizeEntry);}catch(error){cloudLoadFailed=true;console.error(error);}let entries=mergeUnique([...remote,...local],'orderId').sort((a,b)=>new Date(a.createdAt)-new Date(b.createdAt));const usedDemo=entries.length===0;const previewDemo=isLocalPreview;if(usedDemo){entries=demo().map(normalizeEntry);}else if(previewDemo){entries=mergeUnique([...entries,...demo().map(normalizeEntry)],'orderId').sort((a,b)=>new Date(a.createdAt)-new Date(b.createdAt));}el.list.innerHTML='';updateOverview(entries,{usedDemo,cloudLoadFailed,previewDemo});if(entries.length===0){clearView('No reports are available yet. Completed biomarker reports will appear here once payment is confirmed and processing is complete.');el.list.innerHTML=empty('No reports are attached to this account yet.');return;}entries.slice().reverse().forEach(entry=>el.list.appendChild(resultCard(entry,entries)));if(activeKey&&entries.some(entry=>entry.orderId===activeKey)){selectEntry(entries,activeKey);return;}clearSelection(entries);};
+const chartInfo=document.querySelector('[data-chart-info]');if(chartInfo){const trigger=chartInfo.querySelector('.chart-info-trigger');const setOpen=open=>{chartInfo.classList.toggle('is-open',open);if(trigger)trigger.setAttribute('aria-expanded',open?'true':'false');};if(trigger){trigger.addEventListener('click',event=>{event.stopPropagation();setOpen(!chartInfo.classList.contains('is-open'));});}chartInfo.addEventListener('mouseenter',()=>setOpen(true));chartInfo.addEventListener('mouseleave',()=>setOpen(false));document.addEventListener('click',event=>{if(!chartInfo.contains(event.target))setOpen(false);});document.addEventListener('keydown',event=>{if(event.key==='Escape')setOpen(false);});}
+if(el.metricModal){el.metricModal.querySelectorAll('[data-metric-close]').forEach(node=>node.addEventListener('click',closeMetricModal));document.addEventListener('keydown',event=>{if(event.key==='Escape')closeMetricModal();});}
+window.addEventListener('ayuta:auth-updated',render);window.addEventListener('ayuta:state-updated',render);render();
 })();

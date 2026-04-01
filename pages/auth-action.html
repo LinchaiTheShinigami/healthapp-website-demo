@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account Action | ayuta</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/x-icon" href="../Images/Logo/ayuta_favicon.ico" />
+    <link rel="stylesheet" href="../styles/site-base.css" />
+    <style>
+        :root {
+            color-scheme: light;
+        }
+
+        body.auth-action-page {
+            min-height: 100vh;
+            margin: 0;
+            background:
+                radial-gradient(circle at top, rgba(236, 177, 122, 0.26), transparent 38%),
+                linear-gradient(180deg, #fbf7f2 0%, #f4ece2 100%);
+            color: #16313d;
+        }
+
+        .auth-action-shell {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 32px 20px;
+        }
+
+        .auth-action-card {
+            width: min(100%, 560px);
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid rgba(22, 49, 61, 0.12);
+            border-radius: 28px;
+            box-shadow: 0 28px 60px rgba(22, 49, 61, 0.12);
+            padding: 32px 28px;
+        }
+
+        .auth-action-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            color: inherit;
+            text-decoration: none;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .auth-action-brand img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .auth-action-badge {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 999px;
+            padding: 6px 12px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            background: rgba(20, 119, 104, 0.12);
+            color: #0b6a5d;
+        }
+
+        .auth-action-card[data-tone="error"] .auth-action-badge {
+            background: rgba(176, 48, 49, 0.12);
+            color: #a0282d;
+        }
+
+        .auth-action-card[data-tone="loading"] .auth-action-badge {
+            background: rgba(181, 116, 47, 0.12);
+            color: #9a5a1e;
+        }
+
+        .auth-action-title {
+            margin: 18px 0 12px;
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            line-height: 1.04;
+        }
+
+        .auth-action-copy {
+            margin: 0;
+            color: rgba(22, 49, 61, 0.82);
+            font-size: 1rem;
+            line-height: 1.65;
+        }
+
+        .auth-action-form {
+            margin-top: 24px;
+            display: grid;
+            gap: 16px;
+        }
+
+        .auth-action-field {
+            display: grid;
+            gap: 8px;
+        }
+
+        .auth-action-field label {
+            font-size: 0.92rem;
+            font-weight: 700;
+        }
+
+        .auth-action-field input {
+            width: 100%;
+            border: 1px solid rgba(22, 49, 61, 0.18);
+            border-radius: 16px;
+            padding: 14px 16px;
+            font: inherit;
+            color: inherit;
+            background: #fff;
+        }
+
+        .auth-action-field input:focus {
+            outline: 2px solid rgba(20, 119, 104, 0.22);
+            outline-offset: 2px;
+        }
+
+        .auth-action-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .auth-action-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 160px;
+            border-radius: 999px;
+            padding: 14px 18px;
+            border: 1px solid #16313d;
+            background: #16313d;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .auth-action-button.is-secondary {
+            background: transparent;
+            color: #16313d;
+        }
+
+        .auth-action-helper {
+            margin: 0;
+            font-size: 0.92rem;
+            color: rgba(22, 49, 61, 0.72);
+        }
+
+        .auth-action-status {
+            min-height: 24px;
+            margin: 0;
+            font-size: 0.92rem;
+            color: rgba(22, 49, 61, 0.78);
+        }
+
+        .auth-action-status[data-tone="error"] {
+            color: #a0282d;
+        }
+
+        .auth-action-status[data-tone="success"] {
+            color: #0b6a5d;
+        }
+    </style>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-app-compat.js" integrity="sha384-Znt+uHtXAdOhiGTGyIwmBNXlsc5TOAuAzcCG0eAE2dulpw9KiB0JhB34uEGwuHs8" crossorigin="anonymous" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-auth-compat.js" integrity="sha384-A6cYBBWGHa59uc1lMxnsMCEdmpRGH6sFBcvsp5iy586ULeLLZp7CTav7jH/SrDcr" crossorigin="anonymous" defer></script>
+    <script src="../scripts/auth-config.js" defer></script>
+    <script src="../scripts/auth-action-page.js" defer></script>
+</head>
+<body class="auth-action-page">
+    <main class="auth-action-shell">
+        <section class="auth-action-card" id="auth-action-card" data-tone="loading">
+            <a class="auth-action-brand" href="../index.html">
+                <img src="../Images/Logo/ayuta_logo_transparent_clean.png" alt="ayuta" />
+                <span>ayuta</span>
+            </a>
+            <span class="auth-action-badge" id="auth-action-badge">Checking link</span>
+            <h1 class="auth-action-title" id="auth-action-title">Checking your secure link.</h1>
+            <p class="auth-action-copy" id="auth-action-copy">
+                This page completes Firebase account actions on the ayuta domain so users do not have to land on the default Firebase-hosted screen.
+            </p>
+
+            <form class="auth-action-form" id="auth-reset-form" hidden>
+                <p class="auth-action-helper" id="auth-reset-helper"></p>
+                <div class="auth-action-field">
+                    <label for="auth-reset-password">New password</label>
+                    <input id="auth-reset-password" type="password" minlength="8" autocomplete="new-password" required />
+                </div>
+                <div class="auth-action-field">
+                    <label for="auth-reset-confirm">Confirm password</label>
+                    <input id="auth-reset-confirm" type="password" minlength="8" autocomplete="new-password" required />
+                </div>
+                <button class="auth-action-button" id="auth-reset-submit" type="submit">Update password</button>
+                <p class="auth-action-status" id="auth-reset-status" aria-live="polite"></p>
+            </form>
+
+            <div class="auth-action-actions" id="auth-action-actions"></div>
+        </section>
+    </main>
+</body>
+</html>

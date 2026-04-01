@@ -7,7 +7,7 @@ The site now includes:
 - public marketing pages
 - email/password registration and login with Firebase Authentication
 - private profile, orders, and results data in Cloud Firestore
-- Stripe-based frontend checkout demo
+- fixed Stripe Payment Links checkout demo
 
 ## Current Stack
 
@@ -16,7 +16,7 @@ The site now includes:
 - Frontend: static HTML, CSS, JavaScript
 - Auth: Firebase Authentication
 - Private data: Cloud Firestore
-- Payments UI: Stripe
+- Payments: Stripe Payment Links
 
 For the current architecture, see [docs/architecture/current-website-architecture.md](docs/architecture/current-website-architecture.md).
 
@@ -81,12 +81,29 @@ If the site is live through GoDaddy:
 
 ## Stripe Setup
 
-The current checkout is still a frontend demo flow.
+The current checkout uses fixed Stripe Payment Links so the static GitHub Pages site can redirect to a Stripe-hosted payment page without a custom backend.
 
-Before relying on live payments:
+Setup steps:
 
-- replace any placeholder publishable key and client-secret wiring with your real Stripe setup
-- move real payment-intent creation and payment confirmation behind a backend or serverless function you control
+1. Create Stripe Payment Links for all six package and collection variants you want to offer:
+   - `foundation` / `home`
+   - `foundation` / `lab`
+   - `performance` / `home`
+   - `performance` / `lab`
+   - `elite` / `home`
+   - `elite` / `lab`
+2. Replace the placeholder URLs in [scripts/stripe-payment-links-config.js](scripts/stripe-payment-links-config.js).
+3. Configure each link to return to [pages/payment-return.html](pages/payment-return.html) after payment.
+4. Test the live site while signed in so pending orders are stored against the correct account.
+
+Detailed setup notes are in [docs/stripe-payment-links-setup.md](docs/stripe-payment-links-setup.md).
+The current tier basis is documented in [docs/package-basis.md](docs/package-basis.md).
+
+Current limitation:
+
+- the site records pending orders before redirecting to Stripe
+- the browser does not verify payment
+- automatic paid-order confirmation is deferred to the future Firebase-backed Stripe implementation tracked in [tasks.md](tasks.md)
 
 ## Deployment Checklist
 
@@ -97,12 +114,16 @@ Before pushing to production, confirm:
 3. GitHub Pages is enabled.
 4. The `CNAME` file matches the live domain.
 5. Firebase authorized domains include the live domain.
-6. The live site can:
+6. Firebase Authentication email templates have the custom email domain verified and applied.
+7. Firebase Authentication action URLs point to `https://ayuta.co.uk/pages/auth-action.html`.
+8. The live site can:
    - register
    - sign in
    - send password reset emails
+   - complete email verification and password reset from [pages/auth-action.html](pages/auth-action.html)
    - save profile changes
-   - complete the demo checkout while signed in
+   - open the correct Stripe Payment Link while signed in
+   - return to the payment return page after checkout
    - load orders
    - load results
 
@@ -117,6 +138,7 @@ Before pushing to production, confirm:
 - Main entry point: [index.html](index.html)
 - Auth config template: [scripts/auth-config.js](scripts/auth-config.js)
 - Auth and Firestore integration: [scripts/firebase-auth.js](scripts/firebase-auth.js)
+- Stripe Payment Links config: [scripts/stripe-payment-links-config.js](scripts/stripe-payment-links-config.js)
 - Firestore rules: [docs/firestore.rules](docs/firestore.rules)
 - Architecture doc: [docs/architecture/current-website-architecture.md](docs/architecture/current-website-architecture.md)
 

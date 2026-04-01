@@ -38,7 +38,11 @@ That means:
 
 - In Authentication > Settings > Authorized domains, add your live custom domain if it is not already listed.
 - If your website uses a GoDaddy-managed domain, no hosting move is required. Keep GitHub Pages as the host and just point Firebase Auth at the same live domain for redirects and email links.
-- If you want the auth emails to look more branded, configure the email templates in Firebase before going live.
+- In Authentication > Templates, customize the email domain to `ayuta.co.uk`, add the TXT/CNAME records Firebase gives you, then click `Apply Custom Domain` after verification completes.
+- In Authentication > Templates, customize the action URL for password reset and email verification to `https://ayuta.co.uk/pages/auth-action.html`.
+- This repo now includes [pages/auth-action.html](/c:/Users/Aditya/source/repos/healthapp-website-demo/pages/auth-action.html), which handles `verifyEmail`, `resetPassword`, and `recoverEmail` flows on the ayuta domain instead of the default Firebase-hosted page.
+- [scripts/auth-config.js](/c:/Users/Aditya/source/repos/healthapp-website-demo/scripts/auth-config.js) now sets explicit continue URLs so Firebase can send users back to ayuta after verification and password reset flows.
+- If deliverability is still poor after the custom domain is verified, stop relying on Firebase's default Google-sent templates and move to server-generated email action links with your own sender service.
 
 ## Firestore data layout used by the site
 
@@ -73,3 +77,6 @@ That means:
 - Firebase pricing: https://firebase.google.com/pricing
 - Password auth on the web: https://firebase.google.com/docs/auth/web/password-auth
 - Password reset and user management: https://firebase.google.com/docs/auth/web/manage-users
+- Custom email action handlers: https://firebase.google.com/docs/auth/custom-email-handler
+- Custom domains for auth emails: https://firebase.google.com/docs/auth/email-custom-domain
+- Generating email action links for your own email provider: https://firebase.google.com/docs/auth/admin/email-action-links

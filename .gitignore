@@ -1,5 +1,6 @@
 .auth/
+.todo/
 .ideas/
 .vscode/
-.github/instructions/
-.github/skills/
+.playwright-cli/
+output/

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinic Locations | Ayuta Health</title>
+    <link rel="icon" href="../Images/Logo/ayuta_favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../styles/site-base.css">
+    <link rel="stylesheet" href="../styles/styles-clinics.css">
+    <script src="../scripts/app-store.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-app-compat.js" integrity="sha384-Znt+uHtXAdOhiGTGyIwmBNXlsc5TOAuAzcCG0eAE2dulpw9KiB0JhB34uEGwuHs8" crossorigin="anonymous" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-auth-compat.js" integrity="sha384-A6cYBBWGHa59uc1lMxnsMCEdmpRGH6sFBcvsp5iy586ULeLLZp7CTav7jH/SrDcr" crossorigin="anonymous" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore-compat.js" integrity="sha384-XfsHRWyIpDxqmBgRls8NyklJPVxNtAPTuASFjpt47tsNDKvc13Ibf1leNHrxGLax" crossorigin="anonymous" defer></script>
+    <script src="../scripts/auth-config.js" defer></script>
+    <script src="../scripts/firebase-auth.js" defer></script>
+    <script src="../scripts/nav-state.js" defer></script>
+    <script src="../scripts/account-modal.js" defer></script>
+    <script src="../scripts/include-nav.js" defer></script>
+    <script src="../scripts/clinics-page.js" defer></script>
+</head>
+<body class="clinics-body">
+    <div id="nav-placeholder"></div>
+
+    <main class="clinics-page">
+        <section class="clinics-hero section">
+            <div class="container clinics-hero-shell">
+                <div class="clinics-copy">
+                    <span class="eyebrow">Clinic Locations</span>
+                    <h1>Choose the collection route that fits how you want to test.</h1>
+                    <p class="section-subtitle">Prefer a professionally collected sample? Book into one of our partner clinics. Want something more private and flexible? Choose a home kit and complete the process on your own schedule.</p>
+                    <div class="clinics-proof">
+                        <span>13 current locations</span>
+                        <span>Clinic or home kit</span>
+                        <span>South-focused initial network</span>
+                    </div>
+                </div>
+
+                <aside class="clinics-sidecard">
+                    <span class="eyebrow">Collection routes</span>
+                    <h2>Two clear paths.</h2>
+                    <div class="clinics-sidegrid">
+                        <article>
+                            <div class="clinics-route-head">
+                                <span class="clinics-route-icon fa-solid fa-building-circle-check" aria-hidden="true"></span>
+                                <strong>Clinic appointment</strong>
+                            </div>
+                            <p>Professional venous draw through the current partner footprint listed below.</p>
+                        </article>
+                        <article>
+                            <div class="clinics-route-head">
+                                <span class="clinics-route-icon fa-solid fa-house-medical-circle-check" aria-hidden="true"></span>
+                                <strong>Home kit</strong>
+                            </div>
+                            <p>Private capillary collection with return packaging for clients who would rather test from home.</p>
+                        </article>
+                    </div>
+                    <div class="clinics-side-actions">
+                        <a class="btn btn-primary" href="../pages/order.html">Book a package</a>
+                        <a class="btn btn-ghost" href="../index.html#panels">Review packages</a>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <section class="clinics-network section">
+            <div class="container clinics-network-shell">
+                <article class="clinics-summary card">
+                    <span class="eyebrow">Network shape</span>
+                    <h2>London, Sussex, Kent, Surrey, and selected South West routes are covered first.</h2>
+                    <p class="section-subtitle">The footprint is intentionally practical for the initial demo. If clinic coverage is not ideal for a client, the booking flow still allows the home-kit route.</p>
+                </article>
+
+                <div class="clinic-grid">
+                    <button class="clinic-card card" type="button" data-clinic-id="brighton-hove"><span class="clinic-tag">South East</span><h3>Brighton and Hove</h3><p>Appointment-led blood draw location for Brighton and nearby coastal clients.</p><span class="clinic-card-link">View clinic details</span></button>
+                    <button class="clinic-card card" type="button" data-clinic-id="cambridge"><span class="clinic-tag">East of England</span><h3>Cambridge</h3><p>Clinic option for Cambridge and the surrounding East of England area.</p><span class="clinic-card-link">View clinic details</span></button>
+                    <button class="clinic-card card" type="button" data-clinic-id="chiswick"><span class="clinic-tag">West London</span><h3>Chiswick</h3><p>West London collection point for clients who want an in-person venous draw.</p><span class="clinic-card-link">View clinic details</span></button>
+                    <button class="clinic-card card" type="button" data-clinic-id="crawley"><span class="clinic-tag">Sussex</span><h3>Crawley</h3><p>Sussex-area clinic route for appointment-based testing.</p><span class="clinic-card-link">View clinic details</span></button>
+                    <button class="clinic-card card" type="button" data-clinic-id="croydon"><span class="clinic-tag">South London</span><h3>Croydon</h3><p>South London clinic option inside the current rollout footprint.</p><span class="clinic-card-link">View clinic details</span></button>
+                    <button class="clinic-card card" type="button" data-clinic-id="exeter"><span class="clinic-tag">South West</span><h3>Exeter</h3><p>South West location for clients preferring professional collection.</p><span class="clinic-card-link">View clinic details</span></button>
+                    <button class="clinic-card card" type="button" data-clinic-id="guildford"><span class="clinic-tag">Surrey</span><h3>Guildford</h3><p>Surrey clinic route for local appointments and regional access.</p><span class="clinic-card-link">View clinic details</span></button>
+                    <button class="clinic-card card" type="button" data-clinic-id="london-city"><span class="clinic-tag">Central London</span><h3>London City</h3><p>City-based London option for central travel routes and weekday access.</p><span class="clinic-card-link">View clinic details</span></button>
+                    <button class="clinic-card card" type="button" data-clinic-id="london-victoria"><span class="clinic-tag">Central London</span><h3>London Victoria</h3><p>Alternative central London location with strong transport access.</p><span class="clinic-card-link">View clinic details</span></button>
+                    <button class="clinic-card card" type="button" data-clinic-id="london-canary-wharf"><span class="clinic-tag">East London</span><h3>London Canary Wharf</h3><p>East London option for Docklands and nearby office districts.</p><span class="clinic-card-link">View clinic details</span></button>
+                    <button class="clinic-card card" type="button" data-clinic-id="maidstone"><span class="clinic-tag">Kent</span><h3>Maidstone</h3><p>Kent-based clinic location in the current network.</p><span class="clinic-card-link">View clinic details</span></button>
+                    <button class="clinic-card card" type="button" data-clinic-id="plymouth"><span class="clinic-tag">South West</span><h3>Plymouth</h3><p>Plymouth appointment option for clients in the South West.</p><span class="clinic-card-link">View clinic details</span></button>
+                    <button class="clinic-card card" type="button" data-clinic-id="royal-tunbridge-wells"><span class="clinic-tag">Kent</span><h3>Royal Tunbridge Wells</h3><p>Kent and Sussex crossover route for appointment-led collections.</p><span class="clinic-card-link">View clinic details</span></button>
+                </div>
+
+                <div class="clinics-footnote">
+                    <p>Source basis: One Day Tests clinic pages, checked on April 1, 2026.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="clinic-modal" data-clinic-modal hidden>
+        <div class="clinic-modal-backdrop" data-clinic-modal-close></div>
+        <div class="clinic-modal-panel" role="dialog" aria-modal="true" aria-labelledby="clinic-modal-title">
+            <button class="clinic-modal-close" type="button" data-clinic-modal-close aria-label="Close clinic details">
+                <span class="fa-solid fa-xmark" aria-hidden="true"></span>
+            </button>
+            <div class="clinic-modal-head">
+                <div>
+                    <span class="eyebrow" data-clinic-modal-region>Clinic</span>
+                    <h2 id="clinic-modal-title" data-clinic-modal-title>Clinic details</h2>
+                    <p class="clinic-modal-summary" data-clinic-modal-summary></p>
+                </div>
+                <div class="clinic-modal-badges">
+                    <span class="clinic-modal-badge"><span class="fa-solid fa-calendar-check" aria-hidden="true"></span><span>Pre-booked and walk-in service</span></span>
+                    <span class="clinic-modal-badge"><span class="fa-solid fa-flask-vial" aria-hidden="true"></span><span>Venous and capillary support</span></span>
+                </div>
+            </div>
+            <div class="clinic-modal-grid">
+                <div class="clinic-map-frame">
+                    <iframe title="Clinic map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" data-clinic-modal-map></iframe>
+                </div>
+                <div class="clinic-modal-details">
+                    <article class="clinic-detail-card">
+                        <span class="clinic-detail-icon fa-solid fa-location-dot" aria-hidden="true"></span>
+                        <div>
+                            <p class="clinic-detail-label">Address</p>
+                            <p class="clinic-detail-value" data-clinic-modal-address></p>
+                        </div>
+                    </article>
+                    <article class="clinic-detail-card">
+                        <span class="clinic-detail-icon fa-solid fa-clock" aria-hidden="true"></span>
+                        <div>
+                            <p class="clinic-detail-label">Opening hours</p>
+                            <p class="clinic-detail-value" data-clinic-modal-hours></p>
+                        </div>
+                    </article>
+                    <article class="clinic-detail-card">
+                        <span class="clinic-detail-icon fa-solid fa-briefcase-medical" aria-hidden="true"></span>
+                        <div>
+                            <p class="clinic-detail-label">Service availability</p>
+                            <ul class="clinic-service-list" data-clinic-modal-services></ul>
+                        </div>
+                    </article>
+                    <article class="clinic-detail-card">
+                        <span class="clinic-detail-icon fa-solid fa-circle-info" aria-hidden="true"></span>
+                        <div>
+                            <p class="clinic-detail-label">Access notes</p>
+                            <p class="clinic-detail-value" data-clinic-modal-access></p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+            <p class="clinic-modal-footnote">Hours and access notes were checked against One Day Tests clinic pages on April 1, 2026. Confirm latest availability at booking.</p>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div>
+                <p class="footer-title">Ayuta Health</p>
+                <p>Clearer package selection, collection, and follow-up.</p>
+            </div>
+            <div>
+                <p class="footer-title">Explore</p>
+                <div class="footer-links">
+                    <a href="../index.html">Home</a>
+                    <a href="../pages/order.html">Book tests</a>
+                </div>
+            </div>
+            <div>
+                <p class="footer-title">Support</p>
+                <div class="footer-links">
+                    <a href="../pages/contact.html">Contact</a>
+                    <a href="../pages/results.html">Results demo</a>
+                </div>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <p>&copy; 2026 Ayuta Ltd. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

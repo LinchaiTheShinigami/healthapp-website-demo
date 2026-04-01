@@ -1,69 +1,31 @@
 (function () {
+  const auth = window.AyutaAuth;
   const store = window.AyutaStore;
-  if (!store) return;
+  const status = document.getElementById('home-session-status');
 
-  const elements = {
-    basket: document.getElementById('home-basket-items'),
-    count: document.getElementById('home-basket-count'),
-    total: document.getElementById('home-basket-total'),
-    status: document.getElementById('home-session-status')
+  const setStatus = (message) => {
+    if (status) status.textContent = message;
   };
 
-  const renderBasket = (state) => {
-    if (!elements.basket) return;
-    elements.basket.innerHTML = '';
-    if (state.cart.length === 0) {
-      const empty = document.createElement('p');
-      empty.textContent = 'No items selected yet. Start an order to build your kit.';
-      empty.classList.add('order-meta');
-      elements.basket.appendChild(empty);
+  const redirectToResults = () => {
+    if (window.location.pathname.endsWith('/pages/results.html')) return;
+    window.location.replace('pages/results.html');
+  };
+
+  const render = async () => {
+    if (!auth || !store) return;
+    await auth.whenReady();
+    const snapshot = auth.getSnapshot();
+    const state = store.loadState();
+
+    if (snapshot.user || state.session?.email) {
+      redirectToResults();
       return;
     }
 
-    state.cart.slice(0, 3).forEach((item) => {
-      const row = document.createElement('div');
-      row.classList.add('hero-basket-item');
-      const name = document.createElement('span');
-      name.textContent = item.name;
-      const price = document.createElement('strong');
-      price.textContent = store.formatCurrency(item.price);
-      row.appendChild(name);
-      row.appendChild(price);
-      elements.basket.appendChild(row);
-    });
-
-    if (state.cart.length > 3) {
-      const more = document.createElement('p');
-      more.textContent = `+${state.cart.length - 3} more in your basket`;
-      more.classList.add('order-meta');
-      elements.basket.appendChild(more);
-    }
+    setStatus('Sign in to turn Ayuta into your results dashboard.');
   };
 
-  const renderSummary = (state) => {
-    if (elements.count) elements.count.textContent = String(state.cart.length);
-    if (elements.total) {
-      elements.total.textContent = store.formatCurrency(store.getTotals(state.cart).total);
-    }
-  };
-
-  const renderStatus = (state) => {
-    if (!elements.status) return;
-    if (state.session && state.session.email) {
-      elements.status.textContent = `Signed in as ${state.session.email}.`;
-    } else {
-      elements.status.textContent = 'Not signed in yet.';
-    }
-  };
-
-  const refresh = () => {
-    const state = store.loadState();
-    renderBasket(state);
-    renderSummary(state);
-    renderStatus(state);
-  };
-
-  window.addEventListener('ayuta:state-updated', refresh);
-  window.addEventListener('ayuta:auth-updated', refresh);
-  refresh();
+  window.addEventListener('ayuta:auth-updated', render);
+  render();
 })();

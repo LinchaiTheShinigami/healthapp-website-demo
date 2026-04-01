@@ -14,7 +14,11 @@ function getNavPath(basePath) {
 function setNavLinks(navRoot, basePath) {
   navRoot.querySelectorAll('[data-nav-link][data-path]').forEach(link => {
     const target = link.getAttribute('data-path');
-    link.setAttribute('href', `${basePath}${target}`);
+    const resolved = `${basePath}${target}`;
+    link.setAttribute('href', resolved);
+    link.setAttribute('data-public-href', resolved);
+    const authTarget = link.getAttribute('data-auth-path');
+    if (authTarget) link.setAttribute('data-auth-href', `${basePath}${authTarget}`);
   });
 
   navRoot.querySelectorAll('[data-asset]').forEach(asset => {
@@ -28,18 +32,22 @@ function setActiveLink(navRoot) {
   let activeKey = null;
   if (page === '' || page === 'index.html') activeKey = 'home';
   if (page === 'order.html') activeKey = 'order';
+  if (page === 'payment-return.html') activeKey = 'order';
   if (page === 'webapp.html') activeKey = 'mobile';
+  if (page === 'clinics.html') activeKey = 'clinics';
   if (page === 'about.html') activeKey = 'about';
   if (page === 'contact.html') activeKey = 'contact';
   if (page === 'orders.html') activeKey = 'orders';
   if (page === 'results.html') activeKey = 'results';
   if (page === 'profile.html') activeKey = 'profile';
+  if (document.body) {
+    document.body.setAttribute('data-page-key', activeKey || page.replace('.html', ''));
+  }
   if (activeKey) {
-    const activeLink = navRoot.querySelector(`[data-nav-key="${activeKey}"]`);
-    if (activeLink) {
+    navRoot.querySelectorAll(`[data-nav-key="${activeKey}"]`).forEach((activeLink) => {
       activeLink.classList.add('is-active');
       activeLink.setAttribute('aria-current', 'page');
-    }
+    });
   }
 }
 
@@ -137,8 +145,8 @@ if (navPlaceholder) {
       navPlaceholder.innerHTML = data;
       const navRoot = navPlaceholder.querySelector('.site-nav');
       if (!navRoot) return;
-      setNavLinks(navRoot, basePath);
-      setActiveLink(navRoot);
+      setNavLinks(navPlaceholder, basePath);
+      setActiveLink(navPlaceholder);
       wireNavToggle(navRoot);
       wireA11yControls(navRoot);
       if (window.AyutaNav && typeof window.AyutaNav.init === 'function') {

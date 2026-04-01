@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Return | Ayuta Health</title>
+    <link rel="icon" href="../Images/Logo/ayuta_favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../styles/site-base.css">
+    <link rel="stylesheet" href="../styles/styles-order.css">
+    <script src="../scripts/app-store.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-app-compat.js" integrity="sha384-Znt+uHtXAdOhiGTGyIwmBNXlsc5TOAuAzcCG0eAE2dulpw9KiB0JhB34uEGwuHs8" crossorigin="anonymous" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-auth-compat.js" integrity="sha384-A6cYBBWGHa59uc1lMxnsMCEdmpRGH6sFBcvsp5iy586ULeLLZp7CTav7jH/SrDcr" crossorigin="anonymous" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore-compat.js" integrity="sha384-XfsHRWyIpDxqmBgRls8NyklJPVxNtAPTuASFjpt47tsNDKvc13Ibf1leNHrxGLax" crossorigin="anonymous" defer></script>
+    <script src="../scripts/auth-config.js" defer></script>
+    <script src="../scripts/firebase-auth.js" defer></script>
+    <script src="../scripts/nav-state.js" defer></script>
+    <script src="../scripts/account-modal.js" defer></script>
+    <script src="../scripts/include-nav.js" defer></script>
+    <script src="../scripts/payment-return-page.js" defer></script>
+</head>
+<body class="order-page payment-return-page app-page">
+    <div id="nav-placeholder"></div>
+
+    <main class="order-main payment-return-main">
+        <div class="order-shell">
+            <section class="payment-return-shell">
+                <section class="payment-return-milestones" aria-label="Order progress">
+                    <div class="payment-return-milestones-shell">
+                        <div class="payment-return-step is-complete-muted" aria-current="false">
+                            <span class="step-index">01</span>
+                            <span>Choose package(s)</span>
+                        </div>
+                        <div class="payment-return-step is-complete-muted" aria-current="false">
+                            <span class="step-index">02</span>
+                            <span>Open Stripe checkout</span>
+                        </div>
+                        <div class="payment-return-step is-active" aria-current="step">
+                            <span class="step-index">03</span>
+                            <span>Track the order</span>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="payment-return-hero">
+                    <div class="payment-return-copy">
+                        <span class="eyebrow">Stripe return</span>
+                        <h1>Payment submitted. The order is now waiting for confirmation.</h1>
+                        <p>The current demo uses fixed Stripe Payment Links, so the browser stores a pending order first and the paid state is reconciled later.</p>
+                        <div class="payment-return-actions">
+                            <a class="btn btn-primary" href="../pages/orders.html">View orders</a>
+                            <a class="btn btn-ghost" href="../pages/order.html">Start another order</a>
+                        </div>
+                    </div>
+
+                    <aside class="payment-return-side">
+                        <span class="eyebrow">Current demo model</span>
+                        <h2>Thin checkout now, verified payments next.</h2>
+                        <div class="payment-return-side-grid">
+                            <article>
+                                <strong>Saved first</strong>
+                                <p>The order is recorded locally and against the signed-in account before redirecting to Stripe.</p>
+                            </article>
+                            <article>
+                                <strong>Confirmed later</strong>
+                                <p>The next iteration replaces manual confirmation with a Firebase-backed verification flow.</p>
+                            </article>
+                        </div>
+                    </aside>
+                </div>
+
+                <section class="payment-return-status-card card">
+                    <div class="payment-return-status-head">
+                        <span class="eyebrow">Latest state</span>
+                        <h2 id="payment-return-status">Checking your latest order.</h2>
+                        <p id="payment-return-detail">Loading your saved order state.</p>
+                    </div>
+                    <p class="payment-return-summary" id="payment-return-summary">The current demo does not verify payment in the browser.</p>
+                </section>
+            </section>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 Ayuta Ltd. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
