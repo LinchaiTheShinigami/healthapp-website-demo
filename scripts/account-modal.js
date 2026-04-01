@@ -144,6 +144,8 @@
     if (!modalRoot) return;
     if (options && typeof options.returnTo === 'string') {
       writePostAuthTarget(options.returnTo);
+    } else {
+      clearPostAuthTarget();
     }
     modalRoot.hidden = false;
     modalRoot.classList.add('is-open');
