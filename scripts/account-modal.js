@@ -1,6 +1,7 @@
 (function () {
   let modalRoot = null;
   let initialized = false;
+  const POST_AUTH_TARGET_KEY = 'ayuta_post_auth_target';
 
   const getStoreState = () => {
     if (!window.AyutaStore || typeof window.AyutaStore.loadState !== 'function') return null;
@@ -18,7 +19,52 @@
     return page.includes('/pages/') ? 'results.html' : 'pages/results.html';
   };
 
-  const redirectToResults = () => {
+  const writePostAuthTarget = (href) => {
+    if (!href) return;
+    try {
+      sessionStorage.setItem(POST_AUTH_TARGET_KEY, href);
+    } catch (error) {
+      console.warn(error);
+    }
+  };
+
+  const readPostAuthTarget = () => {
+    try {
+      return sessionStorage.getItem(POST_AUTH_TARGET_KEY);
+    } catch (error) {
+      console.warn(error);
+      return null;
+    }
+  };
+
+  const clearPostAuthTarget = () => {
+    try {
+      sessionStorage.removeItem(POST_AUTH_TARGET_KEY);
+    } catch (error) {
+      console.warn(error);
+    }
+  };
+
+  const redirectAfterAuth = () => {
+    const target = readPostAuthTarget();
+    if (target) {
+      clearPostAuthTarget();
+      try {
+        const nextUrl = new URL(target, window.location.href);
+        const currentUrl = new URL(window.location.href);
+        const isCurrentView =
+          nextUrl.pathname === currentUrl.pathname &&
+          nextUrl.search === currentUrl.search &&
+          nextUrl.hash === currentUrl.hash;
+        if (!isCurrentView) {
+          window.location.assign(nextUrl.href);
+        }
+        return;
+      } catch (error) {
+        console.warn(error);
+      }
+    }
+
     const href = getResultsHref();
     if (!href) return;
     window.location.assign(href);
@@ -93,8 +139,11 @@
     if (registerPhone && !registerPhone.value) registerPhone.value = phone;
   };
 
-  const openModal = (tabName) => {
+  const openModal = (tabName, options) => {
     if (!modalRoot) return;
+    if (options && typeof options.returnTo === 'string') {
+      writePostAuthTarget(options.returnTo);
+    }
     modalRoot.hidden = false;
     modalRoot.classList.add('is-open');
     setActiveTab(tabName || 'login');
@@ -137,7 +186,7 @@
           await auth.login({ email, password });
           setStatus(loginStatus, 'Signed in.', 'success');
           closeModal();
-          redirectToResults();
+          redirectAfterAuth();
         } catch (error) {
           setStatus(loginStatus, error.message, 'error');
         } finally {
@@ -204,7 +253,7 @@
           'success'
         );
         closeModal();
-        redirectToResults();
+        redirectAfterAuth();
       } catch (error) {
         setStatus(registerStatus, error.message, 'error');
       } finally {

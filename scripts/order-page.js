@@ -213,6 +213,10 @@ document.addEventListener('DOMContentLoaded', function () {
     window.dispatchEvent(new CustomEvent('ayuta:state-updated'));
   };
 
+  const openLoginForCurrentOrderFlow = () => {
+    window.AyutaAccount?.open?.('login', { returnTo: window.location.href });
+  };
+
   const normalizeState = () => {
     const hasPersistedCheckoutState = Boolean((state.cart && state.cart.length) || (state.orders && state.orders.length));
     if (!COLLECTION_CONTENT[state.collectionMethod]) state.collectionMethod = null;
@@ -571,7 +575,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   if (elements.registerTrigger) {
-    elements.registerTrigger.addEventListener('click', () => window.AyutaAccount?.open?.('login'));
+    elements.registerTrigger.addEventListener('click', openLoginForCurrentOrderFlow);
   }
 
   elements.stepButtons.forEach((button) =>
@@ -593,7 +597,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const authSnapshot = getAuthSnapshot();
       if (!authSnapshot?.user) {
         setStatus(elements.checkoutStatus, 'Sign in before paying so your order can be stored in your account.', 'error');
-        window.AyutaAccount?.open?.('login');
+        openLoginForCurrentOrderFlow();
         return;
       }
 
