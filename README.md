@@ -1,13 +1,13 @@
-# Ayuta Health Website Demo
+# Ayuta Health Website
 
-Static marketing and demo website for Ayuta Health, hosted on GitHub Pages with a custom GoDaddy-managed domain.
+Static marketing and account website for Ayuta Health, hosted on GitHub Pages with a custom GoDaddy-managed domain.
 
 The site now includes:
 
 - public marketing pages
 - email/password registration and login with Firebase Authentication
 - private profile, orders, and results data in Cloud Firestore
-- fixed Stripe Payment Links checkout demo
+- hosted Stripe Payment Links checkout
 
 ## Current Stack
 
@@ -81,7 +81,7 @@ If the site is live through GoDaddy:
 
 ## Stripe Setup
 
-The current checkout uses fixed Stripe Payment Links so the static GitHub Pages site can redirect to a Stripe-hosted payment page without a custom backend.
+The current checkout uses hosted Stripe Payment Links so the static GitHub Pages site can redirect to a Stripe-hosted payment page without a custom backend.
 
 Setup steps:
 
@@ -103,7 +103,7 @@ Current limitation:
 
 - the site records pending orders before redirecting to Stripe
 - the browser does not verify payment
-- automatic paid-order confirmation is deferred to the future Firebase-backed Stripe implementation tracked in [tasks.md](tasks.md)
+- automatic paid-order confirmation is deferred to the future server-backed Stripe implementation tracked in [tasks.md](tasks.md)
 
 ## Deployment Checklist
 
@@ -131,7 +131,7 @@ Before pushing to production, confirm:
 
 - GitHub Pages cannot protect static files that are published with the site.
 - Sensitive user data must stay in Firestore behind auth rules, not in repo files or public JSON.
-- Local storage is only used for basket state and same-browser demo fallback data.
+- Local storage is only used for basket state and same-browser sample fallback data.
 
 ## Repository Notes
 

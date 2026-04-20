@@ -188,7 +188,7 @@
 
   const assertConfigured = () => {
     if (!state.configured) {
-      throw new Error('Authentication is not configured yet. Add your Firebase project values in scripts/auth-config.js.');
+      throw new Error('Authentication is not configured yet. Add your project values in scripts/auth-config.js.');
     }
   };
 
@@ -270,7 +270,7 @@
     if (!window.firebase) {
       state.loading = false;
       state.ready = true;
-      state.error = 'Firebase could not be loaded.';
+      state.error = 'Authentication service could not be loaded.';
       resolveReady();
       dispatchAuthUpdate();
       return;

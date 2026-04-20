@@ -25,19 +25,19 @@ document.addEventListener('DOMContentLoaded', async function () {
       .sort((left, right) => new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime())[0];
 
     if (!latestOrder) {
-      setText(elements.status, 'No Stripe Payment Link order was found on this device yet.');
+      setText(elements.status, 'No recent checkout order was found on this device yet.');
       setText(
         elements.detail,
-        'Return to the order page, choose a package, and open the hosted Stripe checkout to create a pending order record.'
+        'Return to the order page, choose a package, and open checkout to create an order record.'
       );
-      setText(elements.summary, 'This demo does not verify payment in the browser.');
+      setText(elements.summary, 'Your order summary will appear here after checkout.');
       return;
     }
 
     setText(elements.status, `Order ${latestOrder.id} is saved as ${latestOrder.status}.`);
     setText(
       elements.detail,
-      'This demo uses fixed Stripe Payment Links, so payment confirmation is not synced back automatically yet.'
+      'Payment confirmation, collection, and report access will continue from your account timeline.'
     );
     setText(
       elements.summary,

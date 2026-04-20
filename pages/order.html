@@ -3,6 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Book a blood test with Ayuta Health. Choose Foundation, Performance, or Elite, pick home kit or clinic collection across 13 UK locations, and pay securely.">
+    <link rel="canonical" href="https://ayuta.co.uk/pages/order.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Ayuta Health">
+    <meta property="og:title" content="Book a Blood Test — Ayuta Health">
+    <meta property="og:description" content="Choose Foundation, Performance, or Elite. Home kit or clinic collection across 13 UK locations. Results in 2–5 working days.">
+    <meta property="og:url" content="https://ayuta.co.uk/pages/order.html">
+    <meta property="og:image" content="https://ayuta.co.uk/Images/Logo/ayuta-og.png">
     <title>Order | Ayuta Health</title>
     <link rel="icon" href="../Images/Logo/ayuta_favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../styles/site-base.css">
@@ -18,6 +26,58 @@
     <script src="../scripts/account-modal.js" defer></script>
     <script src="../scripts/include-nav.js" defer></script>
     <script src="../scripts/order-page.js" defer></script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Ayuta Health Blood Test Packages",
+      "url": "https://ayuta.co.uk/pages/order.html",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "Product",
+            "name": "Foundation Blood Test",
+            "description": "Baseline blood panel covering Full Blood Count, vitamins, iron, cholesterol, and HbA1c. Best if you have never had a blood panel done.",
+            "brand": { "@type": "Brand", "name": "Ayuta Health" },
+            "offers": [
+              { "@type": "Offer", "price": "149", "priceCurrency": "GBP", "name": "Home kit", "availability": "https://schema.org/InStock" },
+              { "@type": "Offer", "price": "199", "priceCurrency": "GBP", "name": "Clinic appointment", "availability": "https://schema.org/InStock" }
+            ]
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "Product",
+            "name": "Performance Blood Test",
+            "description": "Expanded panel for active training. Foundation plus testosterone, cortisol, CRP, apolipoprotein A/B, and zinc. Best for those training 4+ times a week.",
+            "brand": { "@type": "Brand", "name": "Ayuta Health" },
+            "offers": [
+              { "@type": "Offer", "price": "249", "priceCurrency": "GBP", "name": "Home kit", "availability": "https://schema.org/InStock" },
+              { "@type": "Offer", "price": "299", "priceCurrency": "GBP", "name": "Clinic appointment", "availability": "https://schema.org/InStock" }
+            ]
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@type": "Product",
+            "name": "Elite Blood Test",
+            "description": "Deepest panel with thyroid, oestradiol, prolactin, and folic acid on top of Performance. Best for longitudinal tracking and advanced monitoring.",
+            "brand": { "@type": "Brand", "name": "Ayuta Health" },
+            "offers": [
+              { "@type": "Offer", "price": "399", "priceCurrency": "GBP", "name": "Home kit", "availability": "https://schema.org/InStock" },
+              { "@type": "Offer", "price": "499", "priceCurrency": "GBP", "name": "Clinic appointment", "availability": "https://schema.org/InStock" }
+            ]
+          }
+        }
+      ]
+    }
+    </script>
 </head>
 <body class="order-page app-page">
     <div id="nav-placeholder"></div>
@@ -30,7 +90,7 @@
             </button>
             <button class="order-subnav-step" type="button" data-order-step="payment">
                 <span class="step-index">02</span>
-                <span>Open Stripe checkout</span>
+                <span>Secure checkout</span>
             </button>
             <button class="order-subnav-step" type="button" data-order-step="post">
                 <span class="step-index">03</span>
@@ -56,6 +116,7 @@
                                     data-product-biomarkers="5 source tests" data-product-goals="foundation" data-product-range="GBP 199">
                                     <span class="product-copy">
                                         <span class="product-kicker">Foundation</span>
+                                        <span class="product-for">If you've never had a blood panel done, start here.</span>
                                         <span class="product-name">Baseline reset</span>
                                         <span class="product-note">Baseline visibility across core health markers.</span>
                                     </span>
@@ -70,6 +131,7 @@
                                     data-product-biomarkers="11 source tests" data-product-goals="performance" data-product-range="GBP 299">
                                     <span class="product-copy">
                                         <span class="product-kicker">Performance</span>
+                                        <span class="product-for">If you train 4+ times a week and want to optimise recovery.</span>
                                         <span class="product-name">Training and recovery</span>
                                         <span class="product-note">Broader recovery, hormone, and metabolic oversight.</span>
                                     </span>
@@ -84,6 +146,7 @@
                                     data-product-biomarkers="15 source tests" data-product-goals="elite" data-product-range="GBP 499">
                                     <span class="product-copy">
                                         <span class="product-kicker">Elite</span>
+                                        <span class="product-for">If you've had previous results and want to track trends over time.</span>
                                         <span class="product-name">Longitudinal oversight</span>
                                         <span class="product-note">Deep endocrine and longitudinal monitoring.</span>
                                     </span>
@@ -104,20 +167,32 @@
                                     <a class="text-button" href="../pages/clinics.html">View clinics</a>
                                 </div>
                                 <div class="collection-toggle" role="radiogroup" aria-label="Choose collection method">
-                                    <button class="collection-option" type="button" data-collection="home" aria-pressed="false">
-                                        <span class="collection-option-icon fa-solid fa-house-medical" aria-hidden="true"></span>
-                                        <span class="collection-option-copy">
-                                            <span class="collection-option-label">Home kit</span>
-                                            <span class="collection-option-note" data-collection-note="home">Select to see savings</span>
-                                        </span>
-                                    </button>
-                                    <button class="collection-option" type="button" data-collection="lab" aria-pressed="false">
-                                        <span class="collection-option-icon fa-solid fa-hospital" aria-hidden="true"></span>
-                                        <span class="collection-option-copy">
-                                            <span class="collection-option-label">Clinic appointment</span>
-                                            <span class="collection-option-note" data-collection-note="lab">Highest price tier</span>
-                                        </span>
-                                    </button>
+                                    <div class="collection-option-shell">
+                                        <div class="collection-option-row">
+                                            <button class="collection-option" type="button" data-collection="home" aria-pressed="false">
+                                                <span class="collection-option-icon fa-solid fa-house-medical" aria-hidden="true"></span>
+                                                <span class="collection-option-copy">
+                                                    <span class="collection-option-label">Home kit</span>
+                                                    <span class="collection-option-note" data-collection-note="home">Select to see savings</span>
+                                                </span>
+                                            </button>
+                                            <button class="collection-info-trigger" type="button" data-collection-info="home" aria-expanded="false" aria-controls="collection-info-home" aria-label="How home kit testing works">?</button>
+                                        </div>
+                                        <div class="collection-info-inline" id="collection-info-home" data-collection-info-panel="home" hidden></div>
+                                    </div>
+                                    <div class="collection-option-shell">
+                                        <div class="collection-option-row">
+                                            <button class="collection-option" type="button" data-collection="lab" aria-pressed="false">
+                                                <span class="collection-option-icon fa-solid fa-hospital" aria-hidden="true"></span>
+                                                <span class="collection-option-copy">
+                                                    <span class="collection-option-label">Clinic appointment</span>
+                                                    <span class="collection-option-note" data-collection-note="lab">Highest price tier</span>
+                                                </span>
+                                            </button>
+                                            <button class="collection-info-trigger" type="button" data-collection-info="lab" aria-expanded="false" aria-controls="collection-info-lab" aria-label="How clinic testing works">?</button>
+                                        </div>
+                                        <div class="collection-info-inline" id="collection-info-lab" data-collection-info-panel="lab" hidden></div>
+                                    </div>
                                 </div>
                                 <p class="collection-status" id="collection-status">Select a collection route to confirm pricing and add this package.</p>
                                 <p class="collection-warning" id="collection-warning" hidden><span class="fa-solid fa-triangle-exclamation" aria-hidden="true"></span><span>Select a collection route before adding this package.</span></p>
@@ -125,7 +200,7 @@
                             <div class="detail-meta">
                                 <span id="detail-biomarkers">5 source tests</span>
                                 <span id="detail-goals">Baseline training reset</span>
-                                <span id="detail-turnaround">Results in 1 to 2 working days after processing</span>
+                                <span id="detail-turnaround">Results in 2–3 working days (clinic) or 3–5 working days (home kit)</span>
                             </div>
                             <div class="detail-elements-section">
                                 <div class="biomarker-head">
@@ -170,8 +245,8 @@
                         <div class="payment-content">
                             <header class="order-panel-header">
                                 <span class="eyebrow">Step 2</span>
-                                <h2>Continue in Stripe-hosted checkout</h2>
-                                <p>This demo uses fixed Stripe Payment Links for each package and collection combination. A pending order is stored first, then the user is redirected to Stripe.</p>
+                                <h2>Continue to secure checkout</h2>
+                                <p>Your order is saved first, then checkout opens with the package and collection route you selected.</p>
                             </header>
                             <div class="payment-stack">
                                 <form class="checkout-card card" id="checkout-form">
@@ -180,11 +255,11 @@
                                         <input id="checkout-email" name="checkout-email" type="email" autocomplete="email" placeholder="you@domain.com" readonly>
                                     </div>
                                     <div class="stripe-fallback">
-                                        <p class="order-meta">The site stores a pending order before redirecting to Stripe.</p>
-                                        <p class="order-meta">Payment confirmation is still manual in this demo version.</p>
+                                        <p class="order-meta">Your order is recorded before checkout opens, so your package and collection route are confirmed.</p>
+                                        <p class="order-meta">You will return to your account once payment is complete.</p>
                                     </div>
-                                    <button class="btn btn-primary checkout-button" type="submit">Continue to Stripe</button>
-                                    <p class="checkout-note">Configure the fixed URLs in <code>scripts/stripe-payment-links-config.js</code>.</p>
+                                    <button class="btn btn-primary checkout-button" type="submit">Continue to secure checkout</button>
+                                    <p class="checkout-note">You will return to your Ayuta account after payment.</p>
                                     <div class="status" id="checkout-status" role="status" aria-live="polite"></div>
                                 </form>
                             </div>
@@ -213,14 +288,14 @@
                 <div class="order-panel" data-order-panel="post">
                     <header class="order-panel-header">
                         <span class="eyebrow">Step 3</span>
-                        <h2>Track the pending order in your account</h2>
-                        <p>Until the Firebase-backed Stripe flow is added, the fixed links only create a pending order record. Results stay locked until payment is confirmed outside the browser.</p>
+                        <h2>Track the order in your account</h2>
+                        <p>After checkout, use your account to follow payment, collection, processing, and report status.</p>
                     </header>
                     <div class="card registration-card">
                         <div>
                             <p class="eyebrow">After payment</p>
                             <h3>Review the order record</h3>
-                            <p id="registration-message">Sign in before opening Stripe checkout so the pending order can be stored in your account.</p>
+                            <p id="registration-message">Sign in before completing checkout so your order is linked to your account.</p>
                         </div>
                         <div class="registration-actions">
                             <button class="btn btn-outline" type="button" data-register-trigger>Open account</button>
@@ -231,6 +306,19 @@
             </section>
         </div>
     </main>
+
+    <div class="collection-info-modal" data-collection-modal hidden>
+        <div class="collection-info-backdrop" data-collection-modal-close></div>
+        <div class="collection-info-panel" role="dialog" aria-modal="true" aria-labelledby="collection-info-title">
+            <button class="collection-info-close" type="button" data-collection-modal-close aria-label="Close collection information">
+                <span class="fa-solid fa-xmark" aria-hidden="true"></span>
+            </button>
+            <span class="eyebrow" data-collection-modal-kicker>Collection route</span>
+            <h2 id="collection-info-title" data-collection-modal-title>Collection route</h2>
+            <p class="collection-info-lead" data-collection-modal-lead></p>
+            <div class="collection-info-grid" data-collection-modal-details></div>
+        </div>
+    </div>
 
     <footer class="site-footer">
         <div class="container">

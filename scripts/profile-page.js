@@ -124,7 +124,7 @@
       return;
     }
     if (!snapshot.configured) {
-      setStatus(elements.lockedStatus, 'Authentication is not configured yet. Add your Firebase project values in scripts/auth-config.js.');
+      setStatus(elements.lockedStatus, 'Authentication is not configured yet. Add your project values in scripts/auth-config.js.');
       return;
     }
     setStatus(elements.lockedStatus, 'Sign in to view and edit your profile.');

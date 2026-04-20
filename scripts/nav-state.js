@@ -15,7 +15,10 @@
     profile: 'Profile',
     'payment-return': 'Payment',
     clinics: 'Clinics',
+    packages: 'Packages',
+    partnership: 'Gym partnerships',
     contact: 'Support',
+    about: 'About',
     home: 'Home'
   };
   const warmedDocuments = new Map();
@@ -606,6 +609,8 @@
     cartDrawerBound = true;
   };
 
+  const PUBLIC_TRANSITION_DELAY_MS = 200;
+
   const bindPageTransitions = () => {
     if (pageTransitionBound) return;
 
@@ -613,14 +618,9 @@
       const link = event.target.closest('a[data-nav-link]');
       if (!link || isModifiedClick(event)) return;
       if (link.classList.contains('nav-cart')) return;
-
-      const pageKey = getPageKey();
-      const session = readSession();
-      const snapshot = readAuthSnapshot();
-      const isLoggedIn = Boolean((snapshot && snapshot.user) || (session && session.email));
-      if (!isLoggedIn || !APP_PAGES.has(pageKey)) return;
       if (link.hasAttribute('download') || link.target === '_blank') return;
 
+      // Skip links with no href (active-page links have href removed)
       const href = link.getAttribute('href');
       if (!href) return;
 
@@ -629,15 +629,32 @@
       if (nextUrl.origin !== currentUrl.origin) return;
       if (nextUrl.pathname === currentUrl.pathname && nextUrl.search === currentUrl.search && nextUrl.hash === currentUrl.hash) return;
 
+      const pageKey = getPageKey();
+      const session = readSession();
+      const snapshot = readAuthSnapshot();
+      const isLoggedIn = Boolean((snapshot && snapshot.user) || (session && session.email));
+      const isAppPage = isLoggedIn && APP_PAGES.has(pageKey);
+
       event.preventDefault();
       closeCartDrawer();
       writeStoredTransition(nextUrl.href, getPageLabel(link, nextUrl));
-      warmPage(nextUrl);
-      openPageTransition(getPageLabel(link, nextUrl));
-      if (transitionTimer) window.clearTimeout(transitionTimer);
-      transitionTimer = window.setTimeout(() => {
-        window.location.assign(nextUrl.href);
-      }, APP_TRANSITION_DELAY_MS);
+
+      if (isAppPage) {
+        // Full overlay transition for authenticated app pages
+        warmPage(nextUrl);
+        openPageTransition(getPageLabel(link, nextUrl));
+        if (transitionTimer) window.clearTimeout(transitionTimer);
+        transitionTimer = window.setTimeout(() => {
+          window.location.assign(nextUrl.href);
+        }, APP_TRANSITION_DELAY_MS);
+      } else {
+        // Lightweight fade-out for public page navigation
+        document.body.classList.add('is-navigating-away');
+        if (transitionTimer) window.clearTimeout(transitionTimer);
+        transitionTimer = window.setTimeout(() => {
+          window.location.assign(nextUrl.href);
+        }, PUBLIC_TRANSITION_DELAY_MS);
+      }
     });
 
     pageTransitionBound = true;
@@ -669,6 +686,47 @@
     }
   };
 
+  const markActiveNavLink = (navRoot) => {
+    const pageKey = getPageKey();
+    // Clear any previously-marked links (e.g. after a soft refresh)
+    navRoot.querySelectorAll('[data-nav-key]').forEach((link) => {
+      link.classList.remove('is-active');
+      link.removeAttribute('aria-current');
+      if (link.dataset.originalHref) {
+        link.setAttribute('href', link.dataset.originalHref);
+        delete link.dataset.originalHref;
+      }
+    });
+    document.querySelectorAll('.app-sidebar-link[data-nav-key]').forEach((link) => {
+      link.classList.remove('is-active');
+      link.removeAttribute('aria-current');
+    });
+
+    // Match by data-nav-key or by the filename in data-path
+    const allNavLinks = [
+      ...navRoot.querySelectorAll('[data-nav-key]'),
+      ...document.querySelectorAll('.app-sidebar-link[data-nav-key]')
+    ];
+
+    allNavLinks.forEach((link) => {
+      const navKey = link.getAttribute('data-nav-key');
+      const dataPath = link.getAttribute('data-path') || '';
+      const pathKey = dataPath.split('/').pop().replace('.html', '') || 'home';
+      const isActive = navKey === pageKey || pathKey === pageKey ||
+        (pageKey === 'home' && (dataPath === 'index.html' || dataPath === ''));
+
+      if (!isActive) return;
+
+      link.classList.add('is-active');
+      link.setAttribute('aria-current', 'page');
+      // Neutralise the link so clicking it does nothing
+      if (link.hasAttribute('href')) {
+        link.dataset.originalHref = link.getAttribute('href');
+        link.removeAttribute('href');
+      }
+    });
+  };
+
   const init = (navRoot) => {
     if (!navRoot) return;
     bindLoginButtons(document);
@@ -677,6 +735,7 @@
     bindLogoutButtons();
     bindCartDrawer();
     bindPageTransitions();
+    markActiveNavLink(navRoot);
     refresh(navRoot);
     runStoredPageEntrance();
     window.addEventListener('ayuta:auth-updated', () => refresh(navRoot));

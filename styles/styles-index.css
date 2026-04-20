@@ -203,7 +203,7 @@ body.home footer {
 
 .pan-card,
 .tier-card,
-.results-demo {
+.results-preview {
     scroll-snap-align: start;
 }
 
@@ -272,6 +272,17 @@ body.home footer {
     color: rgba(251, 250, 247, 0.72);
 }
 
+.tier-for {
+    margin: 0;
+    color: var(--accent-dark);
+    font-size: 0.92rem;
+    font-weight: 800;
+}
+
+.tier-card--elite .tier-for {
+    color: rgba(251, 250, 247, 0.9);
+}
+
 .tier-meta {
     display: grid;
     gap: 4px;
@@ -295,33 +306,33 @@ body.home footer {
     border: 1px solid rgba(23, 27, 24, 0.08);
 }
 
-.results-demo {
+.results-preview {
     display: grid;
     gap: 16px;
     padding: 28px;
     border-radius: 34px;
 }
 
-.results-demo--dark {
+.results-preview--dark {
     background: linear-gradient(160deg, rgba(22, 37, 56, 0.98) 0%, rgba(22, 28, 24, 0.98) 100%);
     color: #fbfaf7;
     box-shadow: 0 30px 64px rgba(22, 37, 56, 0.18);
 }
 
-.results-demo-head,
-.results-demo-stats {
+.results-preview-head,
+.results-preview-stats {
     display: flex;
     justify-content: space-between;
     gap: 12px;
     align-items: center;
 }
 
-.results-demo-head span,
-.results-demo--dark small {
+.results-preview-head span,
+.results-preview--dark small {
     color: rgba(251, 250, 247, 0.64);
 }
 
-.results-demo-chart {
+.results-preview-chart {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     align-items: end;
@@ -332,13 +343,13 @@ body.home footer {
     background: linear-gradient(180deg, rgba(251, 250, 247, 0.06), rgba(220, 231, 214, 0.14));
 }
 
-.results-demo-chart span {
+.results-preview-chart span {
     display: block;
     border-radius: 18px 18px 8px 8px;
     background: linear-gradient(180deg, #e0c6b5 0%, #dce7d6 38%, #55755e 100%);
 }
 
-.results-demo-axis {
+.results-preview-axis {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     color: rgba(251, 250, 247, 0.72);
@@ -375,12 +386,76 @@ body.home footer {
     color: rgba(251, 250, 247, 0.76);
 }
 
+/* Laptop (1101–1440px): hero stays two-column but dark card is too narrow for
+   a 3-col step grid. Switch route-cards to compact horizontal rows instead. */
+@media (max-width: 1440px) {
+    .hero-stage-grid {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+
+    .route-card {
+        grid-template-columns: 44px 1fr;
+        gap: 4px 14px;
+        padding: 12px 16px;
+        align-items: start;
+    }
+
+    .route-card .route-index {
+        grid-row: 1 / span 2;
+        align-self: center;
+    }
+
+    .route-card h3 {
+        grid-column: 2;
+        grid-row: 1;
+        margin: 0;
+        font-size: 0.96rem;
+    }
+
+    .route-card p {
+        grid-column: 2;
+        grid-row: 2;
+    }
+}
+
+/* ≤1100px: hero collapses to single column. Stage now spans full width,
+   so restore the 3-column card grid with full card layout. */
 @media (max-width: 1100px) {
     .hero-grid {
         grid-template-columns: 1fr;
     }
+
+    .hero-stage-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .route-card {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 18px;
+        align-items: start;
+    }
+
+    .route-card .route-index {
+        grid-row: auto;
+        align-self: auto;
+    }
+
+    .route-card h3 {
+        grid-column: auto;
+        grid-row: auto;
+        font-size: 1rem;
+    }
+
+    .route-card p {
+        grid-column: auto;
+        grid-row: auto;
+    }
 }
 
+/* ≤900px: stage collapses back to single column */
 @media (max-width: 900px) {
     .hero-stage-grid {
         grid-template-columns: 1fr;
@@ -407,7 +482,7 @@ body.home footer {
     }
 
     .hero-stage,
-    .results-demo,
+    .results-preview,
     .tier-card,
     .cta-band-inner {
         padding: 22px;

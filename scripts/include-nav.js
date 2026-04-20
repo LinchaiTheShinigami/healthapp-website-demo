@@ -35,6 +35,7 @@ function setActiveLink(navRoot) {
   if (page === 'payment-return.html') activeKey = 'order';
   if (page === 'webapp.html') activeKey = 'mobile';
   if (page === 'clinics.html') activeKey = 'clinics';
+  if (page === 'partnership.html') activeKey = 'partnership';
   if (page === 'about.html') activeKey = 'about';
   if (page === 'contact.html') activeKey = 'contact';
   if (page === 'orders.html') activeKey = 'orders';

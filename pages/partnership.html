@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ayuta Health partners with gyms and coaches to offer member blood testing, coach-friendly opt-ins, and anonymised programme insight.">
+    <link rel="canonical" href="https://ayuta.co.uk/pages/partnership.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Ayuta Health">
+    <meta property="og:title" content="Gym Partnerships — Ayuta Health">
+    <meta property="og:description" content="Give gym members a clear way to test, opt in to share results with their coach, and contribute to anonymised programme insight.">
+    <meta property="og:url" content="https://ayuta.co.uk/pages/partnership.html">
+    <meta property="og:image" content="https://ayuta.co.uk/Images/Logo/ayuta-og.png">
+    <title>Gym Partnerships | Ayuta Health</title>
+    <link rel="icon" href="../Images/Logo/ayuta_favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../styles/site-base.css">
+    <link rel="stylesheet" href="../styles/styles-partnership.css">
+    <script src="../scripts/app-store.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-app-compat.js" integrity="sha384-Znt+uHtXAdOhiGTGyIwmBNXlsc5TOAuAzcCG0eAE2dulpw9KiB0JhB34uEGwuHs8" crossorigin="anonymous" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-auth-compat.js" integrity="sha384-A6cYBBWGHa59uc1lMxnsMCEdmpRGH6sFBcvsp5iy586ULeLLZp7CTav7jH/SrDcr" crossorigin="anonymous" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore-compat.js" integrity="sha384-XfsHRWyIpDxqmBgRls8NyklJPVxNtAPTuASFjpt47tsNDKvc13Ibf1leNHrxGLax" crossorigin="anonymous" defer></script>
+    <script src="../scripts/auth-config.js" defer></script>
+    <script src="../scripts/firebase-auth.js" defer></script>
+    <script src="../scripts/nav-state.js" defer></script>
+    <script src="../scripts/account-modal.js" defer></script>
+    <script src="../scripts/include-nav.js" defer></script>
+    <script src="../scripts/partnership-page.js" defer></script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Ayuta Health Gym Partnership Programme",
+      "description": "Ayuta Health partners with gyms, PT studios, and performance coaches to offer member blood testing, consent-led coach opt-ins, and anonymised programme insight.",
+      "provider": { "@type": "Organization", "name": "Ayuta Health", "url": "https://ayuta.co.uk" },
+      "serviceType": "Blood Testing Partnership",
+      "url": "https://ayuta.co.uk/pages/partnership.html"
+    }
+    </script>
+</head>
+<body class="partnership-body">
+    <div id="nav-placeholder"></div>
+
+    <main class="partnership-page">
+        <section class="partnership-hero section">
+            <div class="container partnership-hero-grid">
+                <div class="partnership-copy">
+                    <span class="eyebrow">Gym Partnerships</span>
+                    <h1>Blood testing routes for gyms, PT studios, and performance coaches.</h1>
+                    <p class="section-subtitle">Give members a clear way to buy a blood panel, choose home or clinic collection, and share useful context with their coach when they opt in.</p>
+                    <div class="partnership-actions">
+                        <a class="btn btn-primary" href="#partner-contact">Discuss a partnership</a>
+                        <a class="btn btn-ghost" href="../index.html#panels">Review member tiers</a>
+                    </div>
+                    <div class="partnership-proof">
+                        <span>Foundation, Performance, Elite</span>
+                        <span>13 partner clinic locations</span>
+                        <span>2–5 day result timeline</span>
+                    </div>
+                </div>
+
+                <aside class="partnership-sidecard">
+                    <span class="eyebrow">Use case</span>
+                    <h2>Useful for gyms that want health insight without becoming a clinic.</h2>
+                    <div class="partnership-sidegrid">
+                        <article>
+                            <strong>Members stay in control</strong>
+                            <p>They buy their own test, choose home kit or clinic, and decide whether their coach sees selected results.</p>
+                        </article>
+                        <article>
+                            <strong>Coaches get clearer signals</strong>
+                            <p>Training load, recovery, and nutrition decisions can be informed by actual blood markers rather than guesswork.</p>
+                        </article>
+                        <article>
+                            <strong>Gyms get programme insight</strong>
+                            <p>Anonymised, aggregated data helps coaches spot broad trends across their member base without exposing individual records.</p>
+                        </article>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <section class="section partnership-models" id="models">
+            <div class="container partnership-section-shell">
+                <div class="partnership-section-head">
+                    <span class="eyebrow">Partnership Models</span>
+                    <h2 class="section-title">Two ways to start.</h2>
+                    <p class="section-subtitle">Start with a simple member opt-in, then add aggregate insight once volume and consent are in place.</p>
+                </div>
+                <div class="model-grid">
+                    <article class="model-card card">
+                        <span class="model-index">01</span>
+                        <h3>Individual Opt-In</h3>
+                        <p>A member buys their own Ayuta package and opts in to share selected results with their coach or gym programme. Opting in unlocks a member discount. Members who prefer privacy can still test anonymously while contributing aggregated data to programme development.</p>
+                        <div class="model-points">
+                            <span>Member pays directly</span>
+                            <span>Discount for opting in</span>
+                            <span>Consent-led data sharing</span>
+                            <span>Anonymous option available</span>
+                        </div>
+                    </article>
+                    <article class="model-card model-card--dark">
+                        <span class="model-index">02</span>
+                        <h3>Aggregated Anonymous Insight</h3>
+                        <p>Members test independently and contribute anonymised data to a programme-level view. Coaches see broad trends across the member base — recovery patterns, deficiency profiles, training readiness — without ever accessing individual results.</p>
+                        <div class="model-points">
+                            <span>Anonymous group patterns</span>
+                            <span>Programme-level insight</span>
+                            <span>No individual disclosure</span>
+                            <span>Useful for programme design</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section partnership-benefits">
+            <div class="container benefit-grid">
+                <article class="benefit-card card">
+                    <span class="eyebrow">Benefits</span>
+                    <h2>Make testing practical for active members.</h2>
+                    <div class="benefit-list">
+                        <article>
+                            <strong>Better package fit</strong>
+                            <p>Foundation for first panels, Performance for frequent training, Elite for tracking deeper trends.</p>
+                        </article>
+                        <article>
+                            <strong>Clearer collection choices</strong>
+                            <p>Home capillary kits and clinic venous draws are explained before checkout.</p>
+                        </article>
+                        <article>
+                            <strong>Follow-up in one account</strong>
+                            <p>Orders, collection route, processing status, and reports live together.</p>
+                        </article>
+                    </div>
+                </article>
+
+                <article class="network-card">
+                    <span class="eyebrow">Proof Point</span>
+                    <h2>13 clinic locations support the current rollout.</h2>
+                    <p>Members can use the clinic network for venous draws, or choose a home kit when location or schedule makes clinic collection harder.</p>
+                    <a class="text-button text-button--light" href="../pages/clinics.html">View clinic network</a>
+                </article>
+            </div>
+        </section>
+
+        <section class="section partnership-timeline">
+            <div class="container timeline-shell">
+                <div class="partnership-section-head">
+                    <span class="eyebrow">Implementation</span>
+                    <h2 class="section-title">A light rollout before deeper integration.</h2>
+                </div>
+                <div class="timeline-grid">
+                    <article>
+                        <span>Week 1</span>
+                        <strong>Confirm model</strong>
+                        <p>Choose opt-in, aggregate insight, or a phased mix based on member base and coaching workflow.</p>
+                    </article>
+                    <article>
+                        <span>Week 2</span>
+                        <strong>Set member route</strong>
+                        <p>Agree pricing, discount logic, collection guidance, and the messaging members see.</p>
+                    </article>
+                    <article>
+                        <span>Week 3</span>
+                        <strong>Launch pilot</strong>
+                        <p>Open bookings to a defined cohort and collect operational feedback.</p>
+                    </article>
+                    <article>
+                        <span>Future</span>
+                        <strong>Booking integration</strong>
+                        <p>Real-time clinic availability may be added as booking integrations mature.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section partnership-contact" id="partner-contact">
+            <div class="container partnership-contact-grid">
+                <div class="contact-intro">
+                    <span class="eyebrow">Partner Contact</span>
+                    <h2>Tell us how your gym would use Ayuta.</h2>
+                    <p class="section-subtitle">Use the general Ayuta inbox for now. Include the size of your member base, coaching model, and whether you want opt-in testing or aggregate insight first.</p>
+                    <a class="btn btn-ghost" href="mailto:ayuta.info@gmail.com?subject=Ayuta%20gym%20partnership">Email Ayuta</a>
+                </div>
+
+                <form class="partner-form card" action="mailto:ayuta.info@gmail.com" method="POST" data-mailto="ayuta.info@gmail.com">
+                    <div class="partner-form-head">
+                        <span class="eyebrow">Send enquiry</span>
+                        <h3>Partnership details</h3>
+                    </div>
+                    <div class="form-row">
+                        <label for="partner-name">Name</label>
+                        <input type="text" id="partner-name" name="name" required autocomplete="name" placeholder="Your name">
+                    </div>
+                    <div class="form-row">
+                        <label for="partner-email">Email</label>
+                        <input type="email" id="partner-email" name="email" required autocomplete="email" placeholder="you@domain.com">
+                    </div>
+                    <div class="form-row">
+                        <label for="partner-gym">Gym or studio</label>
+                        <input type="text" id="partner-gym" name="gym" required autocomplete="organization" placeholder="Gym name">
+                    </div>
+                    <div class="form-row">
+                        <label for="partner-model">Preferred model</label>
+                        <select id="partner-model" name="model">
+                            <option value="Individual Opt-In">Individual Opt-In</option>
+                            <option value="Aggregated Anonymous Insight">Aggregated Anonymous Insight</option>
+                            <option value="Both models">Both models</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <label for="partner-message">What are you trying to solve?</label>
+                        <textarea id="partner-message" name="message" rows="5" required placeholder="Share your member base, coaching setup, and ideal launch timing."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send partnership enquiry</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div>
+                <p class="footer-title">Ayuta Health</p>
+                <p>Blood testing routes for members, coaches, and performance programmes.</p>
+            </div>
+            <div>
+                <p class="footer-title">Explore</p>
+                <div class="footer-links">
+                    <a href="../index.html">Home</a>
+                    <a href="../index.html#panels">Packages</a>
+                    <a href="../pages/clinics.html">Clinics</a>
+                </div>
+            </div>
+            <div>
+                <p class="footer-title">Company</p>
+                <div class="footer-links">
+                    <a href="../pages/about.html">About</a>
+                    <a href="../pages/contact.html">Contact</a>
+                </div>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <p>&copy; 2026 Ayuta Ltd. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

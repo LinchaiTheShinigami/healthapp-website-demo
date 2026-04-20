@@ -217,11 +217,25 @@ body.has-app-shell .order-subnav {
     gap: 10px;
 }
 
+.collection-option-shell {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+}
+
+.collection-option-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 38px;
+    gap: 8px;
+    align-items: stretch;
+}
+
 .collection-option {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
     gap: 10px;
     align-items: center;
+    width: 100%;
     border-radius: 999px;
     border: 1px solid rgba(85, 117, 94, 0.22);
     background: rgba(255, 255, 255, 0.78);
@@ -229,6 +243,27 @@ body.has-app-shell .order-subnav {
     font-weight: 800;
     color: var(--muted);
     cursor: pointer;
+}
+
+.collection-info-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    min-width: 38px;
+    border-radius: 50%;
+    border: 1px solid rgba(251, 250, 247, 0.22);
+    background: rgba(251, 250, 247, 0.12);
+    color: #fbfaf7;
+    font-size: 0.9rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.collection-info-trigger:hover,
+.collection-info-trigger[aria-expanded="true"] {
+    background: rgba(220, 231, 214, 0.24);
+    border-color: rgba(220, 231, 214, 0.42);
 }
 
 .collection-option.is-active,
@@ -282,6 +317,30 @@ body.has-app-shell .order-subnav {
     color: #f0c45a;
     font-size: 0.82rem;
     font-weight: 800;
+}
+
+.collection-info-inline {
+    display: grid;
+    gap: 8px;
+    padding: 12px 14px;
+    border-radius: 16px;
+    background: rgba(251, 250, 247, 0.1);
+    border: 1px solid rgba(251, 250, 247, 0.12);
+    color: rgba(251, 250, 247, 0.76);
+    font-size: 0.82rem;
+}
+
+.collection-info-inline strong {
+    color: #fbfaf7;
+}
+
+.collection-info-inline ul {
+    margin: 0;
+    padding-left: 18px;
+}
+
+.collection-info-inline li + li {
+    margin-top: 5px;
 }
 
 .goal-filter {
@@ -348,6 +407,13 @@ body.has-app-shell .order-subnav {
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--accent-dark);
+}
+
+.product-for {
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.35;
 }
 
 .product-name {
@@ -750,6 +816,84 @@ body.has-app-shell .order-subnav {
     font-size: 0.84rem;
 }
 
+.collection-info-modal {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    z-index: 390;
+}
+
+.collection-info-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(18, 22, 19, 0.52);
+    backdrop-filter: blur(8px);
+}
+
+.collection-info-panel {
+    position: relative;
+    z-index: 1;
+    width: min(620px, 92%);
+    display: grid;
+    gap: 16px;
+    padding: 28px;
+    border-radius: 28px;
+    background: rgba(251, 247, 240, 0.98);
+    border: 1px solid rgba(23, 27, 24, 0.08);
+    box-shadow: var(--shadow);
+}
+
+.collection-info-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid rgba(23, 27, 24, 0.12);
+    background: rgba(255, 255, 255, 0.88);
+    cursor: pointer;
+}
+
+.collection-info-panel h2,
+.collection-info-panel p {
+    margin: 0;
+}
+
+.collection-info-panel h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3vw, 2.7rem);
+    line-height: 0.96;
+}
+
+.collection-info-lead {
+    color: var(--muted);
+}
+
+.collection-info-grid {
+    display: grid;
+    gap: 12px;
+}
+
+.collection-info-grid article {
+    display: grid;
+    gap: 5px;
+    padding: 16px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(23, 27, 24, 0.08);
+}
+
+.collection-info-grid strong {
+    color: var(--ink);
+}
+
+.collection-info-grid span {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
 .stripe-fallback {
     display: grid;
     gap: 10px;
@@ -999,7 +1143,6 @@ body.has-app-shell .order-subnav {
     }
 
     .collection-toggle,
-    .product-list-item,
     .detail-actions,
     .registration-actions,
     .product-side {
@@ -1010,6 +1153,10 @@ body.has-app-shell .order-subnav {
 
     .product-list-item {
         grid-template-columns: 1fr;
+    }
+
+    .collection-option-row {
+        grid-template-columns: minmax(0, 1fr) 38px;
     }
 
     .product-side {

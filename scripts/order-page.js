@@ -7,21 +7,42 @@ document.addEventListener('DOMContentLoaded', function () {
   const COLLECTION_CONTENT = {
     home: {
       label: 'Home kit',
-      message: 'Home kit selected. We send the sampling kit with return instructions and prepaid packaging.',
-      summary: 'Home kit selected with return packaging and guided sample instructions.',
+      message: 'Home kit selected. Complete a finger-prick sample at home, then return it by post to the lab using the prepaid packaging included.',
+      summary: 'Home kit with finger-prick sampling and prepaid return post. Results in 3–5 working days.',
       basketLabel: 'Home kit'
     },
     lab: {
       label: 'Clinic appointment',
-      message: 'Clinic appointment selected. Use the current clinic network page to choose the most suitable location.',
-      summary: 'Clinic appointment selected. Choose from the current clinic network before checkout.',
+      message: 'Clinic appointment selected. Choose from 13 partner locations for a full venous draw with same-day processing.',
+      summary: 'Clinic appointment with venous draw at one of 13 partner locations. Results in 2–3 working days.',
       basketLabel: 'Clinic appointment'
+    }
+  };
+  const COLLECTION_INFO = {
+    home: {
+      kicker: 'Home kit',
+      title: 'Capillary finger-prick testing from home',
+      lead: 'Use the home kit when privacy and schedule flexibility matter most.',
+      details: [
+        ['Sample type', 'Finger-prick capillary sample collected at home using the kit provided.'],
+        ['Return route', 'Return the completed sample by post to the lab using the prepaid packaging included with your kit.'],
+        ['Timeline', 'Results are typically ready within 3–5 working days, including return postage and lab processing.']
+      ]
+    },
+    lab: {
+      kicker: 'Clinic appointment',
+      title: 'Venous blood draw at a partner clinic',
+      lead: 'Use the clinic route when you want a professional draw and same-day processing.',
+      details: [
+        ['Sample type', 'Full venous draw completed by a trained phlebotomist.'],
+        ['Network', '13 partner locations are available across the current clinic footprint.'],
+        ['Timeline', 'Results are typically ready within 2–3 working days from your clinic appointment.'],
+        ['Booking', 'Book your clinic appointment through this website when placing your order.']
+      ]
     }
   };
   const stripePaymentLinks = root.AYUTA_STRIPE_PAYMENT_LINKS || {};
 
-  // Package basis now comes from the Sussex Pathology B2B menu. The Ayuta tiers
-  // are commercial bundles built from those listed panels and biomarkers.
   const catalog = {
     foundation: {
       id: 'foundation',
@@ -31,10 +52,8 @@ document.addEventListener('DOMContentLoaded', function () {
       goals: ['foundation'],
       homePrice: 149,
       labPrice: 199,
-      turnaround: 'Results in 1 to 2 working days after processing',
+      turnaround: 'Results in 3–5 working days (home kit) or 2–3 working days (clinic)',
       focus: 'Baseline training reset',
-      source:
-        'Source combination from the Sussex Pathology menu: Full Blood Count Blood Test + Ultimate Vitamins Blood Test + Ultimate Iron Blood Test + Cholesterol Profile Blood Test + HbA1c.',
       elements: [
         'Full Blood Count Blood Test',
         'Ultimate Vitamins Blood Test',
@@ -57,10 +76,8 @@ document.addEventListener('DOMContentLoaded', function () {
       goals: ['performance'],
       homePrice: 249,
       labPrice: 299,
-      turnaround: 'Results in 1 to 2 working days after processing',
+      turnaround: 'Results in 3–5 working days (home kit) or 2–3 working days (clinic)',
       focus: 'Training and recovery focus',
-      source:
-        'Source combination from the Sussex Pathology menu: Foundation package + Ultimate Testosterone Blood Test + Cortisol + C-Reactive Protein + Apolipoprotein A + Apolipoprotein B + Zinc.',
       elements: [
         'Full Blood Count Blood Test',
         'Ultimate Vitamins Blood Test',
@@ -89,10 +106,8 @@ document.addEventListener('DOMContentLoaded', function () {
       goals: ['elite'],
       homePrice: 399,
       labPrice: 499,
-      turnaround: 'Results in 1 to 2 working days after processing',
+      turnaround: 'Results in 3–5 working days (home kit) or 2–3 working days (clinic)',
       focus: 'Deep performance monitoring',
-      source:
-        'Source combination from the Sussex Pathology menu: Performance package + Ultimate Thyroid Function Blood Test + Oestradiol + Prolactin + Folic Acid.',
       elements: [
         'Full Blood Count Blood Test',
         'Ultimate Vitamins Blood Test',
@@ -149,6 +164,14 @@ document.addEventListener('DOMContentLoaded', function () {
     collectionStatus: document.getElementById('collection-status'),
     collectionWarning: document.getElementById('collection-warning'),
     collectionNotes: Array.from(document.querySelectorAll('[data-collection-note]')),
+    collectionInfoButtons: Array.from(document.querySelectorAll('[data-collection-info]')),
+    collectionInfoPanels: Array.from(document.querySelectorAll('[data-collection-info-panel]')),
+    collectionModal: document.querySelector('[data-collection-modal]'),
+    collectionModalKicker: document.querySelector('[data-collection-modal-kicker]'),
+    collectionModalTitle: document.querySelector('[data-collection-modal-title]'),
+    collectionModalLead: document.querySelector('[data-collection-modal-lead]'),
+    collectionModalDetails: document.querySelector('[data-collection-modal-details]'),
+    collectionModalClose: Array.from(document.querySelectorAll('[data-collection-modal-close]')),
     quizPriority: document.getElementById('quiz-priority'),
     quizIntensity: document.getElementById('quiz-intensity'),
     quizButton: document.getElementById('recommendation-button'),
@@ -159,6 +182,8 @@ document.addEventListener('DOMContentLoaded', function () {
   let currentStep = 'select';
   let selectedProductId = null;
   let requestedStep = new URLSearchParams(root.location.search).get('step');
+  let activeInfoTrigger = null;
+  const mobileCollectionInfoQuery = root.matchMedia ? root.matchMedia('(max-width: 760px)') : null;
 
   const getAuthSnapshot = () =>
     root.AyutaAuth && typeof root.AyutaAuth.getSnapshot === 'function'
@@ -207,6 +232,96 @@ document.addEventListener('DOMContentLoaded', function () {
     button.disabled = false;
     button.classList.remove('is-loading');
     if (button.dataset.originalLabel) button.textContent = button.dataset.originalLabel;
+  };
+
+  const isMobileCollectionInfo = () => Boolean(mobileCollectionInfoQuery?.matches);
+
+  const getCollectionInfo = (method) => COLLECTION_INFO[method] || null;
+
+  const setInfoButtonExpanded = (method, isExpanded) => {
+    elements.collectionInfoButtons.forEach((button) => {
+      if (button.getAttribute('data-collection-info') === method) {
+        button.setAttribute('aria-expanded', String(isExpanded));
+      } else if (isExpanded) {
+        button.setAttribute('aria-expanded', 'false');
+      }
+    });
+  };
+
+  const renderCollectionInfoPanel = (panel, method) => {
+    const info = getCollectionInfo(method);
+    if (!panel || !info) return;
+    panel.innerHTML = `
+      <strong>${info.title}</strong>
+      <ul>
+        ${info.details.map(([label, value]) => `<li><strong>${label}:</strong> ${value}</li>`).join('')}
+      </ul>
+    `;
+  };
+
+  const closeInlineCollectionInfo = () => {
+    elements.collectionInfoPanels.forEach((panel) => {
+      panel.hidden = true;
+    });
+    elements.collectionInfoButtons.forEach((button) => {
+      button.setAttribute('aria-expanded', 'false');
+    });
+  };
+
+  const openInlineCollectionInfo = (method) => {
+    elements.collectionInfoPanels.forEach((panel) => {
+      const isTarget = panel.getAttribute('data-collection-info-panel') === method;
+      if (isTarget) renderCollectionInfoPanel(panel, method);
+      panel.hidden = !isTarget;
+    });
+    setInfoButtonExpanded(method, true);
+  };
+
+  const renderCollectionInfoModal = (method) => {
+    const info = getCollectionInfo(method);
+    if (!info) return false;
+    if (elements.collectionModalKicker) elements.collectionModalKicker.textContent = info.kicker;
+    if (elements.collectionModalTitle) elements.collectionModalTitle.textContent = info.title;
+    if (elements.collectionModalLead) elements.collectionModalLead.textContent = info.lead;
+    if (elements.collectionModalDetails) {
+      elements.collectionModalDetails.innerHTML = info.details
+        .map(([label, value]) => `<article><strong>${label}</strong><span>${value}</span></article>`)
+        .join('');
+    }
+    return true;
+  };
+
+  const closeCollectionModal = () => {
+    if (!elements.collectionModal) return;
+    elements.collectionModal.hidden = true;
+    document.body.classList.remove('modal-open');
+    elements.collectionInfoButtons.forEach((button) => {
+      button.setAttribute('aria-expanded', 'false');
+    });
+    if (activeInfoTrigger) {
+      activeInfoTrigger.focus();
+      activeInfoTrigger = null;
+    }
+  };
+
+  const openCollectionModal = (method, trigger) => {
+    if (!elements.collectionModal || !renderCollectionInfoModal(method)) return;
+    activeInfoTrigger = trigger || null;
+    closeInlineCollectionInfo();
+    elements.collectionModal.hidden = false;
+    document.body.classList.add('modal-open');
+    setInfoButtonExpanded(method, true);
+    elements.collectionModal.querySelector('[data-collection-modal-close]')?.focus();
+  };
+
+  const toggleCollectionInfo = (method, trigger) => {
+    if (!getCollectionInfo(method)) return;
+    if (isMobileCollectionInfo()) {
+      if (trigger?.getAttribute('aria-expanded') === 'true') closeInlineCollectionInfo();
+      else openInlineCollectionInfo(method);
+      return;
+    }
+    openCollectionModal(method, trigger);
   };
 
   const saveState = () => {
@@ -372,7 +487,7 @@ document.addEventListener('DOMContentLoaded', function () {
     container.innerHTML = '';
 
     if (state.cart.length === 0) {
-      container.innerHTML = '<p class="order-meta">No package selected yet. Choose one tier to continue to the fixed Stripe Payment Link.</p>';
+      container.innerHTML = '<p class="order-meta">No package selected yet. Choose one tier to continue to checkout.</p>';
       return;
     }
 
@@ -464,18 +579,18 @@ document.addEventListener('DOMContentLoaded', function () {
     const snapshot = getAuthSnapshot();
 
     if (!snapshot?.configured) {
-      elements.registerMessage.textContent = 'Add your Firebase project details before opening Stripe checkout.';
+      elements.registerMessage.textContent = 'Account services are not configured yet. Add the project values before opening checkout.';
       return;
     }
 
     if (!snapshot.user) {
-      elements.registerMessage.textContent = 'Sign in before opening Stripe checkout so the pending order can be saved to your account.';
+      elements.registerMessage.textContent = 'Sign in before opening checkout so the order can be saved to your account.';
       return;
     }
 
     const latestOrder = state.orders[0];
     elements.registerMessage.textContent = !latestOrder
-      ? 'You are signed in. Choose one package and continue to the hosted Stripe checkout.'
+      ? 'You are signed in. Choose one package and continue to hosted checkout.'
       : `Latest order ${latestOrder.id} is ${latestOrder.status}. Results stay locked until payment is confirmed and a report is attached.`;
   };
 
@@ -545,6 +660,36 @@ document.addEventListener('DOMContentLoaded', function () {
     })
   );
 
+  elements.collectionInfoButtons.forEach((button) =>
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      toggleCollectionInfo(button.getAttribute('data-collection-info'), button);
+    })
+  );
+
+  elements.collectionModalClose.forEach((node) => {
+    node.addEventListener('click', closeCollectionModal);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeCollectionModal();
+      closeInlineCollectionInfo();
+    }
+  });
+
+  if (mobileCollectionInfoQuery) {
+    const handleInfoModeChange = () => {
+      closeCollectionModal();
+      closeInlineCollectionInfo();
+    };
+    if (typeof mobileCollectionInfoQuery.addEventListener === 'function') {
+      mobileCollectionInfoQuery.addEventListener('change', handleInfoModeChange);
+    } else if (typeof mobileCollectionInfoQuery.addListener === 'function') {
+      mobileCollectionInfoQuery.addListener(handleInfoModeChange);
+    }
+  }
+
   elements.productItems.forEach((item) => item.addEventListener('click', () => selectProduct(item)));
 
   if (elements.quizButton) elements.quizButton.addEventListener('click', applyRecommendation);
@@ -613,7 +758,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!isConfiguredPaymentLink(paymentLinkUrl)) {
         setStatus(
           elements.checkoutStatus,
-          'This Stripe Payment Link is not configured yet. Add the fixed URLs in scripts/stripe-payment-links-config.js.',
+          'Checkout is not configured for this package yet. Add the hosted checkout URL before taking payment.',
           'error'
         );
         return;
@@ -624,7 +769,7 @@ document.addEventListener('DOMContentLoaded', function () {
         setButtonLoading(submitButton, true);
       }
 
-      setStatus(elements.checkoutStatus, 'Saving your pending order and redirecting to Stripe...', 'loading');
+      setStatus(elements.checkoutStatus, 'Saving your order and opening checkout...', 'loading');
 
       try {
         const totals = store.getTotals(state.cart, TAX_RATE, 0);
@@ -639,8 +784,8 @@ document.addEventListener('DOMContentLoaded', function () {
           collectionMethod: state.collectionMethod,
           packageTier: selectedItem.id,
           paymentProvider: 'stripe_payment_link',
-          paymentMode: 'fixed-link-demo',
-          paymentVerification: 'manual',
+          paymentMode: 'hosted_checkout',
+          paymentVerification: 'pending_confirmation',
           paymentLinkUrl
         };
 
@@ -660,7 +805,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error(error);
         setStatus(
           elements.checkoutStatus,
-          error.message || 'The pending order could not be saved before redirecting to Stripe.',
+          error.message || 'The order could not be saved before checkout opened.',
           'error'
         );
         if (submitButton) {

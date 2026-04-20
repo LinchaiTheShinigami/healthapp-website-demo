@@ -82,7 +82,7 @@
                 if (!W || !H){ requestAnimationFrame(draw); return; }
                 if (started === undefined) started = now;
                 ctx.clearRect(0,0,W,H);
-                const dt = 1/60; // fixed timestep
+                const dt = 1/60; // constant timestep
                 pieces.forEach(p=>{
                     p.vy += 320*dt; // gravity pulls down
                     p.x += p.vx*dt;

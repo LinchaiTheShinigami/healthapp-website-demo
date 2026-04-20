@@ -31,6 +31,8 @@ html {
     font-size: 16px;
     scroll-behavior: smooth;
     scroll-padding-top: 112px;
+    /* Prevent a white flash on page load — match the warm base of the page gradient */
+    background-color: #f3ede1;
 }
 
 html.a11y-text-lg {
@@ -506,14 +508,17 @@ textarea:focus-visible {
     border-radius: 999px;
 }
 
-.nav-link:hover,
-.nav-link.is-active {
+.nav-link:hover {
     color: var(--ink);
     background: rgba(220, 231, 214, 0.74);
 }
 
 .nav-link.is-active {
-    box-shadow: inset 0 0 0 1px rgba(85, 117, 94, 0.26);
+    color: var(--accent-dark);
+    background: rgba(85, 117, 94, 0.14);
+    box-shadow: inset 0 0 0 1.5px rgba(85, 117, 94, 0.36);
+    cursor: default;
+    pointer-events: none;
 }
 
 .nav-cta {
@@ -1186,7 +1191,19 @@ body.cart-open {
     animation: ayuta-spin 0.7s linear infinite;
 }
 
+/* Fade out the page content before navigating away (public page transitions) */
+body.is-navigating-away .site-nav,
+body.is-navigating-away > main,
+body.is-navigating-away > header,
+body.is-navigating-away .site-footer {
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    pointer-events: none;
+}
+
 body.has-page-entrance .site-nav,
+body.has-page-entrance > header,
 body.has-page-entrance > main,
 body.has-page-entrance .app-sidebar-shell,
 body.has-page-entrance .app-cart,
@@ -1197,6 +1214,7 @@ body.has-page-entrance .order-subnav-shell {
 }
 
 body.is-page-entering .site-nav,
+body.is-page-entering > header,
 body.is-page-entering > main,
 body.is-page-entering .app-sidebar-shell,
 body.is-page-entering .app-cart,
@@ -1210,6 +1228,36 @@ body.is-page-entering .order-subnav-shell {
     to {
         transform: rotate(360deg);
     }
+}
+
+/* CSS-driven entrance animation — runs immediately on paint, before any JS.
+   Ensures smooth arrival on every page load without relying on JS class toggling. */
+@keyframes ayuta-page-enter {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+body > header,
+body > main {
+    animation: ayuta-page-enter 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+body > footer {
+    animation: ayuta-page-enter 0.38s cubic-bezier(0.22, 1, 0.36, 1) 0.06s both;
+}
+
+/* When the app-shell JS transition is managing entrance, suppress the CSS animation
+   so the two mechanisms don't fight each other. */
+body.has-page-entrance > header,
+body.has-page-entrance > main,
+body.has-page-entrance > footer {
+    animation: none;
 }
 
 body.is-large-text {

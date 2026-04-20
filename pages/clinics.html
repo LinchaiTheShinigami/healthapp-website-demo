@@ -3,6 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Find your nearest Ayuta Health partner clinic. 13 locations across London, Sussex, Kent, Surrey, and the South West for professional venous blood collection.">
+    <link rel="canonical" href="https://ayuta.co.uk/pages/clinics.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Ayuta Health">
+    <meta property="og:title" content="Clinic Locations — Ayuta Health">
+    <meta property="og:description" content="13 partner clinic locations across London, Sussex, Kent, Surrey, and the South West for professional blood collection.">
+    <meta property="og:url" content="https://ayuta.co.uk/pages/clinics.html">
+    <meta property="og:image" content="https://ayuta.co.uk/Images/Logo/ayuta-og.png">
     <title>Clinic Locations | Ayuta Health</title>
     <link rel="icon" href="../Images/Logo/ayuta_favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../styles/site-base.css">
@@ -17,6 +25,30 @@
     <script src="../scripts/account-modal.js" defer></script>
     <script src="../scripts/include-nav.js" defer></script>
     <script src="../scripts/clinics-page.js" defer></script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Ayuta Health Partner Clinic Locations",
+      "description": "13 partner clinic locations across London, Sussex, Kent, Surrey, and the South West offering venous blood draws for Ayuta Health packages.",
+      "numberOfItems": 13,
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Brighton and Hove", "item": { "@type": "MedicalClinic", "name": "Ayuta Health — Brighton and Hove", "address": { "@type": "PostalAddress", "addressLocality": "Brighton", "addressRegion": "East Sussex", "addressCountry": "GB" } } },
+        { "@type": "ListItem", "position": 2, "name": "Cambridge", "item": { "@type": "MedicalClinic", "name": "Ayuta Health — Cambridge", "address": { "@type": "PostalAddress", "addressLocality": "Cambridge", "addressCountry": "GB" } } },
+        { "@type": "ListItem", "position": 3, "name": "Chiswick", "item": { "@type": "MedicalClinic", "name": "Ayuta Health — Chiswick", "address": { "@type": "PostalAddress", "addressLocality": "Chiswick", "addressRegion": "London", "addressCountry": "GB" } } },
+        { "@type": "ListItem", "position": 4, "name": "Crawley", "item": { "@type": "MedicalClinic", "name": "Ayuta Health — Crawley", "address": { "@type": "PostalAddress", "addressLocality": "Crawley", "addressRegion": "West Sussex", "addressCountry": "GB" } } },
+        { "@type": "ListItem", "position": 5, "name": "Croydon", "item": { "@type": "MedicalClinic", "name": "Ayuta Health — Croydon", "address": { "@type": "PostalAddress", "addressLocality": "Croydon", "addressRegion": "London", "addressCountry": "GB" } } },
+        { "@type": "ListItem", "position": 6, "name": "Exeter", "item": { "@type": "MedicalClinic", "name": "Ayuta Health — Exeter", "address": { "@type": "PostalAddress", "addressLocality": "Exeter", "addressRegion": "Devon", "addressCountry": "GB" } } },
+        { "@type": "ListItem", "position": 7, "name": "Guildford", "item": { "@type": "MedicalClinic", "name": "Ayuta Health — Guildford", "address": { "@type": "PostalAddress", "addressLocality": "Guildford", "addressRegion": "Surrey", "addressCountry": "GB" } } },
+        { "@type": "ListItem", "position": 8, "name": "London City", "item": { "@type": "MedicalClinic", "name": "Ayuta Health — London City", "address": { "@type": "PostalAddress", "addressLocality": "City of London", "addressRegion": "London", "addressCountry": "GB" } } },
+        { "@type": "ListItem", "position": 9, "name": "London Victoria", "item": { "@type": "MedicalClinic", "name": "Ayuta Health — London Victoria", "address": { "@type": "PostalAddress", "addressLocality": "Victoria", "addressRegion": "London", "addressCountry": "GB" } } },
+        { "@type": "ListItem", "position": 10, "name": "London Canary Wharf", "item": { "@type": "MedicalClinic", "name": "Ayuta Health — London Canary Wharf", "address": { "@type": "PostalAddress", "addressLocality": "Canary Wharf", "addressRegion": "London", "addressCountry": "GB" } } },
+        { "@type": "ListItem", "position": 11, "name": "Maidstone", "item": { "@type": "MedicalClinic", "name": "Ayuta Health — Maidstone", "address": { "@type": "PostalAddress", "addressLocality": "Maidstone", "addressRegion": "Kent", "addressCountry": "GB" } } },
+        { "@type": "ListItem", "position": 12, "name": "Plymouth", "item": { "@type": "MedicalClinic", "name": "Ayuta Health — Plymouth", "address": { "@type": "PostalAddress", "addressLocality": "Plymouth", "addressRegion": "Devon", "addressCountry": "GB" } } },
+        { "@type": "ListItem", "position": 13, "name": "Royal Tunbridge Wells", "item": { "@type": "MedicalClinic", "name": "Ayuta Health — Royal Tunbridge Wells", "address": { "@type": "PostalAddress", "addressLocality": "Royal Tunbridge Wells", "addressRegion": "Kent", "addressCountry": "GB" } } }
+      ]
+    }
+    </script>
 </head>
 <body class="clinics-body">
     <div id="nav-placeholder"></div>
@@ -67,7 +99,7 @@
                 <article class="clinics-summary card">
                     <span class="eyebrow">Network shape</span>
                     <h2>London, Sussex, Kent, Surrey, and selected South West routes are covered first.</h2>
-                    <p class="section-subtitle">The footprint is intentionally practical for the initial demo. If clinic coverage is not ideal for a client, the booking flow still allows the home-kit route.</p>
+                    <p class="section-subtitle">The footprint is intentionally practical for the first rollout. If clinic coverage is not ideal for a client, the booking flow still allows the home-kit route.</p>
                 </article>
 
                 <div class="clinic-grid">
@@ -86,9 +118,7 @@
                     <button class="clinic-card card" type="button" data-clinic-id="royal-tunbridge-wells"><span class="clinic-tag">Kent</span><h3>Royal Tunbridge Wells</h3><p>Kent and Sussex crossover route for appointment-led collections.</p><span class="clinic-card-link">View clinic details</span></button>
                 </div>
 
-                <div class="clinics-footnote">
-                    <p>Source basis: One Day Tests clinic pages, checked on April 1, 2026.</p>
-                </div>
+
             </div>
         </section>
     </main>
@@ -145,7 +175,7 @@
                     </article>
                 </div>
             </div>
-            <p class="clinic-modal-footnote">Hours and access notes were checked against One Day Tests clinic pages on April 1, 2026. Confirm latest availability at booking.</p>
+            <p class="clinic-modal-footnote">Clinic hours and availability may change. Confirm the latest details when booking your appointment.</p>
         </div>
     </div>
 
@@ -166,7 +196,7 @@
                 <p class="footer-title">Support</p>
                 <div class="footer-links">
                     <a href="../pages/contact.html">Contact</a>
-                    <a href="../pages/results.html">Results demo</a>
+                    <a href="../pages/results.html">Results dashboard</a>
                 </div>
             </div>
         </div>

@@ -32,7 +32,7 @@
                         </div>
                         <div class="payment-return-step is-complete-muted" aria-current="false">
                             <span class="step-index">02</span>
-                            <span>Open Stripe checkout</span>
+                            <span>Secure checkout</span>
                         </div>
                         <div class="payment-return-step is-active" aria-current="step">
                             <span class="step-index">03</span>
@@ -43,9 +43,9 @@
 
                 <div class="payment-return-hero">
                     <div class="payment-return-copy">
-                        <span class="eyebrow">Stripe return</span>
-                        <h1>Payment submitted. The order is now waiting for confirmation.</h1>
-                        <p>The current demo uses fixed Stripe Payment Links, so the browser stores a pending order first and the paid state is reconciled later.</p>
+                        <span class="eyebrow">Payment return</span>
+                        <h1>Payment submitted. Your order is now waiting for confirmation.</h1>
+                        <p>Your order has been saved. Payment confirmation, collection, and report access will continue from your account timeline.</p>
                         <div class="payment-return-actions">
                             <a class="btn btn-primary" href="../pages/orders.html">View orders</a>
                             <a class="btn btn-ghost" href="../pages/order.html">Start another order</a>
@@ -53,16 +53,16 @@
                     </div>
 
                     <aside class="payment-return-side">
-                        <span class="eyebrow">Current demo model</span>
-                        <h2>Thin checkout now, verified payments next.</h2>
+                        <span class="eyebrow">Order timeline</span>
+                        <h2>Payment, collection, processing, and report access stay connected.</h2>
                         <div class="payment-return-side-grid">
                             <article>
                                 <strong>Saved first</strong>
-                                <p>The order is recorded locally and against the signed-in account before redirecting to Stripe.</p>
+                                <p>The order is recorded against the signed-in account before checkout opens.</p>
                             </article>
                             <article>
                                 <strong>Confirmed later</strong>
-                                <p>The next iteration replaces manual confirmation with a Firebase-backed verification flow.</p>
+                                <p>Payment status updates when confirmation is received.</p>
                             </article>
                         </div>
                     </aside>
@@ -74,7 +74,7 @@
                         <h2 id="payment-return-status">Checking your latest order.</h2>
                         <p id="payment-return-detail">Loading your saved order state.</p>
                     </div>
-                    <p class="payment-return-summary" id="payment-return-summary">The current demo does not verify payment in the browser.</p>
+                    <p class="payment-return-summary" id="payment-return-summary">Checking payment and order status.</p>
                 </section>
             </section>
         </div>

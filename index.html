@@ -3,7 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Ayuta Health helps you choose a blood test, pick a home kit or clinic route, and return to a clearer biomarker dashboard.">
+    <meta name="description" content="Ayuta Health makes preventive blood testing straightforward. Choose Foundation, Performance, or Elite, pick home kit or clinic collection, and return to a clear biomarker dashboard.">
+    <link rel="canonical" href="https://ayuta.co.uk/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Ayuta Health">
+    <meta property="og:title" content="Ayuta Health — Preventive Blood Testing, Clarified">
+    <meta property="og:description" content="Three curated blood test packages. Home kit or clinic collection. Results in days, explained in plain language.">
+    <meta property="og:url" content="https://ayuta.co.uk/">
+    <meta property="og:image" content="https://ayuta.co.uk/Images/Logo/ayuta-og.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Ayuta Health — Preventive Blood Testing, Clarified">
+    <meta name="twitter:description" content="Three curated blood test packages. Home kit or clinic collection. Results in days, explained in plain language.">
     <title>Ayuta Health</title>
     <link rel="icon" href="Images/Logo/ayuta_favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles/site-base.css">
@@ -18,6 +28,76 @@
     <script src="scripts/account-modal.js" defer></script>
     <script src="scripts/include-nav.js" defer></script>
     <script src="scripts/home-page.js" defer></script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "name": "Ayuta Health",
+          "url": "https://ayuta.co.uk",
+          "logo": "https://ayuta.co.uk/Images/Logo/ayuta_favicon.ico",
+          "description": "Ayuta Health provides preventive blood testing with three curated packages, home kit or clinic collection, and a clear results dashboard.",
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "email": "ayuta.info@gmail.com",
+            "contactType": "customer support"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "name": "Ayuta Health",
+          "url": "https://ayuta.co.uk"
+        },
+        {
+          "@type": "ItemList",
+          "name": "Blood Test Packages",
+          "description": "Three curated blood test packages for training, recovery, and preventive health.",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "item": {
+                "@type": "Product",
+                "name": "Foundation Blood Test",
+                "description": "Baseline blood panel covering Full Blood Count, vitamins, iron, cholesterol, and HbA1c. Ideal for a first blood panel.",
+                "offers": [
+                  { "@type": "Offer", "price": "149", "priceCurrency": "GBP", "name": "Home kit" },
+                  { "@type": "Offer", "price": "199", "priceCurrency": "GBP", "name": "Clinic appointment" }
+                ]
+              }
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "item": {
+                "@type": "Product",
+                "name": "Performance Blood Test",
+                "description": "Expanded panel for active training with hormone, inflammation, and advanced lipid markers on top of the Foundation set.",
+                "offers": [
+                  { "@type": "Offer", "price": "249", "priceCurrency": "GBP", "name": "Home kit" },
+                  { "@type": "Offer", "price": "299", "priceCurrency": "GBP", "name": "Clinic appointment" }
+                ]
+              }
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "item": {
+                "@type": "Product",
+                "name": "Elite Blood Test",
+                "description": "Deepest panel with thyroid and endocrine coverage for longitudinal tracking and advanced performance monitoring.",
+                "offers": [
+                  { "@type": "Offer", "price": "399", "priceCurrency": "GBP", "name": "Home kit" },
+                  { "@type": "Offer", "price": "499", "priceCurrency": "GBP", "name": "Clinic appointment" }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
 </head>
 <body class="home">
     <div id="nav-placeholder"></div>
@@ -26,18 +106,18 @@
         <div class="container hero-grid">
             <div class="hero-copy">
                 <span class="eyebrow">Preventive Blood Testing, Clarified</span>
-                <h1 class="hero-title">A cleaner public entry point for a results-led health product.</h1>
+                <h1 class="hero-title">Blood testing built around training, recovery, and prevention.</h1>
                 <p class="hero-lede">
-                    Ayuta starts in public mode with one clear promise: pick the right package quickly, choose the collection route early, and come back to a calmer dashboard once results exist.
+                    Choose the right package, pick home kit or clinic collection, and return to a clear biomarker dashboard when results are ready in 2–5 working days.
                 </p>
                 <div class="hero-actions">
                     <a class="btn btn-primary" href="pages/order.html">Book tests</a>
-                    <a class="btn btn-ghost" href="#panels">Review packages</a>
+                    <a class="btn btn-ghost" href="pages/packages.html">See packages</a>
                 </div>
                 <div class="hero-proof-row">
                     <span class="hero-proof-chip">3 curated tiers</span>
-                    <span class="hero-proof-chip">Clinic or home-kit route</span>
-                    <span class="hero-proof-chip">Results-first dashboard</span>
+                    <span class="hero-proof-chip">Clinic or home kit</span>
+                    <span class="hero-proof-chip">Clear results dashboard</span>
                 </div>
                 <p class="hero-status" id="home-session-status">Sign in to turn Ayuta into your results dashboard.</p>
             </div>
@@ -45,8 +125,8 @@
             <div class="hero-stage">
                 <div class="hero-stage-head">
                     <div>
-                        <p class="hero-service-label">Public mode</p>
-                        <h2 class="hero-panel-title">Show the path, not the whole back office.</h2>
+                        <p class="hero-service-label">Testing journey</p>
+                        <h2 class="hero-panel-title">Choose, collect, review.</h2>
                     </div>
                     <a class="text-button text-button--light" href="pages/about.html">About Ayuta</a>
                 </div>
@@ -54,192 +134,38 @@
                 <div class="hero-stage-grid">
                     <article class="route-card">
                         <span class="route-index">01</span>
-                        <h3>Choose one tier</h3>
-                        <p>Foundation, Performance, and Elite keep the public choice set tight.</p>
+                        <h3>Choose your tier</h3>
+                        <p>Pick the depth that fits your goals — Foundation, Performance, or Elite.</p>
                     </article>
                     <article class="route-card">
                         <span class="route-index">02</span>
-                        <h3>Pick collection</h3>
-                        <p>Home kit and clinic appointments stay visible from the start.</p>
+                        <h3>Pick how to collect</h3>
+                        <p>Use a home finger-prick kit, or book a clinic appointment for a full venous draw.</p>
                     </article>
                     <article class="route-card">
                         <span class="route-index">03</span>
-                        <h3>Return to results</h3>
-                        <p>Once signed in, the default view becomes the dashboard, not the landing page.</p>
+                        <h3>Read your results</h3>
+                        <p>Results land in your dashboard with plain-language context for every biomarker.</p>
                     </article>
                 </div>
 
                 <div class="hero-note-card">
                     <div>
-                        <p class="hero-summary-label">Current demo model</p>
-                        <h3>Thin Stripe checkout now, verified payments next.</h3>
+                        <p class="hero-summary-label">Your order</p>
+                        <h3>Your package, collection route, and results — all in one place.</h3>
                     </div>
-                    <p>The public site stays light. The next iteration tightens payment confirmation through Firebase-backed verification rather than browser-only assumptions.</p>
+                    <p>Every order links your chosen package and collection route to your account, so your results are waiting when they arrive.</p>
                 </div>
             </div>
         </div>
     </header>
 
     <main>
-        <section class="section pan-section" id="path">
-            <div class="container">
-                <div class="pan-header">
-                    <div>
-                        <span class="eyebrow">How It Works</span>
-                        <h2 class="section-title">Pan across the public journey instead of scrolling through a brochure.</h2>
-                    </div>
-                    <p class="pan-note">Swipe or scroll sideways</p>
-                </div>
-                <div class="pan-track pan-track--process">
-                    <article class="pan-card card">
-                        <span class="journey-index">01</span>
-                        <h3>Start with intent</h3>
-                        <p>Users should choose depth of testing before reading every biomarker name.</p>
-                    </article>
-                    <article class="pan-card card">
-                        <span class="journey-index">02</span>
-                        <h3>Keep routes explicit</h3>
-                        <p>Clinic and home-kit options sit alongside the package choice, not after it.</p>
-                    </article>
-                    <article class="pan-card card">
-                        <span class="journey-index">03</span>
-                        <h3>Show where clinics exist</h3>
-                        <p>The network is visible early so location fit is not left to guesswork.</p>
-                    </article>
-                    <article class="pan-card card pan-card--dark">
-                        <span class="journey-index">04</span>
-                        <h3>Shift to dashboard mode after sign-in</h3>
-                        <p>Authenticated users land on results first, with app navigation on the side.</p>
-                    </article>
-                    <article class="pan-card card">
-                        <span class="journey-index">05</span>
-                        <h3>Keep payment verification honest</h3>
-                        <p>Public checkout is thin today. Confirmation becomes stricter in the next backend iteration.</p>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <section class="section pan-section" id="panels">
-            <div class="container">
-                <div class="pan-header">
-                    <div>
-                        <span class="eyebrow">Packages</span>
-                        <h2 class="section-title">Three bundles:</h2>
-                    </div>
-                    <a class="btn btn-outline" href="pages/order.html">Open booking flow</a>
-                </div>
-                <div class="pan-track pan-track--packages">
-                    <article class="tier-card tier-card--foundation">
-                        <h3>Foundation</h3>
-                        <p>Baseline reset for nutrients, iron, lipids, and glucose context.</p>
-                        <div class="tier-tags">
-                            <span>5 source tests</span>
-                            <span>Home or clinic</span>
-                        </div>
-                        <div class="tier-meta">
-                            <strong>GBP 149 to GBP 199</strong>
-                            <span>Full Blood Count, Vitamins, Iron, Lipids, HbA1c</span>
-                        </div>
-                    </article>
-                    <article class="tier-card tier-card--performance">
-                        <h3>Performance</h3>
-                        <p>Built for regular training blocks with deeper recovery, hormone, and inflammation coverage.</p>
-                        <div class="tier-tags">
-                            <span>11 source tests</span>
-                            <span>Training-focused</span>
-                        </div>
-                        <div class="tier-meta">
-                            <strong>GBP 249 to GBP 299</strong>
-                            <span>Foundation plus Testosterone, Cortisol, CRP, Apo A/B, Zinc</span>
-                        </div>
-                    </article>
-                    <article class="tier-card tier-card--elite">
-                        <h3>Elite</h3>
-                        <p>Deeper longitudinal review for clients who want thyroid and endocrine visibility layered on top.</p>
-                        <div class="tier-tags">
-                            <span>15 source tests</span>
-                            <span>Highest-depth tier</span>
-                        </div>
-                        <div class="tier-meta">
-                            <strong>GBP 399 to GBP 499</strong>
-                            <span>Performance plus Thyroid, Oestradiol, Prolactin, Folic Acid</span>
-                        </div>
-                    </article>
-                </div>
-                <div class="source-strip">
-                    <p>Source basis: Sussex Pathology B2B menu. The public site presents those ingredients as Ayuta bundles for clinic or home-kit collection.</p>
-                    <div class="preview-tags">
-                        <span>Home kit</span>
-                        <span>Clinic appointment</span>
-                        <span>Fixed Stripe links</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="section pan-section" id="evidence">
-            <div class="container">
-                <div class="pan-header">
-                    <div>
-                        <span class="eyebrow">Dashboard Preview</span>
-                        <h2 class="section-title">The authenticated mode should care about results first.</h2>
-                    </div>
-                    <a class="btn btn-outline" href="pages/results.html">Open results page</a>
-                </div>
-                <div class="pan-track pan-track--results">
-                    <article class="results-demo results-demo--dark">
-                        <div class="results-demo-head">
-                            <strong>Vitamin D trend</strong>
-                            <span>Sample view</span>
-                        </div>
-                        <div class="results-demo-chart">
-                            <span style="height: 42%"></span>
-                            <span style="height: 58%"></span>
-                            <span style="height: 76%"></span>
-                            <span style="height: 88%"></span>
-                        </div>
-                        <div class="results-demo-axis">
-                            <span>Jan</span>
-                            <span>Mar</span>
-                            <span>May</span>
-                            <span>Jul</span>
-                        </div>
-                        <div class="results-demo-stats">
-                            <div>
-                                <small>Current value</small>
-                                <strong>54 nmol/L</strong>
-                            </div>
-                            <div>
-                                <small>Status</small>
-                                <strong>Improving</strong>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="pan-card card">
-                        <span class="eyebrow">Results dashboard</span>
-                        <h3>Latest reports should lead the screen.</h3>
-                        <p>The logged-in base page should open on the latest biomarker context rather than marketing copy.</p>
-                    </article>
-                    <article class="pan-card card">
-                        <span class="eyebrow">Sidebar navigation</span>
-                        <h3>Results, orders, profile, and booking stay in one app shell.</h3>
-                        <p>Once authenticated, the site behaves more like a dashboard with persistent navigation.</p>
-                    </article>
-                    <article class="pan-card card">
-                        <span class="eyebrow">Order continuity</span>
-                        <h3>Pending, paid, and report-ready states should read as one timeline.</h3>
-                        <p>The account mode keeps payment state, fulfilment, and result access in one place.</p>
-                    </article>
-                </div>
-            </div>
-        </section>
-
         <section class="section cta-band">
             <div class="container cta-band-inner">
                 <div>
-                    <h2>Start with the booking flow.</h2>
-                    <p>Choose a package, confirm the collection route, and move into the demo checkout without wading through repeated content first.</p>
+                    <h2>Ready to find out where you stand?</h2>
+                    <p>Choose a package, pick home kit or clinic, and check out in a few minutes. Results follow in days.</p>
                 </div>
                 <a class="btn btn-primary" href="pages/order.html">Book now</a>
             </div>
@@ -250,13 +176,12 @@
         <div class="container footer-grid">
             <div>
                 <p class="footer-title">Ayuta Health</p>
-                <p>Public mode stays concise. Authenticated mode turns into a results-led dashboard.</p>
+                <p>Clear package selection, collection, and follow-up.</p>
             </div>
             <div>
                 <p class="footer-title">Explore</p>
                 <div class="footer-links">
-                    <a href="#path">How it works</a>
-                    <a href="#panels">Packages</a>
+                    <a href="pages/packages.html">Packages</a>
                     <a href="pages/clinics.html">Clinics</a>
                     <a href="pages/order.html">Book tests</a>
                 </div>
@@ -265,6 +190,7 @@
                 <p class="footer-title">Company</p>
                 <div class="footer-links">
                     <a href="pages/about.html">About</a>
+                    <a href="pages/partnership.html">Gym partnerships</a>
                     <a href="pages/contact.html">Contact</a>
                 </div>
             </div>
