@@ -1259,6 +1259,7 @@ body > footer {
 /* When the app-shell JS transition is managing entrance, suppress the CSS animation
    so the two mechanisms don't fight each other. */
 body.has-page-entrance > header,
+body.has-page-entrance > nav,
 body.has-page-entrance > main,
 body.has-page-entrance > footer {
     animation: none;

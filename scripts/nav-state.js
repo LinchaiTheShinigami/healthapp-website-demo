@@ -635,10 +635,6 @@
     navRoot.querySelectorAll('[data-nav-key]').forEach((link) => {
       link.classList.remove('is-active');
       link.removeAttribute('aria-current');
-      if (link.dataset.originalHref) {
-        link.setAttribute('href', link.dataset.originalHref);
-        delete link.dataset.originalHref;
-      }
     });
     document.querySelectorAll('.app-sidebar-link[data-nav-key]').forEach((link) => {
       link.classList.remove('is-active');
@@ -662,11 +658,12 @@
 
       link.classList.add('is-active');
       link.setAttribute('aria-current', 'page');
-      // Neutralise the link so clicking it does nothing
-      if (link.hasAttribute('href')) {
-        link.dataset.originalHref = link.getAttribute('href');
-        link.removeAttribute('href');
-      }
+      // Keep href so the link stays keyboard-focusable; the page-transition
+      // binder already skips same-page navigations, so clicking it is a no-op.
+      // Add a direct guard here as a safety net.
+      link.addEventListener('click', (e) => {
+        if (link.classList.contains('is-active')) e.preventDefault();
+      }, { once: false });
     });
   };
 

@@ -220,7 +220,9 @@
       if (fieldName === 'phone') {
         phone = getFullPhone();
       } else {
-        phone = elements.phoneInput ? getFullPhone() : '';
+        // Read from snapshot so we don't double-prepend the prefix
+        // that is already embedded in phoneInput.value during read-only state
+        phone = (currentSnapshot?.profile?.phone ?? '').trim();
       }
 
       if (!name) {

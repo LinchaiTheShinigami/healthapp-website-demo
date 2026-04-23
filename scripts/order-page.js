@@ -481,10 +481,15 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   const clearCollectionRequirement = (tierId) => {
-    const card = tierId ? document.querySelector(`[data-tier-card="${tierId}"]`) : null;
-    const warning = card ? card.querySelector('.collection-warning') : elements.collectionWarning;
-    if (warning) warning.hidden = true;
-    // clear shake on the global collection toggle
+    if (tierId) {
+      const card = document.querySelector(`[data-tier-card="${tierId}"]`);
+      const warning = card ? card.querySelector('.collection-warning') : null;
+      if (warning) warning.hidden = true;
+    } else {
+      // No specific tier — clear all per-card and global warnings
+      document.querySelectorAll('.collection-warning').forEach((w) => { w.hidden = true; });
+      if (elements.collectionWarning) elements.collectionWarning.hidden = true;
+    }
     const toggle = document.querySelector('.tiers-collection-bar .collection-toggle') || elements.detailRoutePicker;
     toggle?.classList.remove('is-required', 'is-shaking');
   };

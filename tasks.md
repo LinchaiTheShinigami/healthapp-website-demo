@@ -14,7 +14,11 @@
 
 - [ ] Configure Stripe Payment Links for all six package and collection variants, then set the after-payment redirect to `/pages/payment-return.html`.
 
-## Security (OWASP)
+## Profile
+
+- [ ] **Phone number ISO ambiguity** — `splitPhone()` maps `+1` → `US` and `+7` → `RU`, but multiple countries share those prefixes (Canada, Jamaica, etc. for `+1`; Kazakhstan for `+7`). A user who selects Canada will have their number stored as `+1 …` and reloaded with the US flag. Fix: persist the selected ISO code as a separate field in the Firestore profile document (e.g. `phoneIso: "CA"`), then use it directly in `resetFormValues` rather than parsing from the prefix. Requires a Firestore profile schema update and a `saveProfile` change to write `phoneIso` alongside `phone`.
+
+
 
 - [ ] **A02 Cryptographic / Credential Exposure** — Firebase API key is committed to `scripts/auth-config.js` and publicly visible. This is expected for client-side Firebase (the key is restricted by Firebase security rules and authorised domain settings). Confirm that authorised domains in Firebase console are locked to `ayuta.co.uk` only before going live.
 - [ ] **A03 Injection (XSS)** — `scripts/include-nav.js` sets `innerHTML` from a fetched snippet file (`navPlaceholder.innerHTML = data`). The fetch is same-origin (GitHub Pages static file) so risk is low in the current setup. If the nav snippet source ever changes to an external CDN, sanitise the response with DOMParser before inserting.
