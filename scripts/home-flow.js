@@ -123,7 +123,7 @@
     loginEmail: document.getElementById('login-email'),
     ordersStatus: document.getElementById('orders-status'),
     ordersList: document.getElementById('orders-list'),
-    clearDemo: document.getElementById('clear-demo'),
+    clearSampleData: document.getElementById('clear-sample-data'),
     flowSteps: Array.from(document.querySelectorAll('[data-flow-step]')),
     heroGoal: document.getElementById('hero-goal'),
     heroTotal: document.getElementById('hero-total')
@@ -436,9 +436,9 @@
     });
   }
 
-  if (elements.clearDemo) {
-    elements.clearDemo.addEventListener('click', () => {
-      const confirmed = window.confirm('Clear all demo data stored in this browser?');
+  if (elements.clearSampleData) {
+    elements.clearSampleData.addEventListener('click', () => {
+      const confirmed = window.confirm('Clear all sample data stored in this browser?');
       if (!confirmed) return;
       Object.values(STORAGE_KEYS).forEach((key) => {
         try {
@@ -454,7 +454,7 @@
       state.goal = 'all';
       state.paymentEmail = '';
       refreshUI();
-      setStatus(elements.ordersStatus, 'Demo data cleared.', 'success');
+      setStatus(elements.ordersStatus, 'Sample data cleared.', 'success');
     });
   }
 

@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+Disallow: /pages/results.html
+Disallow: /pages/orders.html
+Disallow: /pages/profile.html
+Disallow: /pages/payment-return.html
+Disallow: /pages/auth-action.html
+Disallow: /pages/mobile/
+
+Sitemap: https://ayuta.co.uk/sitemap.xml

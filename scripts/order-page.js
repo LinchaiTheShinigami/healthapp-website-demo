@@ -7,21 +7,104 @@ document.addEventListener('DOMContentLoaded', function () {
   const COLLECTION_CONTENT = {
     home: {
       label: 'Home kit',
-      message: 'Home kit selected. We send the sampling kit with return instructions and prepaid packaging.',
-      summary: 'Home kit selected with return packaging and guided sample instructions.',
+      message: 'Home kit selected. Complete a finger-prick sample at home, then return it by post to the lab using the prepaid packaging included.',
+      summary: 'Home kit with finger-prick sampling and prepaid return post. Results in 3–5 working days.',
       basketLabel: 'Home kit'
     },
     lab: {
       label: 'Clinic appointment',
-      message: 'Clinic appointment selected. Use the current clinic network page to choose the most suitable location.',
-      summary: 'Clinic appointment selected. Choose from the current clinic network before checkout.',
+      message: 'Clinic appointment selected. Choose from 13 partner locations for a full venous draw with same-day processing.',
+      summary: 'Clinic appointment with venous draw at one of 13 partner locations. Results in 2–3 working days.',
       basketLabel: 'Clinic appointment'
+    }
+  };
+  const COLLECTION_INFO = {
+    home: {
+      kicker: 'Home kit',
+      title: 'Capillary finger-prick testing from home',
+      lead: 'Use the home kit when privacy and schedule flexibility matter most.',
+      details: [
+        ['Sample type', 'Finger-prick capillary sample collected at home using the kit provided.'],
+        ['Return route', 'Return the completed sample by post to the lab using the prepaid packaging included with your kit.'],
+        ['Timeline', 'Results are typically ready within 3–5 working days, including return postage and lab processing.']
+      ]
+    },
+    lab: {
+      kicker: 'Clinic appointment',
+      title: 'Venous blood draw at a partner clinic',
+      lead: 'Use the clinic route when you want a professional draw and same-day processing.',
+      details: [
+        ['Sample type', 'Full venous draw completed by a trained phlebotomist.'],
+        ['Network', '13 partner locations are available across the current clinic footprint.'],
+        ['Timeline', 'Results are typically ready within 2–3 working days from your clinic appointment.'],
+        ['Booking', 'Book your clinic appointment through this website when placing your order.']
+      ]
     }
   };
   const stripePaymentLinks = root.AYUTA_STRIPE_PAYMENT_LINKS || {};
 
-  // Package basis now comes from the Sussex Pathology B2B menu. The Ayuta tiers
-  // are commercial bundles built from those listed panels and biomarkers.
+  // ── Icon lookups ──────────────────────────────────────────────────────────
+  const BIOMARKER_ICONS = {
+    HbA1c: 'fa-droplet',
+    Ferritin: 'fa-bolt',
+    Iron: 'fa-bolt',
+    'Vitamin D': 'fa-sun',
+    'Vitamin B12': 'fa-bolt',
+    'Free Testosterone': 'fa-dumbbell',
+    'Total Testosterone': 'fa-dumbbell',
+    Testosterone: 'fa-dumbbell',
+    Cortisol: 'fa-brain',
+    'Apolipoprotein B': 'fa-heart-pulse',
+    'Apolipoprotein A': 'fa-heart-pulse',
+    'C-Reactive': 'fa-fire-flame-simple',
+    Cholesterol: 'fa-heart-pulse',
+    TSH: 'fa-gauge',
+    'Free T3': 'fa-thermometer',
+    'Free T4': 'fa-thermometer',
+    Oestradiol: 'fa-venus',
+    Prolactin: 'fa-circle-dot',
+    Folate: 'fa-seedling',
+    'Folic Acid': 'fa-seedling',
+    'IGF-1': 'fa-arrow-trend-up',
+    Zinc: 'fa-shield-halved',
+    SHBG: 'fa-link',
+  };
+
+  const ELEMENT_ICONS = {
+    'Full Blood Count': 'fa-microscope',
+    Vitamins: 'fa-capsules',
+    Iron: 'fa-bolt',
+    Cholesterol: 'fa-heart-pulse',
+    HbA1c: 'fa-droplet',
+    Testosterone: 'fa-dumbbell',
+    Cortisol: 'fa-brain',
+    'C-Reactive Protein': 'fa-fire-flame-simple',
+    Apolipoprotein: 'fa-heart-pulse',
+    Zinc: 'fa-shield-halved',
+    SHBG: 'fa-link',
+    Folate: 'fa-seedling',
+    'Folic Acid': 'fa-seedling',
+    Thyroid: 'fa-gauge',
+    Oestradiol: 'fa-venus',
+    Prolactin: 'fa-circle-dot',
+    'IGF-1': 'fa-arrow-trend-up',
+  };
+
+  const getBiomarkerIcon = (name) => {
+    for (const [key, icon] of Object.entries(BIOMARKER_ICONS)) {
+      if (name.includes(key)) return icon;
+    }
+    return 'fa-vial';
+  };
+
+  const getElementIcon = (name) => {
+    for (const [key, icon] of Object.entries(ELEMENT_ICONS)) {
+      if (name.includes(key)) return icon;
+    }
+    return 'fa-vial';
+  };
+  // ─────────────────────────────────────────────────────────────────────────
+
   const catalog = {
     foundation: {
       id: 'foundation',
@@ -31,10 +114,8 @@ document.addEventListener('DOMContentLoaded', function () {
       goals: ['foundation'],
       homePrice: 149,
       labPrice: 199,
-      turnaround: 'Results in 1 to 2 working days after processing',
+      turnaround: '3–5 days home · 2–3 days clinic',
       focus: 'Baseline training reset',
-      source:
-        'Source combination from the Sussex Pathology menu: Full Blood Count Blood Test + Ultimate Vitamins Blood Test + Ultimate Iron Blood Test + Cholesterol Profile Blood Test + HbA1c.',
       elements: [
         'Full Blood Count Blood Test',
         'Ultimate Vitamins Blood Test',
@@ -57,10 +138,8 @@ document.addEventListener('DOMContentLoaded', function () {
       goals: ['performance'],
       homePrice: 249,
       labPrice: 299,
-      turnaround: 'Results in 1 to 2 working days after processing',
+      turnaround: '3–5 days home · 2–3 days clinic',
       focus: 'Training and recovery focus',
-      source:
-        'Source combination from the Sussex Pathology menu: Foundation package + Ultimate Testosterone Blood Test + Cortisol + C-Reactive Protein + Apolipoprotein A + Apolipoprotein B + Zinc.',
       elements: [
         'Full Blood Count Blood Test',
         'Ultimate Vitamins Blood Test',
@@ -89,10 +168,8 @@ document.addEventListener('DOMContentLoaded', function () {
       goals: ['elite'],
       homePrice: 399,
       labPrice: 499,
-      turnaround: 'Results in 1 to 2 working days after processing',
+      turnaround: '3–5 days home · 2–3 days clinic',
       focus: 'Deep performance monitoring',
-      source:
-        'Source combination from the Sussex Pathology menu: Performance package + Ultimate Thyroid Function Blood Test + Oestradiol + Prolactin + Folic Acid.',
       elements: [
         'Full Blood Count Blood Test',
         'Ultimate Vitamins Blood Test',
@@ -149,16 +226,29 @@ document.addEventListener('DOMContentLoaded', function () {
     collectionStatus: document.getElementById('collection-status'),
     collectionWarning: document.getElementById('collection-warning'),
     collectionNotes: Array.from(document.querySelectorAll('[data-collection-note]')),
+    collectionInfoButtons: Array.from(document.querySelectorAll('[data-collection-info]')),
+    collectionInfoPanels: Array.from(document.querySelectorAll('[data-collection-info-panel]')),
+    collectionModal: document.querySelector('[data-collection-modal]'),
+    collectionModalKicker: document.querySelector('[data-collection-modal-kicker]'),
+    collectionModalTitle: document.querySelector('[data-collection-modal-title]'),
+    collectionModalLead: document.querySelector('[data-collection-modal-lead]'),
+    collectionModalDetails: document.querySelector('[data-collection-modal-details]'),
+    collectionModalClose: Array.from(document.querySelectorAll('[data-collection-modal-close]')),
     quizPriority: document.getElementById('quiz-priority'),
     quizIntensity: document.getElementById('quiz-intensity'),
     quizButton: document.getElementById('recommendation-button'),
-    quizStatus: document.getElementById('recommendation-status')
+    quizStatus: document.getElementById('recommendation-status'),
+    tierCards: Array.from(document.querySelectorAll('[data-tier-card]')),
+    tierTabChips: Array.from(document.querySelectorAll('[data-tier-tab]')),
+    tierSelectButtons: Array.from(document.querySelectorAll('.tier-select-btn'))
   };
 
   let state = store.loadState();
   let currentStep = 'select';
   let selectedProductId = null;
   let requestedStep = new URLSearchParams(root.location.search).get('step');
+  let activeInfoTrigger = null;
+  const mobileCollectionInfoQuery = root.matchMedia ? root.matchMedia('(max-width: 760px)') : null;
 
   const getAuthSnapshot = () =>
     root.AyutaAuth && typeof root.AyutaAuth.getSnapshot === 'function'
@@ -209,6 +299,96 @@ document.addEventListener('DOMContentLoaded', function () {
     if (button.dataset.originalLabel) button.textContent = button.dataset.originalLabel;
   };
 
+  const isMobileCollectionInfo = () => Boolean(mobileCollectionInfoQuery?.matches);
+
+  const getCollectionInfo = (method) => COLLECTION_INFO[method] || null;
+
+  const setInfoButtonExpanded = (method, isExpanded) => {
+    elements.collectionInfoButtons.forEach((button) => {
+      if (button.dataset.collectionInfo === method) {
+        button.setAttribute('aria-expanded', String(isExpanded));
+      } else if (isExpanded) {
+        button.setAttribute('aria-expanded', 'false');
+      }
+    });
+  };
+
+  const renderCollectionInfoPanel = (panel, method) => {
+    const info = getCollectionInfo(method);
+    if (!panel || !info) return;
+    panel.innerHTML = `
+      <strong>${info.title}</strong>
+      <ul>
+        ${info.details.map(([label, value]) => `<li><strong>${label}:</strong> ${value}</li>`).join('')}
+      </ul>
+    `;
+  };
+
+  const closeInlineCollectionInfo = () => {
+    elements.collectionInfoPanels.forEach((panel) => {
+      panel.hidden = true;
+    });
+    elements.collectionInfoButtons.forEach((button) => {
+      button.setAttribute('aria-expanded', 'false');
+    });
+  };
+
+  const openInlineCollectionInfo = (method) => {
+    elements.collectionInfoPanels.forEach((panel) => {
+      const isTarget = panel.dataset.collectionInfoPanel === method;
+      if (isTarget) renderCollectionInfoPanel(panel, method);
+      panel.hidden = !isTarget;
+    });
+    setInfoButtonExpanded(method, true);
+  };
+
+  const renderCollectionInfoModal = (method) => {
+    const info = getCollectionInfo(method);
+    if (!info) return false;
+    if (elements.collectionModalKicker) elements.collectionModalKicker.textContent = info.kicker;
+    if (elements.collectionModalTitle) elements.collectionModalTitle.textContent = info.title;
+    if (elements.collectionModalLead) elements.collectionModalLead.textContent = info.lead;
+    if (elements.collectionModalDetails) {
+      elements.collectionModalDetails.innerHTML = info.details
+        .map(([label, value]) => `<article><strong>${label}</strong><span>${value}</span></article>`)
+        .join('');
+    }
+    return true;
+  };
+
+  const closeCollectionModal = () => {
+    if (!elements.collectionModal) return;
+    elements.collectionModal.hidden = true;
+    document.body.classList.remove('modal-open');
+    elements.collectionInfoButtons.forEach((button) => {
+      button.setAttribute('aria-expanded', 'false');
+    });
+    if (activeInfoTrigger) {
+      activeInfoTrigger.focus();
+      activeInfoTrigger = null;
+    }
+  };
+
+  const openCollectionModal = (method, trigger) => {
+    if (!elements.collectionModal || !renderCollectionInfoModal(method)) return;
+    activeInfoTrigger = trigger || null;
+    closeInlineCollectionInfo();
+    elements.collectionModal.hidden = false;
+    document.body.classList.add('modal-open');
+    setInfoButtonExpanded(method, true);
+    elements.collectionModal.querySelector('[data-collection-modal-close]')?.focus();
+  };
+
+  const toggleCollectionInfo = (method, trigger) => {
+    if (!getCollectionInfo(method)) return;
+    if (isMobileCollectionInfo()) {
+      if (trigger?.getAttribute('aria-expanded') === 'true') closeInlineCollectionInfo();
+      else openInlineCollectionInfo(method);
+      return;
+    }
+    openCollectionModal(method, trigger);
+  };
+
   const saveState = () => {
     store.saveState(state);
     root.dispatchEvent(new CustomEvent('ayuta:state-updated'));
@@ -241,72 +421,82 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const getProductData = (item) => {
     if (!item) return null;
-    const id = item.getAttribute('data-product-id');
+    const id = item.dataset.productId;
     const details = getCatalogItem(id);
     if (!details) return null;
     return {
       ...details,
-      rangeLabel: item.getAttribute('data-product-range') || '',
+      rangeLabel: item.dataset.productRange || '',
       price: getPriceForCollection(id, state.collectionMethodChosen ? state.collectionMethod : null)
     };
   };
 
-  const renderBiomarkers = (items) => {
-    if (!elements.detailBiomarkerGrid) return;
-    elements.detailBiomarkerGrid.innerHTML = '';
+  const renderBiomarkersInto = (grid, items) => {
+    if (!grid) return;
+    grid.innerHTML = '';
     (items || []).forEach(([name, category, explanation]) => {
+      const icon = getBiomarkerIcon(name);
       const card = document.createElement('div');
       card.className = 'bio-chip';
-      card.innerHTML = `<div class="bio-text"><strong>${name}</strong><span>${category}</span></div><span class="bio-info" tabindex="0" role="button" aria-label="Why ${name} matters">i<span class="bio-tooltip">${explanation}</span></span>`;
-      elements.detailBiomarkerGrid.appendChild(card);
+      card.innerHTML = `<span class="bio-icon fa-solid ${icon}" aria-hidden="true"></span><div class="bio-text"><strong>${name}</strong><span>${category}</span></div><span class="bio-info" tabindex="0" role="button" aria-label="Why ${name} matters">?<span class="bio-tooltip">${explanation}</span></span>`;
+      grid.appendChild(card);
     });
   };
 
-  const renderSelectedElements = (items) => {
-    if (!elements.detailElementsList) return;
-    elements.detailElementsList.innerHTML = '';
+  const renderElementsInto = (list, items) => {
+    if (!list) return;
+    list.innerHTML = '';
     (items || []).forEach((item) => {
+      const icon = getElementIcon(item);
+      const label = item.replace(/ Blood Test$/, '');
       const row = document.createElement('span');
       row.className = 'detail-element-item';
-      row.textContent = item;
-      elements.detailElementsList.appendChild(row);
+      row.innerHTML = `<span class="detail-element-icon fa-solid ${icon}" aria-hidden="true"></span>${label}`;
+      list.appendChild(row);
     });
   };
 
-  const showCollectionRequirement = () => {
-    if (elements.collectionWarning) elements.collectionWarning.hidden = false;
-    if (elements.detailRoutePicker) {
-      elements.detailRoutePicker.classList.remove('is-shaking');
-      elements.detailRoutePicker.classList.add('is-required');
-      void elements.detailRoutePicker.offsetWidth;
-      elements.detailRoutePicker.classList.add('is-shaking');
-      root.setTimeout(() => elements.detailRoutePicker?.classList.remove('is-shaking'), 420);
+  const renderAllTierContent = () => {
+    Object.values(catalog).forEach((data) => {
+      const grid = document.getElementById(`detail-biomarker-grid-${data.id}`);
+      const list = document.getElementById(`detail-elements-list-${data.id}`);
+      renderBiomarkersInto(grid, data.biomarkers);
+      renderElementsInto(list, data.elements);
+    });
+  };
+
+  const showCollectionRequirement = (tierId) => {
+    const card = tierId ? document.querySelector(`[data-tier-card="${tierId}"]`) : null;
+    const warning = card ? card.querySelector('.collection-warning') : elements.collectionWarning;
+    const toggle = card ? document.querySelector('.tiers-collection-bar .collection-toggle') : elements.detailRoutePicker;
+    if (warning) warning.hidden = false;
+    if (toggle) {
+      toggle.classList.remove('is-shaking');
+      toggle.classList.add('is-required');
+      toggle.getBoundingClientRect(); // force reflow so re-applied class restarts the animation
+      toggle.classList.add('is-shaking');
+      root.setTimeout(() => toggle.classList.remove('is-shaking'), 420);
     }
     if (navigator.vibrate) navigator.vibrate([60, 40, 60]);
   };
 
-  const clearCollectionRequirement = () => {
-    if (elements.collectionWarning) elements.collectionWarning.hidden = true;
-    elements.detailRoutePicker?.classList.remove('is-required', 'is-shaking');
-  };
-
-  const updateCollectionOptionNotes = (productId) => {
-    const item = getCatalogItem(productId || selectedProductId);
-    if (!item) return;
-    const savings = Math.max(item.labPrice - item.homePrice, 0);
-    elements.collectionNotes.forEach((node) => {
-      const method = node.getAttribute('data-collection-note');
-      if (method === 'home') {
-        node.textContent = savings > 0 ? `Save ${store.formatCurrency(savings)}` : 'Lower price route';
-      } else if (method === 'lab') {
-        node.textContent = `${store.formatCurrency(item.labPrice)} clinic price`;
-      }
-    });
+  const clearCollectionRequirement = (tierId) => {
+    if (tierId) {
+      const card = document.querySelector(`[data-tier-card="${tierId}"]`);
+      const warning = card ? card.querySelector('.collection-warning') : null;
+      if (warning) warning.hidden = true;
+    } else {
+      // No specific tier — clear all per-card and global warnings
+      document.querySelectorAll('.collection-warning').forEach((w) => { w.hidden = true; });
+      if (elements.collectionWarning) elements.collectionWarning.hidden = true;
+    }
+    const toggle = document.querySelector('.tiers-collection-bar .collection-toggle') || elements.detailRoutePicker;
+    toggle?.classList.remove('is-required', 'is-shaking');
   };
 
   const updateGoalFilter = () => {
     elements.goalButtons.forEach((button) => {
-      const isActive = button.getAttribute('data-goal') === state.goal;
+      const isActive = button.dataset.goal === state.goal;
       button.setAttribute('aria-pressed', String(isActive));
     });
 
@@ -319,52 +509,52 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   const updateDetailToggle = (productId) => {
-    if (!elements.detailToggle) return;
-    const id = productId || selectedProductId;
-    if (!id) return;
-    const inCart = state.cart.some((entry) => entry.id === id);
-    elements.detailToggle.textContent = inCart ? 'Selected for checkout' : 'Select this package';
-    elements.detailToggle.setAttribute('data-product-id', id);
+    // update in-cart state on all tier select buttons
+    elements.tierSelectButtons.forEach((btn) => {
+      const id = btn.dataset.productId;
+      const inCart = state.cart.some((entry) => entry.id === id);
+      const name = getCatalogItem(id)?.name || id;
+      btn.textContent = inCart ? `${name} selected` : `Select ${name}`;
+    });
+    // legacy detailToggle if still present
+    if (elements.detailToggle) {
+      const id = productId || selectedProductId;
+      if (!id) return;
+      const inCart = state.cart.some((entry) => entry.id === id);
+      elements.detailToggle.textContent = inCart ? 'Selected for checkout' : 'Select this package';
+      elements.detailToggle.setAttribute('data-product-id', id);
+    }
   };
 
-  const selectProduct = (item) => {
-    if (!item) return;
-    const data = getProductData(item);
-    if (!data) return;
-
-    selectedProductId = data.id;
-    elements.productItems.forEach((entry) => {
-      const selected = entry === item;
-      entry.classList.toggle('is-active', selected);
-      entry.setAttribute('aria-selected', String(selected));
+  // Mark the currently-in-cart tier card as selected
+  const updateTierCardSelectionState = () => {
+    const cartId = state.cart[0]?.id || null;
+    elements.tierCards.forEach((card) => {
+      const tierId = card.dataset.tierCard;
+      card.classList.toggle('is-selected', tierId === cartId);
     });
+  };
 
-    if (elements.detailName) elements.detailName.textContent = data.name;
-    if (elements.detailBiomarkers) elements.detailBiomarkers.textContent = data.biomarkersLabel;
-    if (elements.detailGoals) elements.detailGoals.textContent = data.focus;
-    if (elements.detailTurnaround) elements.detailTurnaround.textContent = data.turnaround;
-    if (elements.detailPrice) {
-      elements.detailPrice.textContent = store.formatCurrency(
-        getPriceForCollection(data.id, state.collectionMethodChosen ? state.collectionMethod : null)
-      );
-    }
-    updateCollectionOptionNotes(data.id);
-    renderSelectedElements(data.elements);
-    renderBiomarkers(data.biomarkers);
-    updateDetailToggle(data.id);
+  // Mobile tab strip: make one tier card visible, activate its chip
+  const activateMobileTierTab = (tierId) => {
+    elements.tierCards.forEach((card) => {
+      card.classList.toggle('is-mobile-active', card.dataset.tierCard === tierId);
+    });
+    elements.tierTabChips.forEach((chip) => {
+      const active = chip.dataset.tierTab === tierId;
+      chip.classList.toggle('is-active', active);
+      chip.setAttribute('aria-selected', String(active));
+    });
   };
 
   const ensureSelectedProduct = () => {
-    const current = elements.productItems.find(
-      (item) => item.getAttribute('data-product-id') === selectedProductId && !item.classList.contains('is-hidden')
-    );
-    if (current) {
-      selectProduct(current);
-      return;
+    updateTierCardSelectionState();
+    // On mobile, ensure at least one tier card is always visible
+    const isMobile = root.matchMedia ? root.matchMedia('(max-width: 760px)').matches : false;
+    if (isMobile) {
+      const hasActive = elements.tierCards.some((c) => c.classList.contains('is-mobile-active'));
+      if (!hasActive) activateMobileTierTab('foundation');
     }
-
-    const firstVisible = elements.productItems.find((item) => !item.classList.contains('is-hidden'));
-    if (firstVisible) selectProduct(firstVisible);
   };
 
   const renderBasketItems = (container) => {
@@ -372,7 +562,7 @@ document.addEventListener('DOMContentLoaded', function () {
     container.innerHTML = '';
 
     if (state.cart.length === 0) {
-      container.innerHTML = '<p class="order-meta">No package selected yet. Choose one tier to continue to the fixed Stripe Payment Link.</p>';
+      container.innerHTML = '<p class="order-meta">No package selected yet. Choose one tier to continue to checkout.</p>';
       return;
     }
 
@@ -419,7 +609,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     elements.stepButtons.forEach((button) => {
-      const key = button.getAttribute('data-order-step');
+      const key = button.dataset.orderStep;
       const active = key === currentStep;
       button.classList.toggle('is-active', active);
       button.classList.toggle('is-complete', Boolean(complete[key]));
@@ -429,11 +619,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     elements.stepPanels.forEach((panel) => {
-      panel.classList.toggle('is-active', panel.getAttribute('data-order-panel') === currentStep);
+      panel.classList.toggle('is-active', panel.dataset.orderPanel === currentStep);
     });
 
     elements.stepNextButtons.forEach((button) => {
-      button.disabled = !isStepEnabled(button.getAttribute('data-step-next'));
+      button.disabled = !isStepEnabled(button.dataset.stepNext);
     });
   };
 
@@ -446,7 +636,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const updateCollectionUI = () => {
     const collection = getCollection();
     elements.collectionButtons.forEach((button) => {
-      const active = state.collectionMethodChosen && button.getAttribute('data-collection') === state.collectionMethod;
+      const active = state.collectionMethodChosen && button.dataset.collection === state.collectionMethod;
       button.classList.toggle('is-active', active);
       button.setAttribute('aria-pressed', String(active));
     });
@@ -456,7 +646,21 @@ document.addEventListener('DOMContentLoaded', function () {
         ? collection.message
         : 'Select a collection route to confirm pricing and add this package.';
     }
-    if (collection) clearCollectionRequirement();
+    if (collection) {
+      clearCollectionRequirement();
+    }
+    // Update prices on all tier cards whenever collection state changes
+    elements.tierCards.forEach((card) => {
+      const tierId = card.dataset.tierCard;
+      const data = getCatalogItem(tierId);
+      if (!data) return;
+      const price = getPriceForCollection(tierId, state.collectionMethodChosen ? state.collectionMethod : null);
+      const priceEl = card.querySelector(`#tier-price-${tierId}`);
+      if (priceEl) priceEl.textContent = store.formatCurrency(price);
+      // Also sync mobile tab chip price
+      const chip = document.querySelector(`[data-tier-tab="${tierId}"] .tier-tab-price`);
+      if (chip) chip.textContent = store.formatCurrency(price);
+    });
   };
 
   const updateRegistrationMessage = () => {
@@ -464,18 +668,18 @@ document.addEventListener('DOMContentLoaded', function () {
     const snapshot = getAuthSnapshot();
 
     if (!snapshot?.configured) {
-      elements.registerMessage.textContent = 'Add your Firebase project details before opening Stripe checkout.';
+      elements.registerMessage.textContent = 'Account services are not configured yet. Add the project values before opening checkout.';
       return;
     }
 
     if (!snapshot.user) {
-      elements.registerMessage.textContent = 'Sign in before opening Stripe checkout so the pending order can be saved to your account.';
+      elements.registerMessage.textContent = 'Sign in before opening checkout so the order can be saved to your account.';
       return;
     }
 
     const latestOrder = state.orders[0];
     elements.registerMessage.textContent = !latestOrder
-      ? 'You are signed in. Choose one package and continue to the hosted Stripe checkout.'
+      ? 'You are signed in. Choose one package and continue to hosted checkout.'
       : `Latest order ${latestOrder.id} is ${latestOrder.status}. Results stay locked until payment is confirmed and a report is attached.`;
   };
 
@@ -498,11 +702,10 @@ document.addEventListener('DOMContentLoaded', function () {
     saveState();
     refresh();
 
-    const item = elements.productItems.find((entry) => entry.getAttribute('data-product-id') === id);
-    if (!item) return;
-
-    selectProduct(item);
-    item.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    activateMobileTierTab(id);
+    selectedProductId = id;
+    const card = document.querySelector(`[data-tier-card="${id}"]`);
+    card?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
     setStatus(elements.quizStatus, `${getCatalogItem(id).name} looks like the closest match.`, 'success');
   };
 
@@ -518,6 +721,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     updateGoalFilter();
     ensureSelectedProduct();
+    updateTierCardSelectionState();
     updateCollectionUI();
     renderBasket();
     renderTotals();
@@ -529,7 +733,53 @@ document.addEventListener('DOMContentLoaded', function () {
 
   elements.goalButtons.forEach((button) =>
     button.addEventListener('click', () => {
-      state.goal = button.getAttribute('data-goal') || 'all';
+      state.goal = button.dataset.goal || 'all';
+      saveState();
+      refresh();
+    })
+  );
+
+  // Mobile tier tab strip
+  elements.tierTabChips.forEach((chip) =>
+    chip.addEventListener('click', () => {
+      const tierId = chip.dataset.tierTab;
+      if (tierId) activateMobileTierTab(tierId);
+    })
+  );
+
+  // Clicking anywhere on a tier card triggers select (same as the footer button)
+  elements.tierCards.forEach((card) =>
+    card.addEventListener('click', (event) => {
+      // Don't intercept clicks on the '?' info triggers, tooltip buttons, or the select button itself
+      if (event.target.closest('.collection-info-trigger, .tier-select-btn, .bio-info')) return;
+      const tierId = card.dataset.tierCard;
+      if (!tierId) return;
+      if (!state.collectionMethodChosen || !state.collectionMethod) {
+        showCollectionRequirement(tierId);
+        return;
+      }
+      const data = getCatalogItem(tierId);
+      if (!data) return;
+      state.cart = [{ id: data.id, name: data.name, price: getPriceForCollection(data.id, state.collectionMethod), quantity: 1 }];
+      selectedProductId = tierId;
+      saveState();
+      refresh();
+    })
+  );
+
+  // Tier select buttons
+  elements.tierSelectButtons.forEach((btn) =>
+    btn.addEventListener('click', () => {
+      const tierId = btn.dataset.productId;
+      if (!tierId) return;
+      if (!state.collectionMethodChosen || !state.collectionMethod) {
+        showCollectionRequirement(tierId);
+        return;
+      }
+      const data = getCatalogItem(tierId);
+      if (!data) return;
+      state.cart = [{ id: data.id, name: data.name, price: getPriceForCollection(data.id, state.collectionMethod), quantity: 1 }];
+      selectedProductId = tierId;
       saveState();
       refresh();
     })
@@ -537,7 +787,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   elements.collectionButtons.forEach((button) =>
     button.addEventListener('click', () => {
-      state.collectionMethod = button.getAttribute('data-collection') || 'home';
+      state.collectionMethod = button.dataset.collection || 'home';
       state.collectionMethodChosen = true;
       normalizeState();
       saveState();
@@ -545,30 +795,44 @@ document.addEventListener('DOMContentLoaded', function () {
     })
   );
 
-  elements.productItems.forEach((item) => item.addEventListener('click', () => selectProduct(item)));
+  elements.collectionInfoButtons.forEach((button) =>
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      toggleCollectionInfo(button.dataset.collectionInfo, button);
+    })
+  );
+
+  elements.collectionModalClose.forEach((node) => {
+    node.addEventListener('click', closeCollectionModal);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeCollectionModal();
+      closeInlineCollectionInfo();
+    }
+  });
+
+  if (mobileCollectionInfoQuery) {
+    const handleInfoModeChange = () => {
+      closeCollectionModal();
+      closeInlineCollectionInfo();
+    };
+    if (typeof mobileCollectionInfoQuery.addEventListener === 'function') {
+      mobileCollectionInfoQuery.addEventListener('change', handleInfoModeChange);
+    }
+  }
+
+  // Render biomarkers + elements into all tier bodies
+  renderAllTierContent();
 
   if (elements.quizButton) elements.quizButton.addEventListener('click', applyRecommendation);
-
-  if (elements.detailToggle) {
-    elements.detailToggle.addEventListener('click', () => {
-      if (!state.collectionMethodChosen || !state.collectionMethod) {
-        showCollectionRequirement();
-        return;
-      }
-      const id = elements.detailToggle.getAttribute('data-product-id');
-      const details = getCatalogItem(id);
-      if (!details) return;
-      state.cart = [{ id: details.id, name: details.name, price: getPriceForCollection(details.id, state.collectionMethod), quantity: 1 }];
-      saveState();
-      refresh();
-    });
-  }
 
   elements.basketItems.forEach((container) => {
     container.addEventListener('click', (event) => {
       const button = event.target.closest('[data-remove-id]');
       if (!button) return;
-      const id = button.getAttribute('data-remove-id');
+      const id = button.dataset.removeId;
       state.cart = state.cart.filter((item) => item.id !== id);
       saveState();
       refresh();
@@ -580,10 +844,10 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   elements.stepButtons.forEach((button) =>
-    button.addEventListener('click', () => setActiveStep(button.getAttribute('data-order-step')))
+    button.addEventListener('click', () => setActiveStep(button.dataset.orderStep))
   );
   elements.stepNextButtons.forEach((button) =>
-    button.addEventListener('click', () => setActiveStep(button.getAttribute('data-step-next')))
+    button.addEventListener('click', () => setActiveStep(button.dataset.stepNext))
   );
 
   if (elements.checkoutForm) {
@@ -613,7 +877,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!isConfiguredPaymentLink(paymentLinkUrl)) {
         setStatus(
           elements.checkoutStatus,
-          'This Stripe Payment Link is not configured yet. Add the fixed URLs in scripts/stripe-payment-links-config.js.',
+          'Checkout is not configured for this package yet. Add the hosted checkout URL before taking payment.',
           'error'
         );
         return;
@@ -624,7 +888,7 @@ document.addEventListener('DOMContentLoaded', function () {
         setButtonLoading(submitButton, true);
       }
 
-      setStatus(elements.checkoutStatus, 'Saving your pending order and redirecting to Stripe...', 'loading');
+      setStatus(elements.checkoutStatus, 'Saving your order and opening checkout...', 'loading');
 
       try {
         const totals = store.getTotals(state.cart, TAX_RATE, 0);
@@ -639,8 +903,8 @@ document.addEventListener('DOMContentLoaded', function () {
           collectionMethod: state.collectionMethod,
           packageTier: selectedItem.id,
           paymentProvider: 'stripe_payment_link',
-          paymentMode: 'fixed-link-demo',
-          paymentVerification: 'manual',
+          paymentMode: 'hosted_checkout',
+          paymentVerification: 'pending_confirmation',
           paymentLinkUrl
         };
 
@@ -660,7 +924,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error(error);
         setStatus(
           elements.checkoutStatus,
-          error.message || 'The pending order could not be saved before redirecting to Stripe.',
+          error.message || 'The order could not be saved before checkout opened.',
           'error'
         );
         if (submitButton) {
@@ -672,5 +936,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
   root.addEventListener('ayuta:state-updated', refresh);
   root.addEventListener('ayuta:auth-updated', refresh);
+
+  // Tap support for .bio-info hint buttons (biomarker chips + detail-meta tooltips).
+  // The collection-info-trigger buttons have their own handler above; exclude them.
+  document.addEventListener('click', (event) => {
+    const hint = event.target.closest('.bio-info');
+    if (hint) {
+      event.stopPropagation();
+      const isOpen = hint.classList.contains('is-tip-open');
+      document.querySelectorAll('.bio-info.is-tip-open').forEach((el) => el.classList.remove('is-tip-open'));
+      if (!isOpen) hint.classList.add('is-tip-open');
+      return;
+    }
+    // Close any open hint when tapping elsewhere
+    document.querySelectorAll('.bio-info.is-tip-open').forEach((el) => el.classList.remove('is-tip-open'));
+  }, true); // capture phase so stopPropagation prevents product-list-item selection when tapping hint
+
   refresh();
 });

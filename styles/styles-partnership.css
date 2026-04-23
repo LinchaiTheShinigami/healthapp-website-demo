@@ -1,0 +1,271 @@
+.partnership-page {
+    position: relative;
+}
+
+.partnership-hero {
+    padding-top: 112px;
+    padding-bottom: 44px;
+}
+
+.partnership-hero-grid,
+.benefit-grid,
+.partnership-contact-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 0.92fr);
+    gap: 24px;
+    align-items: stretch;
+}
+
+.partnership-copy,
+.partnership-sidecard,
+.partnership-section-shell,
+.benefit-card,
+.network-card,
+.timeline-shell,
+.contact-intro,
+.partner-form {
+    display: grid;
+    gap: 16px;
+}
+
+.partnership-copy h1,
+.partnership-sidecard h2,
+.model-card h3,
+.benefit-card h2,
+.network-card h2,
+.timeline-grid strong,
+.contact-intro h2,
+.partner-form h3 {
+    margin: 0;
+    font-family: var(--font-display);
+}
+
+.partnership-copy h1 {
+    font-size: clamp(3rem, 4.8vw, 5rem);
+    line-height: 0.9;
+    letter-spacing: -0.045em;
+    max-width: 11ch;
+}
+
+.partnership-actions,
+.partnership-proof,
+.model-points {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.partnership-proof span,
+.model-points span {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(23, 27, 24, 0.08);
+    color: var(--accent-2);
+    font-size: 0.84rem;
+    font-weight: 800;
+}
+
+.partnership-sidecard,
+.network-card,
+.model-card--dark {
+    padding: 28px;
+    border-radius: 32px;
+    background: linear-gradient(160deg, rgba(22, 37, 56, 0.98) 0%, rgba(22, 28, 24, 0.98) 100%);
+    color: rgba(251, 250, 247, 0.82);
+    box-shadow: 0 30px 64px rgba(22, 37, 56, 0.16);
+}
+
+.partnership-sidecard .eyebrow,
+.partnership-sidecard p,
+.network-card .eyebrow,
+.network-card p,
+.model-card--dark .model-index,
+.model-card--dark p {
+    color: rgba(251, 250, 247, 0.68);
+}
+
+.partnership-sidecard h2,
+.partnership-sidecard strong,
+.network-card h2,
+.model-card--dark h3 {
+    color: #fbfaf7;
+}
+
+.partnership-sidegrid,
+.benefit-list {
+    display: grid;
+    gap: 14px;
+}
+
+.partnership-sidegrid article,
+.benefit-list article,
+.timeline-grid article {
+    padding: 18px;
+    border-radius: 22px;
+    border: 1px solid rgba(23, 27, 24, 0.08);
+    background: rgba(255, 255, 255, 0.72);
+}
+
+.partnership-sidegrid article {
+    background: rgba(251, 250, 247, 0.08);
+    border-color: rgba(251, 250, 247, 0.08);
+}
+
+.partnership-sidegrid strong,
+.benefit-list strong {
+    display: block;
+    margin-bottom: 6px;
+}
+
+.partnership-sidegrid p,
+.benefit-list p,
+.model-card p,
+.network-card p,
+.timeline-grid p {
+    margin: 0;
+}
+
+.partnership-models,
+.partnership-benefits,
+.partnership-timeline,
+.partnership-contact {
+    padding-top: 44px;
+}
+
+.partnership-section-head {
+    display: grid;
+    gap: 10px;
+    max-width: 720px;
+}
+
+.model-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.model-card {
+    display: grid;
+    gap: 16px;
+    align-content: start;
+}
+
+.model-card h3 {
+    font-size: clamp(2rem, 3vw, 2.8rem);
+    line-height: 0.95;
+}
+
+.model-index {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(85, 117, 94, 0.14);
+    color: var(--accent-dark);
+    font-weight: 800;
+}
+
+.model-card--dark .model-points span {
+    background: rgba(251, 250, 247, 0.1);
+    border-color: rgba(251, 250, 247, 0.12);
+    color: rgba(251, 250, 247, 1);
+}
+
+.benefit-card {
+    align-content: start;
+}
+
+.network-card {
+    align-content: center;
+}
+
+.timeline-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.timeline-grid article {
+    display: grid;
+    gap: 8px;
+    align-content: start;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(247, 242, 234, 0.9) 100%);
+}
+
+.timeline-grid span {
+    color: var(--accent-dark);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.timeline-grid strong {
+    font-size: 1.25rem;
+    line-height: 1;
+}
+
+.partnership-contact {
+    padding-bottom: 88px;
+}
+
+.contact-intro {
+    align-content: center;
+}
+
+.partner-form {
+    max-width: none;
+}
+
+.partner-form-head {
+    display: grid;
+    gap: 6px;
+}
+
+.partner-form textarea {
+    resize: vertical;
+    min-height: 132px;
+}
+
+.partner-form .btn {
+    width: 100%;
+}
+
+@media (max-width: 1120px) {
+    .partnership-hero-grid,
+    .benefit-grid,
+    .partnership-contact-grid,
+    .model-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .timeline-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 760px) {
+    .partnership-hero {
+        padding-top: 94px;
+    }
+
+    .partnership-copy h1 {
+        font-size: clamp(2.6rem, 11vw, 4rem);
+    }
+
+    .partnership-sidecard,
+    .network-card,
+    .model-card--dark {
+        padding: 24px;
+        border-radius: 26px;
+    }
+
+    .timeline-grid {
+        grid-template-columns: 1fr;
+    }
+}

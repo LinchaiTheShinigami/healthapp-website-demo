@@ -83,7 +83,7 @@
 
   const getAuth = (lang) => {
     if (!window.firebase) {
-      throw new Error('Firebase could not be loaded.');
+      throw new Error('Authentication service could not be loaded.');
     }
     const app = window.firebase.apps && window.firebase.apps.length ? window.firebase.app() : window.firebase.initializeApp(firebaseConfig);
     const auth = window.firebase.auth(app);
@@ -201,7 +201,7 @@
     initializeElements();
 
     if (!isConfigured) {
-      setMessage('Authentication unavailable', 'Firebase is not configured for this build, so this account action cannot be completed here.', 'error');
+      setMessage('Authentication unavailable', 'Authentication is not configured for this build, so this account action cannot be completed here.', 'error');
       renderActions([{ label: 'Open ayuta', href: getFallbackContinueUrl() }]);
       return;
     }

@@ -5,7 +5,6 @@
   };
 
   const APP_PAGES = new Set(['results', 'orders', 'profile', 'order', 'payment-return']);
-  const APP_TRANSITION_DELAY_MS = 1100;
   const TRANSITION_STORAGE_KEY = 'ayuta_page_transition';
   const TRANSITION_MAX_AGE_MS = 12000;
   const PAGE_LABELS = {
@@ -15,11 +14,12 @@
     profile: 'Profile',
     'payment-return': 'Payment',
     clinics: 'Clinics',
+    packages: 'Packages',
+    partnership: 'Gym partnerships',
     contact: 'Support',
+    about: 'About',
     home: 'Home'
   };
-  const warmedDocuments = new Map();
-  const warmedResources = new Set();
   const readStoredTransition = () => {
     try {
       const raw = sessionStorage.getItem(TRANSITION_STORAGE_KEY);
@@ -202,53 +202,6 @@
     return PAGE_LABELS[key] || 'page';
   };
 
-  const prefetchResource = (resourceUrl, as) => {
-    if (!resourceUrl || warmedResources.has(resourceUrl)) return;
-    warmedResources.add(resourceUrl);
-
-    const hint = document.createElement('link');
-    hint.rel = 'prefetch';
-    hint.href = resourceUrl;
-    if (as) hint.as = as;
-    document.head.appendChild(hint);
-
-    if (as === 'style' || as === 'script' || as === 'image') {
-      fetch(resourceUrl, { credentials: 'same-origin' }).catch(() => {});
-    }
-  };
-
-  const warmPage = (nextUrl) => {
-    const key = nextUrl.href;
-    if (warmedDocuments.has(key)) return warmedDocuments.get(key);
-
-    const warmPromise = fetch(key, { credentials: 'same-origin' })
-      .then((response) => {
-        if (!response.ok) throw new Error(`Unable to warm ${key}`);
-        return response.text();
-      })
-      .then((html) => {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
-        const resources = [];
-
-        doc.querySelectorAll('link[rel="stylesheet"][href]').forEach((node) => {
-          resources.push({ url: new URL(node.getAttribute('href'), nextUrl.href).href, as: 'style' });
-        });
-        doc.querySelectorAll('script[src]').forEach((node) => {
-          resources.push({ url: new URL(node.getAttribute('src'), nextUrl.href).href, as: 'script' });
-        });
-        doc.querySelectorAll('img[src]').forEach((node) => {
-          resources.push({ url: new URL(node.getAttribute('src'), nextUrl.href).href, as: 'image' });
-        });
-
-        resources.forEach(({ url, as }) => prefetchResource(url, as));
-      })
-      .catch(() => {});
-
-    warmedDocuments.set(key, warmPromise);
-    return warmPromise;
-  };
-
   const openPageTransition = (label) => {
     const overlay = document.querySelector('[data-page-transition]');
     const labelNode = document.querySelector('[data-page-transition-label]');
@@ -368,8 +321,8 @@
 
     if (totalRoot) totalRoot.textContent = window.AyutaStore.formatCurrency(totals.total);
     if (orderButton) {
-      orderButton.disabled = cart.length === 0;
-      orderButton.textContent = cart.length === 0 ? 'Choose a package first' : 'Continue to payment';
+      orderButton.disabled = false;
+      orderButton.textContent = cart.length === 0 ? 'Continue to order' : 'Continue to payment';
     }
   };
 
@@ -582,13 +535,13 @@
     if (orderButton) {
       orderButton.addEventListener('click', () => {
         const state = readStoreState();
-        if (!Array.isArray(state.cart) || state.cart.length === 0) return;
+        const hasItems = Array.isArray(state.cart) && state.cart.length > 0;
         const orderHref =
           document.querySelector('.app-cart')?.getAttribute('href') ||
           document.querySelector('.nav-cart')?.getAttribute('href') ||
           'pages/order.html';
         closeCartDrawer();
-        window.location.assign(`${orderHref}?step=payment`);
+        globalThis.location.assign(hasItems ? `${orderHref}?step=payment` : orderHref);
       });
     }
 
@@ -606,38 +559,45 @@
     cartDrawerBound = true;
   };
 
+  const PUBLIC_TRANSITION_DELAY_MS = 200;
+
   const bindPageTransitions = () => {
     if (pageTransitionBound) return;
 
     document.addEventListener('click', (event) => {
-      const link = event.target.closest('a[data-nav-link]');
+      // Match nav links OR any plain same-origin anchor
+      const link = event.target.closest('a[href]');
       if (!link || isModifiedClick(event)) return;
       if (link.classList.contains('nav-cart')) return;
-
-      const pageKey = getPageKey();
-      const session = readSession();
-      const snapshot = readAuthSnapshot();
-      const isLoggedIn = Boolean((snapshot && snapshot.user) || (session && session.email));
-      if (!isLoggedIn || !APP_PAGES.has(pageKey)) return;
       if (link.hasAttribute('download') || link.target === '_blank') return;
 
+      // Skip links with no href (active-page links have href removed)
       const href = link.getAttribute('href');
       if (!href) return;
+
+      // Skip hash-only, mailto, tel, and javascript: links
+      if (/^(#|mailto:|tel:|javascript:)/i.test(href)) return;
 
       const nextUrl = new URL(href, window.location.href);
       const currentUrl = new URL(window.location.href);
       if (nextUrl.origin !== currentUrl.origin) return;
       if (nextUrl.pathname === currentUrl.pathname && nextUrl.search === currentUrl.search && nextUrl.hash === currentUrl.hash) return;
 
+      const pageKey = getPageKey();
+      const session = readSession();
+      const snapshot = readAuthSnapshot();
+      const isLoggedIn = Boolean((snapshot && snapshot.user) || (session && session.email));
+
       event.preventDefault();
       closeCartDrawer();
       writeStoredTransition(nextUrl.href, getPageLabel(link, nextUrl));
-      warmPage(nextUrl);
-      openPageTransition(getPageLabel(link, nextUrl));
+
+      // Always use the lightweight fade-out for consistent feel across all auth states
+      document.body.classList.add('is-navigating-away');
       if (transitionTimer) window.clearTimeout(transitionTimer);
       transitionTimer = window.setTimeout(() => {
         window.location.assign(nextUrl.href);
-      }, APP_TRANSITION_DELAY_MS);
+      }, PUBLIC_TRANSITION_DELAY_MS);
     });
 
     pageTransitionBound = true;
@@ -669,6 +629,44 @@
     }
   };
 
+  const markActiveNavLink = (navRoot) => {
+    const pageKey = getPageKey();
+    // Clear any previously-marked links (e.g. after a soft refresh)
+    navRoot.querySelectorAll('[data-nav-key]').forEach((link) => {
+      link.classList.remove('is-active');
+      link.removeAttribute('aria-current');
+    });
+    document.querySelectorAll('.app-sidebar-link[data-nav-key]').forEach((link) => {
+      link.classList.remove('is-active');
+      link.removeAttribute('aria-current');
+    });
+
+    // Match by data-nav-key or by the filename in data-path
+    const allNavLinks = [
+      ...navRoot.querySelectorAll('[data-nav-key]'),
+      ...document.querySelectorAll('.app-sidebar-link[data-nav-key]')
+    ];
+
+    allNavLinks.forEach((link) => {
+      const navKey = link.dataset.navKey;
+      const dataPath = link.dataset.path || '';
+      const pathKey = dataPath.split('/').pop().replace('.html', '') || 'home';
+      const isActive = navKey === pageKey || pathKey === pageKey ||
+        (pageKey === 'home' && (dataPath === 'index.html' || dataPath === ''));
+
+      if (!isActive) return;
+
+      link.classList.add('is-active');
+      link.setAttribute('aria-current', 'page');
+      // Keep href so the link stays keyboard-focusable; the page-transition
+      // binder already skips same-page navigations, so clicking it is a no-op.
+      // Add a direct guard here as a safety net.
+      link.addEventListener('click', (e) => {
+        if (link.classList.contains('is-active')) e.preventDefault();
+      }, { once: false });
+    });
+  };
+
   const init = (navRoot) => {
     if (!navRoot) return;
     bindLoginButtons(document);
@@ -677,6 +675,7 @@
     bindLogoutButtons();
     bindCartDrawer();
     bindPageTransitions();
+    markActiveNavLink(navRoot);
     refresh(navRoot);
     runStoredPageEntrance();
     window.addEventListener('ayuta:auth-updated', () => refresh(navRoot));

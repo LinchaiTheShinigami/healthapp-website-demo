@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Compare Ayuta's three blood test packages — Foundation, Performance, and Elite. All available as a home finger-prick kit or clinic venous draw appointment.">
+    <link rel="canonical" href="https://ayuta.co.uk/pages/packages.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Ayuta Health">
+    <meta property="og:title" content="Blood Test Packages | Ayuta Health">
+    <meta property="og:description" content="Foundation from £149, Performance from £249, Elite from £399. Home kit or clinic collection. Results in days.">
+    <meta property="og:url" content="https://ayuta.co.uk/pages/packages.html">
+    <meta property="og:image" content="https://ayuta.co.uk/Images/Logo/ayuta-og.png">
+    <title>Packages | Ayuta Health</title>
+    <link rel="icon" href="../Images/Logo/ayuta_favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../styles/site-base.css">
+    <link rel="stylesheet" href="../styles/styles-index.css">
+    <link rel="stylesheet" href="../styles/styles-packages.css">
+    <script src="../scripts/app-store.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-app-compat.js" integrity="sha384-Znt+uHtXAdOhiGTGyIwmBNXlsc5TOAuAzcCG0eAE2dulpw9KiB0JhB34uEGwuHs8" crossorigin="anonymous" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-auth-compat.js" integrity="sha384-A6cYBBWGHa59uc1lMxnsMCEdmpRGH6sFBcvsp5iy586ULeLLZp7CTav7jH/SrDcr" crossorigin="anonymous" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore-compat.js" integrity="sha384-XfsHRWyIpDxqmBgRls8NyklJPVxNtAPTuASFjpt47tsNDKvc13Ibf1leNHrxGLax" crossorigin="anonymous" defer></script>
+    <script src="../scripts/auth-config.js" defer></script>
+    <script src="../scripts/firebase-auth.js" defer></script>
+    <script src="../scripts/nav-state.js" defer></script>
+    <script src="../scripts/account-modal.js" defer></script>
+    <script src="../scripts/include-nav.js" defer></script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Ayuta Blood Test Packages",
+      "description": "Three curated blood test packages available as home kit or clinic appointment.",
+      "url": "https://ayuta.co.uk/pages/packages.html",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "Product",
+            "name": "Foundation Blood Test",
+            "description": "Baseline panel covering Full Blood Count, vitamins, iron, cholesterol, and HbA1c.",
+            "offers": [
+              { "@type": "Offer", "price": "149", "priceCurrency": "GBP", "name": "Home kit" },
+              { "@type": "Offer", "price": "199", "priceCurrency": "GBP", "name": "Clinic appointment" }
+            ]
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "Product",
+            "name": "Performance Blood Test",
+            "description": "Expanded panel with hormone, inflammation, and advanced lipid markers on top of Foundation.",
+            "offers": [
+              { "@type": "Offer", "price": "249", "priceCurrency": "GBP", "name": "Home kit" },
+              { "@type": "Offer", "price": "299", "priceCurrency": "GBP", "name": "Clinic appointment" }
+            ]
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@type": "Product",
+            "name": "Elite Blood Test",
+            "description": "Deepest panel with thyroid and endocrine coverage for longitudinal tracking.",
+            "offers": [
+              { "@type": "Offer", "price": "399", "priceCurrency": "GBP", "name": "Home kit" },
+              { "@type": "Offer", "price": "499", "priceCurrency": "GBP", "name": "Clinic appointment" }
+            ]
+          }
+        }
+      ]
+    }
+    </script>
+</head>
+<body class="packages-page">
+    <div id="nav-placeholder"></div>
+
+    <header class="packages-hero">
+        <div class="container">
+            <div class="packages-hero-copy">
+                <span class="eyebrow">Packages</span>
+                <h1>Find the right test for you.</h1>
+                <p>Three tiers, each available as a home finger-prick kit or a clinic venous draw appointment. Every package includes a plain-language results dashboard.</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="packages-page">
+        <div class="container">
+            <div class="packages-grid">
+
+                <article class="tier-card tier-card--foundation">
+                    <h3>Foundation</h3>
+                    <p class="tier-for">If you've never had a blood panel done, start here.</p>
+                    <p>A comprehensive baseline covering the key markers that affect how you feel day to day — energy, immunity, iron, cholesterol, and blood sugar.</p>
+
+                    <div class="tier-biomarkers">
+                        <p class="tier-biomarkers-label">What's tested</p>
+                        <p class="tier-biomarkers-list">Full Blood Count · Vitamin B12 · Vitamin D · Ferritin &amp; Iron · Cholesterol &amp; Lipids · HbA1c (blood glucose)</p>
+                    </div>
+
+                    <div class="tier-tags">
+                        <span>Home or clinic</span>
+                        <span>Results in 2–5 days</span>
+                    </div>
+
+                    <div class="tier-price">
+                        <strong>£149 <small>home kit</small></strong>
+                        <small>£199 with clinic appointment</small>
+                    </div>
+
+                    <a class="btn btn-primary tier-book-btn" href="order.html">Book Foundation</a>
+                </article>
+
+                <article class="tier-card tier-card--performance">
+                    <h3>Performance</h3>
+                    <p class="tier-for">If you train regularly and want to optimise recovery.</p>
+                    <p>Everything in Foundation, plus the markers that matter most for training load, hormone balance, and inflammation — so you can see what's driving fatigue or progress.</p>
+
+                    <div class="tier-biomarkers">
+                        <p class="tier-biomarkers-label">What's tested</p>
+                        <p class="tier-biomarkers-list">Foundation markers, plus: Free &amp; Total Testosterone · Cortisol · C-Reactive Protein · Apolipoprotein A &amp; B · Zinc · SHBG · Folate</p>
+                    </div>
+
+                    <div class="tier-tags">
+                        <span>Home or clinic</span>
+                        <span>Results in 2–5 days</span>
+                    </div>
+
+                    <div class="tier-price">
+                        <strong>£249 <small>home kit</small></strong>
+                        <small>£299 with clinic appointment</small>
+                    </div>
+
+                    <a class="btn btn-primary tier-book-btn" href="order.html">Book Performance</a>
+                </article>
+
+                <article class="tier-card tier-card--elite">
+                    <h3>Elite</h3>
+                    <p class="tier-for">If you want the deepest picture and plan to test regularly.</p>
+                    <p>Everything in Performance, plus full thyroid and endocrine coverage. Ideal for tracking trends across multiple tests and building a long-term picture of your health.</p>
+
+                    <div class="tier-biomarkers">
+                        <p class="tier-biomarkers-label">What's tested</p>
+                        <p class="tier-biomarkers-list">Performance markers, plus: TSH · Free T3 &amp; T4 · Oestradiol · Prolactin · Folic Acid · IGF-1</p>
+                    </div>
+
+                    <div class="tier-tags">
+                        <span>Home or clinic</span>
+                        <span>Results in 2–5 days</span>
+                    </div>
+
+                    <div class="tier-price">
+                        <strong>£399 <small>home kit</small></strong>
+                        <small>£499 with clinic appointment</small>
+                    </div>
+
+                    <a class="btn btn-primary tier-book-btn" href="order.html">Book Elite</a>
+                </article>
+
+            </div>
+
+            <p class="packages-collection-note">
+                <strong>Home kit or clinic?</strong>
+                Home kits use a finger-prick capillary sample you return by post using prepaid packaging — results in 3–5 working days. Clinic appointments are a full venous draw with a phlebotomist — results in 2–3 working days. <a href="clinics.html">See clinic locations.</a>
+            </p>
+        </div>
+
+        <section class="packages-cta">
+            <div class="container">
+                <div class="packages-cta-inner">
+                    <div>
+                        <h2>Not sure which tier is right for you?</h2>
+                        <p>Start with Foundation — it covers the essentials and gives you a clear baseline to build on. You can always go deeper next time.</p>
+                    </div>
+                    <a class="btn btn-primary" href="order.html">Start with Foundation</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div>
+                <p class="footer-title">Ayuta Health</p>
+                <p>Clear package selection, collection, and follow-up.</p>
+            </div>
+            <div>
+                <p class="footer-title">Explore</p>
+                <div class="footer-links">
+                    <a href="../index.html">Home</a>
+                    <a href="packages.html">Packages</a>
+                    <a href="clinics.html">Clinics</a>
+                    <a href="order.html">Book tests</a>
+                </div>
+            </div>
+            <div>
+                <p class="footer-title">Company</p>
+                <div class="footer-links">
+                    <a href="about.html">About</a>
+                    <a href="partnership.html">Gym partnerships</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </div>
+            <div>
+                <p class="footer-title">Account</p>
+                <div class="footer-links">
+                    <a href="results.html">Results dashboard</a>
+                    <a href="orders.html">Orders</a>
+                    <a href="profile.html">Profile</a>
+                </div>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <p>&copy; 2026 Ayuta Ltd. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

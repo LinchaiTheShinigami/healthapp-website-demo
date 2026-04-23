@@ -1,0 +1,49 @@
+<!--
+  Order page — sample collection method selector bar.
+  Loaded into #collection-bar-placeholder via include-nav.js / order-page.js.
+  The JS in order-page.js wires up [data-collection] buttons and [data-collection-info] triggers.
+-->
+<div class="tiers-collection-bar">
+    <div class="tiers-collection-bar-label">
+        <span class="fa-solid fa-vial" aria-hidden="true"></span>
+        How would you like your sample collected?
+        <span class="detail-route-required">Required</span>
+    </div>
+    <div class="collection-toggle" role="radiogroup" aria-label="Sample collection method">
+        <div class="collection-option-shell">
+            <div class="collection-option-row">
+                <button class="collection-option" type="button" data-collection="home" aria-pressed="false">
+                    <span class="collection-option-icon fa-solid fa-house-medical" aria-hidden="true"></span>
+                    <span class="collection-option-copy">
+                        <span class="collection-option-label">Home kit</span>
+                        <span class="collection-option-note">Finger-prick · post back · 3–5 days</span>
+                    </span>
+                </button>
+                <button class="collection-info-trigger" type="button"
+                    data-collection-info="home" aria-expanded="false"
+                    aria-controls="collection-info-home"
+                    aria-label="How home kit testing works">?</button>
+            </div>
+        </div>
+        <div class="collection-option-shell">
+            <div class="collection-option-row">
+                <button class="collection-option" type="button" data-collection="lab" aria-pressed="false">
+                    <span class="collection-option-icon fa-solid fa-hospital" aria-hidden="true"></span>
+                    <span class="collection-option-copy">
+                        <span class="collection-option-label">Clinic appointment</span>
+                        <span class="collection-option-note">Venous draw · 2–3 working days</span>
+                    </span>
+                </button>
+                <button class="collection-info-trigger" type="button"
+                    data-collection-info="lab" aria-expanded="false"
+                    aria-controls="collection-info-lab"
+                    aria-label="How clinic testing works">?</button>
+            </div>
+        </div>
+    </div>
+    <div class="collection-info-inline" id="collection-info-home" data-collection-info-panel="home" hidden></div>
+    <div class="collection-info-inline" id="collection-info-lab" data-collection-info-panel="lab" hidden></div>
+    <a class="text-button collection-clinics-link" href="../pages/clinics.html">
+        <span class="fa-solid fa-location-dot" aria-hidden="true"></span> View clinic locations
+    </a>
+</div>

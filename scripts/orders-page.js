@@ -309,7 +309,7 @@
       return;
     }
     if (!snapshot.configured) {
-      setStatus(elements.lockedStatus, 'Authentication is not configured yet. Add your Firebase project values in scripts/auth-config.js.');
+      setStatus(elements.lockedStatus, 'Authentication is not configured yet. Add your project values in scripts/auth-config.js.');
       return;
     }
     setStatus(elements.lockedStatus, 'Sign in to view your saved orders.');
@@ -547,7 +547,7 @@
         previewDemo
           ? `Local preview • ${orders.length} orders in history.`
           : usedDemo
-            ? `Demo dataset • ${orders.length} orders in history.`
+            ? `Sample dataset • ${orders.length} orders in history.`
             : cloudLoadFailed
               ? `Cached view • ${orders.length} orders available.`
               : `${orders.length} orders in history.`

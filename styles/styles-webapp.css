@@ -133,7 +133,7 @@
     width: 100%;
 }
 
-/* Buttons & Inputs scoped to the mobile demo */
+/* Buttons & Inputs scoped to the mobile flow */
 .mobile-container .btn-primary,
 .mobile-container .btn-secondary {
     display: inline-flex;
@@ -292,7 +292,7 @@
 .device-screen {
     position: relative;
     width: 100%;
-    height: 60vh; /* Fixed height set to 80% of the viewport height */
+    height: 60vh; /* Height scales from the viewport. */
     max-height: 700px; /* Maximum height for larger screens */
     background: linear-gradient(180deg, #f8f5ef 0%, #eef2eb 100%);
     border-radius: 32px;

@@ -9,7 +9,7 @@
 
 .account-hero-shell {
     display: grid;
-    grid-template-columns: minmax(0, 0.96fr) minmax(320px, 0.94fr);
+    grid-template-columns: minmax(0, 0.72fr) minmax(320px, 1.18fr);
     gap: 22px;
     align-items: stretch;
 }
@@ -30,10 +30,10 @@
 }
 
 .account-hero h1 {
-    font-size: clamp(3rem, 4.8vw, 4.8rem);
-    line-height: 0.9;
+    font-size: clamp(2rem, 3.2vw, 3.4rem);
+    line-height: 0.92;
     letter-spacing: -0.04em;
-    max-width: 11ch;
+    max-width: 14ch;
 }
 
 .account-hero p,
@@ -1139,6 +1139,7 @@
 
 .profile-panel {
     gap: 22px;
+    max-width: 860px;
 }
 
 .profile-panel-head {
@@ -1156,8 +1157,8 @@
 .profile-panel-copy h2 {
     margin: 0;
     font-family: var(--font-display);
-    font-size: clamp(2rem, 3.4vw, 3rem);
-    line-height: 0.94;
+    font-size: clamp(1.5rem, 2.2vw, 2rem);
+    line-height: 0.96;
 }
 
 .profile-edit-toggle {
@@ -1173,6 +1174,175 @@
     border-color: rgba(22, 37, 56, 0.9);
 }
 
+/* ── Per-field inline editing ──────────────────────────── */
+.profile-field-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.profile-field-row input {
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+}
+
+.profile-field-actions {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+}
+
+.profile-field-btn {
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    background: transparent;
+    cursor: pointer;
+    font-size: 0.82rem;
+    line-height: 1;
+    transition: background 0.14s ease, border-color 0.14s ease, color 0.14s ease;
+}
+
+.profile-field-edit {
+    color: rgba(23, 27, 24, 0.3);
+}
+
+.profile-field-edit:hover {
+    background: rgba(22, 37, 56, 0.07);
+    border-color: rgba(22, 37, 56, 0.12);
+    color: var(--ink);
+}
+
+.profile-field-save {
+    color: var(--accent-2);
+}
+
+.profile-field-save:hover {
+    background: rgba(85, 117, 94, 0.12);
+    border-color: rgba(85, 117, 94, 0.28);
+}
+
+.profile-field-cancel {
+    color: rgba(23, 27, 24, 0.65);
+}
+
+.profile-field-cancel:hover {
+    background: rgba(184, 64, 64, 0.08);
+    border-color: rgba(184, 64, 64, 0.2);
+    color: #b84040;
+}
+
+.profile-field-lock {
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(23, 27, 24, 0.22);
+    font-size: 0.78rem;
+    flex-shrink: 0;
+}
+
+/* ── Phone prefix + number inline ──────────────────────── */
+
+/* Base: just a flex row, no border in read-only state */
+.profile-phone-wrap {
+    display: flex;
+    align-items: center;
+    flex: 1 1 auto;
+    min-width: 0;
+    gap: 0;
+}
+
+/* Flag shown in read-only state */
+.profile-phone-flag {
+    font-size: 1.15rem;
+    line-height: 1;
+    padding-right: 7px;
+    flex-shrink: 0;
+    user-select: none;
+    pointer-events: none;
+}
+
+/* In edit mode: wrap becomes a bordered split-input */
+.profile-field.is-editing .profile-phone-wrap {
+    border-radius: var(--radius-sm, 10px);
+    overflow: hidden;
+    border: 1px solid rgba(23, 27, 24, 0.12);
+    background: rgba(255, 255, 255, 0.92);
+}
+
+.profile-field.is-editing .profile-phone-wrap:focus-within {
+    border-color: rgba(22, 37, 56, 0.24);
+    box-shadow: 0 0 0 4px rgba(22, 37, 56, 0.08);
+}
+
+/* Country code select — only shown during edit mode */
+.profile-phone-prefix {
+    flex: 0 0 auto;
+    width: 5.5rem;
+    max-width: 5.5rem;
+    border: none;
+    border-right: 1px solid rgba(23, 27, 24, 0.1);
+    background-color: rgba(23, 27, 24, 0.04);
+    padding: 0 26px 0 8px;
+    height: 100%;
+    min-height: 44px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--ink);
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23596a62'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    transition: background-color 0.14s ease;
+}
+
+.profile-phone-prefix:hover {
+    background-color: rgba(85, 117, 94, 0.08);
+}
+
+/* Number input inside the wrap */
+.profile-phone-wrap input {
+    flex: 1 1 auto;
+    min-width: 0;
+    border: none;
+    background: transparent;
+    outline: none;
+    box-shadow: none;
+    padding: 0;
+    /* read-only display — matches .is-readonly type */
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+/* In edit mode give the number input proper padding */
+.profile-field.is-editing .profile-phone-wrap input {
+    padding: 13px 12px;
+    font-weight: 400;
+}
+
+.profile-field-status {
+    min-height: 16px;
+    font-size: 0.8rem;
+}
+
+.profile-field.is-editing {
+    background: rgba(255, 255, 255, 0.98);
+    border-color: rgba(22, 37, 56, 0.18);
+    box-shadow: 0 0 0 3px rgba(22, 37, 56, 0.06);
+}
+
 .profile-form {
     display: grid;
     gap: 16px;
@@ -1180,8 +1350,9 @@
 
 .profile-form-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    width: min(60%, 520px);
 }
 
 .profile-field {
@@ -1189,10 +1360,33 @@
     border-radius: 20px;
     border: 1px solid rgba(23, 27, 24, 0.08);
     background: rgba(255, 255, 255, 0.7);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .profile-field--full {
-    grid-column: 1 / -1;
+    /* no longer needed — grid is single column */
+}
+
+.profile-verified-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    align-self: flex-start;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(74, 158, 100, 0.12);
+    border: 1px solid rgba(74, 158, 100, 0.28);
+    color: #1e5e39;
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+}
+
+.profile-verified-badge .fa-solid {
+    color: #3a9e64;
+    font-size: 0.82rem;
 }
 
 .profile-field input.is-readonly {
@@ -1389,7 +1583,7 @@ body.has-app-shell #results-workbench {
     }
 
     .profile-form-grid {
-        grid-template-columns: 1fr;
+        width: 100%;
     }
 
     .orders-workbench,
