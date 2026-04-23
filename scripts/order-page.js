@@ -305,7 +305,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const setInfoButtonExpanded = (method, isExpanded) => {
     elements.collectionInfoButtons.forEach((button) => {
-      if (button.getAttribute('data-collection-info') === method) {
+      if (button.dataset.collectionInfo === method) {
         button.setAttribute('aria-expanded', String(isExpanded));
       } else if (isExpanded) {
         button.setAttribute('aria-expanded', 'false');
@@ -335,7 +335,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const openInlineCollectionInfo = (method) => {
     elements.collectionInfoPanels.forEach((panel) => {
-      const isTarget = panel.getAttribute('data-collection-info-panel') === method;
+      const isTarget = panel.dataset.collectionInfoPanel === method;
       if (isTarget) renderCollectionInfoPanel(panel, method);
       panel.hidden = !isTarget;
     });
@@ -421,12 +421,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const getProductData = (item) => {
     if (!item) return null;
-    const id = item.getAttribute('data-product-id');
+    const id = item.dataset.productId;
     const details = getCatalogItem(id);
     if (!details) return null;
     return {
       ...details,
-      rangeLabel: item.getAttribute('data-product-range') || '',
+      rangeLabel: item.dataset.productRange || '',
       price: getPriceForCollection(id, state.collectionMethodChosen ? state.collectionMethod : null)
     };
   };
@@ -465,10 +465,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   };
 
-  // Keep legacy aliases so any remaining references don't break
-  const renderBiomarkers = (items) => renderBiomarkersInto(document.getElementById('detail-biomarker-grid'), items);
-  const renderSelectedElements = (items) => renderElementsInto(document.getElementById('detail-elements-list'), items);
-
   const showCollectionRequirement = (tierId) => {
     const card = tierId ? document.querySelector(`[data-tier-card="${tierId}"]`) : null;
     const warning = card ? card.querySelector('.collection-warning') : elements.collectionWarning;
@@ -477,7 +473,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (toggle) {
       toggle.classList.remove('is-shaking');
       toggle.classList.add('is-required');
-      void toggle.offsetWidth;
+      toggle.getBoundingClientRect(); // force reflow so re-applied class restarts the animation
       toggle.classList.add('is-shaking');
       root.setTimeout(() => toggle.classList.remove('is-shaking'), 420);
     }
@@ -493,23 +489,9 @@ document.addEventListener('DOMContentLoaded', function () {
     toggle?.classList.remove('is-required', 'is-shaking');
   };
 
-  const updateCollectionOptionNotes = (productId) => {
-    const item = getCatalogItem(productId || selectedProductId);
-    if (!item) return;
-    const savings = Math.max(item.labPrice - item.homePrice, 0);
-    elements.collectionNotes.forEach((node) => {
-      const method = node.getAttribute('data-collection-note');
-      if (method === 'home') {
-        node.textContent = savings > 0 ? `Save ${store.formatCurrency(savings)}` : 'Lower price route';
-      } else if (method === 'lab') {
-        node.textContent = `${store.formatCurrency(item.labPrice)} clinic price`;
-      }
-    });
-  };
-
   const updateGoalFilter = () => {
     elements.goalButtons.forEach((button) => {
-      const isActive = button.getAttribute('data-goal') === state.goal;
+      const isActive = button.dataset.goal === state.goal;
       button.setAttribute('aria-pressed', String(isActive));
     });
 
@@ -524,7 +506,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const updateDetailToggle = (productId) => {
     // update in-cart state on all tier select buttons
     elements.tierSelectButtons.forEach((btn) => {
-      const id = btn.getAttribute('data-product-id');
+      const id = btn.dataset.productId;
       const inCart = state.cart.some((entry) => entry.id === id);
       const name = getCatalogItem(id)?.name || id;
       btn.textContent = inCart ? `${name} selected` : `Select ${name}`;
@@ -543,7 +525,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const updateTierCardSelectionState = () => {
     const cartId = state.cart[0]?.id || null;
     elements.tierCards.forEach((card) => {
-      const tierId = card.getAttribute('data-tier-card');
+      const tierId = card.dataset.tierCard;
       card.classList.toggle('is-selected', tierId === cartId);
     });
   };
@@ -551,10 +533,10 @@ document.addEventListener('DOMContentLoaded', function () {
   // Mobile tab strip: make one tier card visible, activate its chip
   const activateMobileTierTab = (tierId) => {
     elements.tierCards.forEach((card) => {
-      card.classList.toggle('is-mobile-active', card.getAttribute('data-tier-card') === tierId);
+      card.classList.toggle('is-mobile-active', card.dataset.tierCard === tierId);
     });
     elements.tierTabChips.forEach((chip) => {
-      const active = chip.getAttribute('data-tier-tab') === tierId;
+      const active = chip.dataset.tierTab === tierId;
       chip.classList.toggle('is-active', active);
       chip.setAttribute('aria-selected', String(active));
     });
@@ -622,7 +604,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     elements.stepButtons.forEach((button) => {
-      const key = button.getAttribute('data-order-step');
+      const key = button.dataset.orderStep;
       const active = key === currentStep;
       button.classList.toggle('is-active', active);
       button.classList.toggle('is-complete', Boolean(complete[key]));
@@ -632,11 +614,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     elements.stepPanels.forEach((panel) => {
-      panel.classList.toggle('is-active', panel.getAttribute('data-order-panel') === currentStep);
+      panel.classList.toggle('is-active', panel.dataset.orderPanel === currentStep);
     });
 
     elements.stepNextButtons.forEach((button) => {
-      button.disabled = !isStepEnabled(button.getAttribute('data-step-next'));
+      button.disabled = !isStepEnabled(button.dataset.stepNext);
     });
   };
 
@@ -649,7 +631,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const updateCollectionUI = () => {
     const collection = getCollection();
     elements.collectionButtons.forEach((button) => {
-      const active = state.collectionMethodChosen && button.getAttribute('data-collection') === state.collectionMethod;
+      const active = state.collectionMethodChosen && button.dataset.collection === state.collectionMethod;
       button.classList.toggle('is-active', active);
       button.setAttribute('aria-pressed', String(active));
     });
@@ -664,7 +646,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     // Update prices on all tier cards whenever collection state changes
     elements.tierCards.forEach((card) => {
-      const tierId = card.getAttribute('data-tier-card');
+      const tierId = card.dataset.tierCard;
       const data = getCatalogItem(tierId);
       if (!data) return;
       const price = getPriceForCollection(tierId, state.collectionMethodChosen ? state.collectionMethod : null);
@@ -746,7 +728,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   elements.goalButtons.forEach((button) =>
     button.addEventListener('click', () => {
-      state.goal = button.getAttribute('data-goal') || 'all';
+      state.goal = button.dataset.goal || 'all';
       saveState();
       refresh();
     })
@@ -755,7 +737,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // Mobile tier tab strip
   elements.tierTabChips.forEach((chip) =>
     chip.addEventListener('click', () => {
-      const tierId = chip.getAttribute('data-tier-tab');
+      const tierId = chip.dataset.tierTab;
       if (tierId) activateMobileTierTab(tierId);
     })
   );
@@ -765,7 +747,7 @@ document.addEventListener('DOMContentLoaded', function () {
     card.addEventListener('click', (event) => {
       // Don't intercept clicks on the '?' info triggers, tooltip buttons, or the select button itself
       if (event.target.closest('.collection-info-trigger, .tier-select-btn, .bio-info')) return;
-      const tierId = card.getAttribute('data-tier-card');
+      const tierId = card.dataset.tierCard;
       if (!tierId) return;
       if (!state.collectionMethodChosen || !state.collectionMethod) {
         showCollectionRequirement(tierId);
@@ -783,7 +765,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // Tier select buttons
   elements.tierSelectButtons.forEach((btn) =>
     btn.addEventListener('click', () => {
-      const tierId = btn.getAttribute('data-product-id');
+      const tierId = btn.dataset.productId;
       if (!tierId) return;
       if (!state.collectionMethodChosen || !state.collectionMethod) {
         showCollectionRequirement(tierId);
@@ -800,7 +782,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   elements.collectionButtons.forEach((button) =>
     button.addEventListener('click', () => {
-      state.collectionMethod = button.getAttribute('data-collection') || 'home';
+      state.collectionMethod = button.dataset.collection || 'home';
       state.collectionMethodChosen = true;
       normalizeState();
       saveState();
@@ -811,7 +793,7 @@ document.addEventListener('DOMContentLoaded', function () {
   elements.collectionInfoButtons.forEach((button) =>
     button.addEventListener('click', (event) => {
       event.stopPropagation();
-      toggleCollectionInfo(button.getAttribute('data-collection-info'), button);
+      toggleCollectionInfo(button.dataset.collectionInfo, button);
     })
   );
 
@@ -833,8 +815,6 @@ document.addEventListener('DOMContentLoaded', function () {
     };
     if (typeof mobileCollectionInfoQuery.addEventListener === 'function') {
       mobileCollectionInfoQuery.addEventListener('change', handleInfoModeChange);
-    } else if (typeof mobileCollectionInfoQuery.addListener === 'function') {
-      mobileCollectionInfoQuery.addListener(handleInfoModeChange);
     }
   }
 
@@ -847,7 +827,7 @@ document.addEventListener('DOMContentLoaded', function () {
     container.addEventListener('click', (event) => {
       const button = event.target.closest('[data-remove-id]');
       if (!button) return;
-      const id = button.getAttribute('data-remove-id');
+      const id = button.dataset.removeId;
       state.cart = state.cart.filter((item) => item.id !== id);
       saveState();
       refresh();
@@ -859,10 +839,10 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   elements.stepButtons.forEach((button) =>
-    button.addEventListener('click', () => setActiveStep(button.getAttribute('data-order-step')))
+    button.addEventListener('click', () => setActiveStep(button.dataset.orderStep))
   );
   elements.stepNextButtons.forEach((button) =>
-    button.addEventListener('click', () => setActiveStep(button.getAttribute('data-step-next')))
+    button.addEventListener('click', () => setActiveStep(button.dataset.stepNext))
   );
 
   if (elements.checkoutForm) {

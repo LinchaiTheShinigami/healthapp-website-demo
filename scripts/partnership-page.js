@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
-    const recipient = form.getAttribute('data-mailto') || 'ayuta.info@gmail.com';
+    const recipient = form.dataset.mailto || 'ayuta.info@gmail.com';
     const name = form.querySelector('[name="name"]')?.value || '';
     const email = form.querySelector('[name="email"]')?.value || '';
     const gym = form.querySelector('[name="gym"]')?.value || '';
@@ -16,6 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
       `Name: ${name}\nEmail: ${email}\nGym or studio: ${gym}\nPreferred model: ${model}\n\n${message}`
     );
 
-    window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
+    globalThis.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
   });
 });

@@ -1,15 +1,12 @@
 .packages-page {
     position: relative;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 .packages-hero {
     padding-top: 110px;
     padding-bottom: 40px;
-}
-
-.packages-page {
-    padding-top: 0;
-    padding-bottom: 0;
 }
 
 .packages-hero-copy {

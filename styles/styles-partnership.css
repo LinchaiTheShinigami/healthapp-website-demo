@@ -173,7 +173,7 @@
 .model-card--dark .model-points span {
     background: rgba(251, 250, 247, 0.1);
     border-color: rgba(251, 250, 247, 0.12);
-    color: rgba(251, 250, 247, 0.9);
+    color: rgba(251, 250, 247, 1);
 }
 
 .benefit-card {

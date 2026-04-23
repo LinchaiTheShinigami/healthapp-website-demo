@@ -1229,7 +1229,7 @@
 }
 
 .profile-field-cancel {
-    color: rgba(23, 27, 24, 0.38);
+    color: rgba(23, 27, 24, 0.65);
 }
 
 .profile-field-cancel:hover {
@@ -1378,7 +1378,7 @@
     border-radius: 999px;
     background: rgba(74, 158, 100, 0.12);
     border: 1px solid rgba(74, 158, 100, 0.28);
-    color: #2d7a4f;
+    color: #1e5e39;
     font-size: 0.76rem;
     font-weight: 800;
     letter-spacing: 0.02em;

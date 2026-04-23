@@ -5,7 +5,6 @@
   };
 
   const APP_PAGES = new Set(['results', 'orders', 'profile', 'order', 'payment-return']);
-  const APP_TRANSITION_DELAY_MS = 1100;
   const TRANSITION_STORAGE_KEY = 'ayuta_page_transition';
   const TRANSITION_MAX_AGE_MS = 12000;
   const PAGE_LABELS = {
@@ -21,8 +20,6 @@
     about: 'About',
     home: 'Home'
   };
-  const warmedDocuments = new Map();
-  const warmedResources = new Set();
   const readStoredTransition = () => {
     try {
       const raw = sessionStorage.getItem(TRANSITION_STORAGE_KEY);
@@ -203,53 +200,6 @@
     const page = nextUrl.pathname.split('/').pop() || 'index.html';
     const key = page === 'index.html' ? 'home' : page.replace('.html', '');
     return PAGE_LABELS[key] || 'page';
-  };
-
-  const prefetchResource = (resourceUrl, as) => {
-    if (!resourceUrl || warmedResources.has(resourceUrl)) return;
-    warmedResources.add(resourceUrl);
-
-    const hint = document.createElement('link');
-    hint.rel = 'prefetch';
-    hint.href = resourceUrl;
-    if (as) hint.as = as;
-    document.head.appendChild(hint);
-
-    if (as === 'style' || as === 'script' || as === 'image') {
-      fetch(resourceUrl, { credentials: 'same-origin' }).catch(() => {});
-    }
-  };
-
-  const warmPage = (nextUrl) => {
-    const key = nextUrl.href;
-    if (warmedDocuments.has(key)) return warmedDocuments.get(key);
-
-    const warmPromise = fetch(key, { credentials: 'same-origin' })
-      .then((response) => {
-        if (!response.ok) throw new Error(`Unable to warm ${key}`);
-        return response.text();
-      })
-      .then((html) => {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
-        const resources = [];
-
-        doc.querySelectorAll('link[rel="stylesheet"][href]').forEach((node) => {
-          resources.push({ url: new URL(node.getAttribute('href'), nextUrl.href).href, as: 'style' });
-        });
-        doc.querySelectorAll('script[src]').forEach((node) => {
-          resources.push({ url: new URL(node.getAttribute('src'), nextUrl.href).href, as: 'script' });
-        });
-        doc.querySelectorAll('img[src]').forEach((node) => {
-          resources.push({ url: new URL(node.getAttribute('src'), nextUrl.href).href, as: 'image' });
-        });
-
-        resources.forEach(({ url, as }) => prefetchResource(url, as));
-      })
-      .catch(() => {});
-
-    warmedDocuments.set(key, warmPromise);
-    return warmPromise;
   };
 
   const openPageTransition = (label) => {
@@ -591,7 +541,7 @@
           document.querySelector('.nav-cart')?.getAttribute('href') ||
           'pages/order.html';
         closeCartDrawer();
-        window.location.assign(hasItems ? `${orderHref}?step=payment` : orderHref);
+        globalThis.location.assign(hasItems ? `${orderHref}?step=payment` : orderHref);
       });
     }
 
@@ -637,7 +587,6 @@
       const session = readSession();
       const snapshot = readAuthSnapshot();
       const isLoggedIn = Boolean((snapshot && snapshot.user) || (session && session.email));
-      const isAppPage = isLoggedIn && APP_PAGES.has(pageKey);
 
       event.preventDefault();
       closeCartDrawer();
@@ -703,8 +652,8 @@
     ];
 
     allNavLinks.forEach((link) => {
-      const navKey = link.getAttribute('data-nav-key');
-      const dataPath = link.getAttribute('data-path') || '';
+      const navKey = link.dataset.navKey;
+      const dataPath = link.dataset.path || '';
       const pathKey = dataPath.split('/').pop().replace('.html', '') || 'home';
       const isActive = navKey === pageKey || pathKey === pageKey ||
         (pageKey === 'home' && (dataPath === 'index.html' || dataPath === ''));

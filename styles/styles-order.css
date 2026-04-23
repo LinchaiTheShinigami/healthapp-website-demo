@@ -658,7 +658,7 @@ body.has-app-shell .order-subnav {
     border-radius: 16px;
     background: rgba(251, 250, 247, 0.1);
     border: 1px solid rgba(251, 250, 247, 0.12);
-    color: rgba(251, 250, 247, 0.76);
+    color: rgba(251, 250, 247, 0.96);
     font-size: 0.82rem;
 }
 
@@ -1061,7 +1061,7 @@ body.has-app-shell .order-subnav {
     height: 28px;
     border-radius: 8px;
     background: rgba(220, 231, 214, 0.14);
-    color: rgba(220, 231, 214, 0.9);
+    color: rgba(220, 231, 214, 1);
     font-size: 0.76rem;
     flex-shrink: 0;
 }
@@ -1366,6 +1366,7 @@ body.has-app-shell .order-subnav {
     background: rgba(251, 247, 240, 0.98);
     border: 1px solid rgba(23, 27, 24, 0.08);
     box-shadow: var(--shadow);
+    margin: 0; /* reset <dialog> browser default */
 }
 
 .collection-info-close {

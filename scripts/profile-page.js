@@ -178,9 +178,12 @@
       if (isPhone && prefixSel) {
         if (revert) prefixSel.value = originalPrefix;
         const country = COUNTRY_DATA[prefixSel.value] || {};
-        const full = revert
-          ? originalValue
-          : (input.value.trim() ? `${country.prefix} ${input.value.trim()}` : '');
+        let full;
+        if (revert) {
+          full = originalValue;
+        } else {
+          full = input.value.trim() ? `${country.prefix} ${input.value.trim()}` : '';
+        }
         input.value = full;
         if (flagEl) {
           flagEl.textContent = country.flag || '';
@@ -207,12 +210,18 @@
       input.value = newValue;
 
       // Always send both fields together
-      const name = fieldName === 'name'
-        ? newValue
-        : (elements.nameInput ? elements.nameInput.value.trim() : '');
-      const phone = fieldName === 'phone'
-        ? getFullPhone()
-        : (elements.phoneInput ? getFullPhone() : '');
+      let name;
+      if (fieldName === 'name') {
+        name = newValue;
+      } else {
+        name = elements.nameInput ? elements.nameInput.value.trim() : '';
+      }
+      let phone;
+      if (fieldName === 'phone') {
+        phone = getFullPhone();
+      } else {
+        phone = elements.phoneInput ? getFullPhone() : '';
+      }
 
       if (!name) {
         setStatus(statusEl, 'Full name is required.', 'error');
