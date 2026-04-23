@@ -86,15 +86,15 @@
         <div class="order-subnav-shell">
             <button class="order-subnav-step is-active" type="button" data-order-step="select" aria-current="step">
                 <span class="step-index">01</span>
-                <span>Choose package(s)</span>
+                <span>Choose package</span>
             </button>
             <button class="order-subnav-step" type="button" data-order-step="payment">
                 <span class="step-index">02</span>
-                <span>Secure checkout</span>
+                <span>Review &amp; pay</span>
             </button>
             <button class="order-subnav-step" type="button" data-order-step="post">
                 <span class="step-index">03</span>
-                <span>Track the order</span>
+                <span>Track your order</span>
             </button>
         </div>
     </nav>
@@ -103,141 +103,198 @@
         <div class="order-shell">
             <section class="order-stage">
                 <div class="order-panel is-active" data-order-panel="select">
-                    <div class="product-select-grid">
-                        <div class="product-list-card card">
-                            <div class="product-list-header">
-                                <h3>Available packages</h3>
-                                <span class="order-meta">One package at a time</span>
-                            </div>
-                            <div class="product-list" role="listbox" aria-label="Available packages">
-                                <button class="product-list-item is-active" id="menu-foundation" type="button" role="option" aria-selected="true"
-                                    data-product-id="foundation" data-product-name="Foundation" data-product-home-price="149" data-product-lab-price="199"
-                                    data-product-description="Baseline gym and PT package built from blood count, vitamins, iron, cholesterol, and HbA1c coverage."
-                                    data-product-biomarkers="5 source tests" data-product-goals="foundation" data-product-range="GBP 199">
-                                    <span class="product-copy">
-                                        <span class="product-kicker">Foundation</span>
-                                        <span class="product-for">If you've never had a blood panel done, start here.</span>
-                                        <span class="product-name">Baseline reset</span>
-                                        <span class="product-note">Baseline visibility across core health markers.</span>
-                                    </span>
-                                    <span class="product-side">
-                                        <span class="product-range">5 source tests</span>
-                                        <span class="product-price">GBP 199</span>
-                                    </span>
-                                </button>
-                                <button class="product-list-item" id="menu-performance" type="button" role="option" aria-selected="false"
-                                    data-product-id="performance" data-product-name="Performance" data-product-home-price="249" data-product-lab-price="299"
-                                    data-product-description="Expanded training and recovery package built on Foundation with hormone, inflammation, and advanced lipid markers."
-                                    data-product-biomarkers="11 source tests" data-product-goals="performance" data-product-range="GBP 299">
-                                    <span class="product-copy">
-                                        <span class="product-kicker">Performance</span>
-                                        <span class="product-for">If you train 4+ times a week and want to optimise recovery.</span>
-                                        <span class="product-name">Training and recovery</span>
-                                        <span class="product-note">Broader recovery, hormone, and metabolic oversight.</span>
-                                    </span>
-                                    <span class="product-side">
-                                        <span class="product-range">11 source tests</span>
-                                        <span class="product-price">GBP 299</span>
-                                    </span>
-                                </button>
-                                <button class="product-list-item" id="menu-elite" type="button" role="option" aria-selected="false"
-                                    data-product-id="elite" data-product-name="Elite" data-product-home-price="399" data-product-lab-price="499"
-                                    data-product-description="Highest-depth gym and PT package built on Performance with thyroid and additional endocrine coverage."
-                                    data-product-biomarkers="15 source tests" data-product-goals="elite" data-product-range="GBP 499">
-                                    <span class="product-copy">
-                                        <span class="product-kicker">Elite</span>
-                                        <span class="product-for">If you've had previous results and want to track trends over time.</span>
-                                        <span class="product-name">Longitudinal oversight</span>
-                                        <span class="product-note">Deep endocrine and longitudinal monitoring.</span>
-                                    </span>
-                                    <span class="product-side">
-                                        <span class="product-range">15 source tests</span>
-                                        <span class="product-price">GBP 499</span>
-                                    </span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="product-detail card" aria-live="polite">
-                            <span class="eyebrow">Selected package</span>
-                            <h3 id="detail-name">Foundation</h3>
-                            <div class="detail-route-picker" id="detail-route-picker">
-                                <div class="detail-route-head">
-                                    <span class="profile-label">Collection route</span>
-                                    <span class="detail-route-required">Required</span>
-                                    <a class="text-button" href="../pages/clinics.html">View clinics</a>
+
+                    <!-- Left col: collection bar + tier comparison cards -->
+                    <div class="tiers-left-col">
+
+                        <!-- Global collection method selector -->
+                        <div class="tiers-collection-bar">
+                            <div class="tiers-collection-bar-header">
+                                <div class="tiers-collection-bar-icon-wrap">
+                                    <span class="fa-solid fa-vial" aria-hidden="true"></span>
                                 </div>
-                                <div class="collection-toggle" role="radiogroup" aria-label="Choose collection method">
-                                    <div class="collection-option-shell">
-                                        <div class="collection-option-row">
-                                            <button class="collection-option" type="button" data-collection="home" aria-pressed="false">
-                                                <span class="collection-option-icon fa-solid fa-house-medical" aria-hidden="true"></span>
-                                                <span class="collection-option-copy">
-                                                    <span class="collection-option-label">Home kit</span>
-                                                    <span class="collection-option-note" data-collection-note="home">Select to see savings</span>
-                                                </span>
-                                            </button>
-                                            <button class="collection-info-trigger" type="button" data-collection-info="home" aria-expanded="false" aria-controls="collection-info-home" aria-label="How home kit testing works">?</button>
-                                        </div>
-                                        <div class="collection-info-inline" id="collection-info-home" data-collection-info-panel="home" hidden></div>
-                                    </div>
-                                    <div class="collection-option-shell">
-                                        <div class="collection-option-row">
-                                            <button class="collection-option" type="button" data-collection="lab" aria-pressed="false">
-                                                <span class="collection-option-icon fa-solid fa-hospital" aria-hidden="true"></span>
-                                                <span class="collection-option-copy">
-                                                    <span class="collection-option-label">Clinic appointment</span>
-                                                    <span class="collection-option-note" data-collection-note="lab">Highest price tier</span>
-                                                </span>
-                                            </button>
-                                            <button class="collection-info-trigger" type="button" data-collection-info="lab" aria-expanded="false" aria-controls="collection-info-lab" aria-label="How clinic testing works">?</button>
-                                        </div>
-                                        <div class="collection-info-inline" id="collection-info-lab" data-collection-info-panel="lab" hidden></div>
+                                <div class="tiers-collection-bar-text">
+                                    <span class="tiers-collection-bar-title">Sample collection method</span>
+                                    <span class="tiers-collection-bar-sub">Choose how your blood is drawn — pricing varies by method</span>
+                                </div>
+                            </div>
+                            <div class="collection-toggle" role="radiogroup" aria-label="Sample collection method">
+                                <div class="collection-option-shell">
+                                    <div class="collection-option-row">
+                                        <button class="collection-option" type="button" data-collection="home" aria-pressed="false">
+                                            <span class="collection-select-indicator" aria-hidden="true">
+                                                <span class="fa-solid fa-check"></span>
+                                            </span>
+                                            <span class="collection-option-icon fa-solid fa-house-medical" aria-hidden="true"></span>
+                                            <span class="collection-option-copy">
+                                                <span class="collection-option-label">Home kit</span>
+                                                <span class="collection-option-note">Finger-prick · post back · 3–5 days</span>
+                                            </span>
+                                        </button>
+                                        <button class="collection-info-trigger" type="button" data-collection-info="home" aria-expanded="false" aria-controls="collection-info-home" aria-label="How home kit testing works">
+                                            <span class="fa-solid fa-circle-info" aria-hidden="true"></span>
+                                        </button>
                                     </div>
                                 </div>
-                                <p class="collection-status" id="collection-status">Select a collection route to confirm pricing and add this package.</p>
-                                <p class="collection-warning" id="collection-warning" hidden><span class="fa-solid fa-triangle-exclamation" aria-hidden="true"></span><span>Select a collection route before adding this package.</span></p>
-                            </div>
-                            <div class="detail-meta">
-                                <span id="detail-biomarkers">5 source tests</span>
-                                <span id="detail-goals">Baseline training reset</span>
-                                <span id="detail-turnaround">Results in 2–3 working days (clinic) or 3–5 working days (home kit)</span>
-                            </div>
-                            <div class="detail-elements-section">
-                                <div class="biomarker-head">
-                                    <h4>Selected package elements</h4>
+                                <div class="collection-option-shell">
+                                    <div class="collection-option-row">
+                                        <button class="collection-option" type="button" data-collection="lab" aria-pressed="false">
+                                            <span class="collection-select-indicator" aria-hidden="true">
+                                                <span class="fa-solid fa-check"></span>
+                                            </span>
+                                            <span class="collection-option-icon fa-solid fa-hospital" aria-hidden="true"></span>
+                                            <span class="collection-option-copy">
+                                                <span class="collection-option-label">Clinic appointment</span>
+                                                <span class="collection-option-note">Venous draw · 2–3 working days</span>
+                                            </span>
+                                        </button>
+                                        <button class="collection-info-trigger" type="button" data-collection-info="lab" aria-expanded="false" aria-controls="collection-info-lab" aria-label="How clinic testing works">
+                                            <span class="fa-solid fa-circle-info" aria-hidden="true"></span>
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="detail-elements-list" id="detail-elements-list"></div>
                             </div>
-                            <div class="biomarker-section">
-                                <div class="biomarker-head">
-                                    <h4>Highlighted markers</h4>
-                                </div>
-                                <div class="biomarker-grid" id="detail-biomarker-grid"></div>
-                            </div>
-                            <div class="detail-actions">
-                                <span id="detail-price">GBP 149.00</span>
-                                <button class="btn btn-primary" type="button" id="detail-toggle">Select this package</button>
-                            </div>
+                            <div class="collection-info-inline" id="collection-info-home" data-collection-info-panel="home" hidden></div>
+                            <div class="collection-info-inline" id="collection-info-lab" data-collection-info-panel="lab" hidden></div>
+                            <a class="text-button collection-clinics-link" href="../pages/clinics.html">
+                                <span class="fa-solid fa-location-dot" aria-hidden="true"></span> View clinic locations
+                            </a>
                         </div>
+
+                        <!-- Mobile tier tab strip (VA-style compact selectors) -->
+                        <div class="tier-tabs-strip" role="tablist" aria-label="Select blood test tier" id="tier-tabs-strip">
+                            <button class="tier-tab-chip" type="button" role="tab" data-tier-tab="foundation" aria-selected="false">
+                                <span class="tier-tab-name">Foundation</span>
+                                <span class="tier-tab-price">£149</span>
+                            </button>
+                            <button class="tier-tab-chip" type="button" role="tab" data-tier-tab="performance" aria-selected="false">
+                                <span class="tier-tab-name">Performance</span>
+                                <span class="tier-tab-price">£249</span>
+                            </button>
+                            <button class="tier-tab-chip" type="button" role="tab" data-tier-tab="elite" aria-selected="false">
+                                <span class="tier-tab-name">Elite</span>
+                                <span class="tier-tab-price">£399</span>
+                            </button>
+                        </div>
+
+                        <!-- Tier comparison cards -->
+                        <div class="tiers-compare">
+
+                            <!-- Foundation -->
+                            <div class="tier-card" data-tier-card="foundation">
+                                <div class="tier-card-head">
+                                    <span class="tier-row-badge foundation">Foundation</span>
+                                    <h3 class="tier-card-name">Baseline reset</h3>
+                                    <p class="tier-card-hook">Core health baseline — energy, immunity, iron, cholesterol &amp; glucose.</p>
+                                </div>
+                                <div class="tier-card-body">
+                                    <p class="tier-card-section-label">What's tested</p>
+                                    <div class="detail-elements-list" id="detail-elements-list-foundation"></div>
+                                    <p class="tier-card-section-label">Key markers</p>
+                                    <div class="biomarker-grid" id="detail-biomarker-grid-foundation"></div>
+                                </div>
+                                <div class="tier-card-footer">
+                                    <div class="tier-card-price-row">
+                                        <span class="tier-row-from">from</span>
+                                        <span class="tier-card-price" id="tier-price-foundation">£149</span>
+                                    </div>
+                                    <p class="collection-warning" id="collection-warning-foundation" hidden>
+                                        <span class="fa-solid fa-triangle-exclamation" aria-hidden="true"></span>
+                                        <span>Select a collection method above first.</span>
+                                    </p>
+                                    <button class="btn tier-select-btn" type="button" data-product-id="foundation">Select Foundation</button>
+                                </div>
+                            </div>
+
+                            <!-- Performance -->
+                            <div class="tier-card" data-tier-card="performance">
+                                <div class="tier-card-head">
+                                    <span class="tier-row-badge performance">Performance</span>
+                                    <h3 class="tier-card-name">Training &amp; recovery</h3>
+                                    <p class="tier-card-hook">Foundation + hormones, inflammation &amp; advanced lipids for active training.</p>
+                                </div>
+                                <div class="tier-card-body">
+                                    <p class="tier-card-section-label">What's tested</p>
+                                    <div class="detail-elements-list" id="detail-elements-list-performance"></div>
+                                    <p class="tier-card-section-label">Key markers</p>
+                                    <div class="biomarker-grid" id="detail-biomarker-grid-performance"></div>
+                                </div>
+                                <div class="tier-card-footer">
+                                    <div class="tier-card-price-row">
+                                        <span class="tier-row-from">from</span>
+                                        <span class="tier-card-price" id="tier-price-performance">£249</span>
+                                    </div>
+                                    <p class="collection-warning" id="collection-warning-performance" hidden>
+                                        <span class="fa-solid fa-triangle-exclamation" aria-hidden="true"></span>
+                                        <span>Select a collection method above first.</span>
+                                    </p>
+                                    <button class="btn tier-select-btn" type="button" data-product-id="performance">Select Performance</button>
+                                </div>
+                            </div>
+
+                            <!-- Elite -->
+                            <div class="tier-card" data-tier-card="elite">
+                                <div class="tier-card-head">
+                                    <span class="tier-row-badge elite">Elite</span>
+                                    <h3 class="tier-card-name">Longitudinal oversight</h3>
+                                    <p class="tier-card-hook">Performance + full thyroid, endocrine &amp; longitudinal tracking.</p>
+                                </div>
+                                <div class="tier-card-body">
+                                    <p class="tier-card-section-label">What's tested</p>
+                                    <div class="detail-elements-list" id="detail-elements-list-elite"></div>
+                                    <p class="tier-card-section-label">Key markers</p>
+                                    <div class="biomarker-grid" id="detail-biomarker-grid-elite"></div>
+                                </div>
+                                <div class="tier-card-footer">
+                                    <div class="tier-card-price-row">
+                                        <span class="tier-row-from">from</span>
+                                        <span class="tier-card-price" id="tier-price-elite">£399</span>
+                                    </div>
+                                    <p class="collection-warning" id="collection-warning-elite" hidden>
+                                        <span class="fa-solid fa-triangle-exclamation" aria-hidden="true"></span>
+                                        <span>Select a collection method above first.</span>
+                                    </p>
+                                    <button class="btn tier-select-btn" type="button" data-product-id="elite">Select Elite</button>
+                                </div>
+                            </div>
+
+                        </div><!-- .tiers-compare -->
+                    </div><!-- .tiers-left-col -->
+
+                    <!-- Right: Sticky order summary -->
+                    <div class="order-right-col">
+                        <div class="order-summary-inline card">
+                            <div class="basket-header">
+                                <h3>Order summary</h3>
+                            </div>
+                            <div class="basket-items" data-basket-items></div>
+                            <div class="basket-summary">
+                                <div class="summary-row">
+                                    <span>Selected package</span>
+                                    <span data-summary-subtotal>£0.00</span>
+                                </div>
+                                <div class="summary-row total">
+                                    <span>Current total</span>
+                                    <span data-summary-total>£0.00</span>
+                                </div>
+                            </div>
+                            <button class="btn basket-pay" type="button" data-step-next="payment">Continue to payment</button>
+                        </div>
+                        <p class="order-right-note">
+                            <span class="fa-solid fa-lock" aria-hidden="true"></span>
+                            Secure hosted checkout via Stripe. You return to your Ayuta account after payment.
+                        </p>
                     </div>
 
-                    <div class="order-summary-inline card">
-                        <div class="basket-header">
-                            <h3>Order summary</h3>
-                        </div>
-                        <div class="basket-items" data-basket-items></div>
-                        <div class="basket-summary">
-                            <div class="summary-row">
-                                <span>Selected package</span>
-                                <span data-summary-subtotal>GBP 0.00</span>
-                            </div>
-                            <div class="summary-row total">
-                                <span>Current total</span>
-                                <span data-summary-total>GBP 0.00</span>
-                            </div>
-                        </div>
-                        <button class="btn basket-pay" type="button" data-step-next="payment">Continue to payment</button>
-                    </div>
+                    <!-- Hidden state elements required by order-page.js -->
+                    <span id="detail-name" hidden></span>
+                    <span id="detail-biomarkers" hidden></span>
+                    <span id="detail-goals" hidden></span>
+                    <span id="detail-turnaround" hidden></span>
+                    <span id="detail-price" hidden></span>
+                    <div id="detail-route-picker" hidden></div>
+                    <p id="collection-status" hidden></p>
+                    <p id="collection-warning" hidden></p>
                 </div>
 
                 <div class="order-panel" data-order-panel="payment">
@@ -245,8 +302,8 @@
                         <div class="payment-content">
                             <header class="order-panel-header">
                                 <span class="eyebrow">Step 2</span>
-                                <h2>Continue to secure checkout</h2>
-                                <p>Your order is saved first, then checkout opens with the package and collection route you selected.</p>
+                                <h2>Review &amp; pay</h2>
+                                <p>Confirm your package and collection method, then proceed to Stripe's secure checkout. You'll return to your Ayuta account the moment payment is complete.</p>
                             </header>
                             <div class="payment-stack">
                                 <form class="checkout-card card" id="checkout-form">
@@ -255,11 +312,21 @@
                                         <input id="checkout-email" name="checkout-email" type="email" autocomplete="email" placeholder="you@domain.com" readonly>
                                     </div>
                                     <div class="stripe-fallback">
-                                        <p class="order-meta">Your order is recorded before checkout opens, so your package and collection route are confirmed.</p>
-                                        <p class="order-meta">You will return to your account once payment is complete.</p>
+                                        <p class="order-meta">Your order is recorded before checkout opens — your package and collection route are locked in before any payment is taken.</p>
                                     </div>
-                                    <button class="btn btn-primary checkout-button" type="submit">Continue to secure checkout</button>
-                                    <p class="checkout-note">You will return to your Ayuta account after payment.</p>
+                                    <button class="checkout-pay-btn" type="submit">
+                                        <span class="fa-solid fa-lock" aria-hidden="true"></span>
+                                        Pay securely with Stripe
+                                    </button>
+                                    <div class="checkout-card-brands" aria-label="Accepted payment methods">
+                                        <span class="fa-brands fa-cc-visa" aria-label="Visa"></span>
+                                        <span class="fa-brands fa-cc-mastercard" aria-label="Mastercard"></span>
+                                        <span class="fa-brands fa-cc-amex" aria-label="American Express"></span>
+                                        <span class="fa-brands fa-cc-apple-pay" aria-label="Apple Pay"></span>
+                                        <span class="fa-brands fa-cc-google-pay" aria-label="Google Pay"></span>
+                                        <span class="checkout-ssl-note"><span class="fa-solid fa-shield-halved" aria-hidden="true"></span> 256-bit SSL</span>
+                                    </div>
+                                    <p class="checkout-note">Protected by Stripe. You'll return to your Ayuta account when payment is complete.</p>
                                     <div class="status" id="checkout-status" role="status" aria-live="polite"></div>
                                 </form>
                             </div>
@@ -288,14 +355,14 @@
                 <div class="order-panel" data-order-panel="post">
                     <header class="order-panel-header">
                         <span class="eyebrow">Step 3</span>
-                        <h2>Track the order in your account</h2>
-                        <p>After checkout, use your account to follow payment, collection, processing, and report status.</p>
+                        <h2>Track your order</h2>
+                        <p>Once payment goes through, your order appears in your account. Follow each stage — collection, lab processing, and report publication — from one place.</p>
                     </header>
                     <div class="card registration-card">
                         <div>
                             <p class="eyebrow">After payment</p>
-                            <h3>Review the order record</h3>
-                            <p id="registration-message">Sign in before completing checkout so your order is linked to your account.</p>
+                            <h3>Your order record</h3>
+                            <p id="registration-message">Sign in before checkout so your order is automatically linked to your account and results are delivered directly to you.</p>
                         </div>
                         <div class="registration-actions">
                             <button class="btn btn-outline" type="button" data-register-trigger>Open account</button>

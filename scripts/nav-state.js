@@ -371,8 +371,8 @@
 
     if (totalRoot) totalRoot.textContent = window.AyutaStore.formatCurrency(totals.total);
     if (orderButton) {
-      orderButton.disabled = cart.length === 0;
-      orderButton.textContent = cart.length === 0 ? 'Choose a package first' : 'Continue to payment';
+      orderButton.disabled = false;
+      orderButton.textContent = cart.length === 0 ? 'Continue to order' : 'Continue to payment';
     }
   };
 
@@ -585,13 +585,13 @@
     if (orderButton) {
       orderButton.addEventListener('click', () => {
         const state = readStoreState();
-        if (!Array.isArray(state.cart) || state.cart.length === 0) return;
+        const hasItems = Array.isArray(state.cart) && state.cart.length > 0;
         const orderHref =
           document.querySelector('.app-cart')?.getAttribute('href') ||
           document.querySelector('.nav-cart')?.getAttribute('href') ||
           'pages/order.html';
         closeCartDrawer();
-        window.location.assign(`${orderHref}?step=payment`);
+        window.location.assign(hasItems ? `${orderHref}?step=payment` : orderHref);
       });
     }
 
@@ -615,7 +615,8 @@
     if (pageTransitionBound) return;
 
     document.addEventListener('click', (event) => {
-      const link = event.target.closest('a[data-nav-link]');
+      // Match nav links OR any plain same-origin anchor
+      const link = event.target.closest('a[href]');
       if (!link || isModifiedClick(event)) return;
       if (link.classList.contains('nav-cart')) return;
       if (link.hasAttribute('download') || link.target === '_blank') return;
@@ -623,6 +624,9 @@
       // Skip links with no href (active-page links have href removed)
       const href = link.getAttribute('href');
       if (!href) return;
+
+      // Skip hash-only, mailto, tel, and javascript: links
+      if (/^(#|mailto:|tel:|javascript:)/i.test(href)) return;
 
       const nextUrl = new URL(href, window.location.href);
       const currentUrl = new URL(window.location.href);
@@ -639,22 +643,12 @@
       closeCartDrawer();
       writeStoredTransition(nextUrl.href, getPageLabel(link, nextUrl));
 
-      if (isAppPage) {
-        // Full overlay transition for authenticated app pages
-        warmPage(nextUrl);
-        openPageTransition(getPageLabel(link, nextUrl));
-        if (transitionTimer) window.clearTimeout(transitionTimer);
-        transitionTimer = window.setTimeout(() => {
-          window.location.assign(nextUrl.href);
-        }, APP_TRANSITION_DELAY_MS);
-      } else {
-        // Lightweight fade-out for public page navigation
-        document.body.classList.add('is-navigating-away');
-        if (transitionTimer) window.clearTimeout(transitionTimer);
-        transitionTimer = window.setTimeout(() => {
-          window.location.assign(nextUrl.href);
-        }, PUBLIC_TRANSITION_DELAY_MS);
-      }
+      // Always use the lightweight fade-out for consistent feel across all auth states
+      document.body.classList.add('is-navigating-away');
+      if (transitionTimer) window.clearTimeout(transitionTimer);
+      transitionTimer = window.setTimeout(() => {
+        window.location.assign(nextUrl.href);
+      }, PUBLIC_TRANSITION_DELAY_MS);
     });
 
     pageTransitionBound = true;
