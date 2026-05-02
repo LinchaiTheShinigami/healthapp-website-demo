@@ -79,6 +79,28 @@ If the site is live through GoDaddy:
 3. Wait for DNS propagation.
 4. Recheck the live site using the final public URL.
 
+## Partnership Form Setup
+
+The partnership enquiry form on `/pages/partnership.html` submits via `fetch()` POST to a Google Apps Script web app, which sends a Gmail notification and logs the submission to a Google Sheet.
+
+Setup steps:
+
+1. Enable 2-Step Verification on the Google account you will deploy from: https://myaccount.google.com/security
+2. Go to https://script.google.com → New project.
+3. Paste the full contents of [apps-script/partnership-enquiry.gs](apps-script/partnership-enquiry.gs) into the editor.
+4. Update `NOTIFY_EMAIL` at the top of the script to the inbox that should receive enquiries.
+5. Click **Deploy → New deployment**:
+   - Type: Web app
+   - Execute as: Me
+   - Who has access: Anyone
+6. Copy the generated Web App URL.
+7. Open [scripts/partnership-page.js](scripts/partnership-page.js) and replace `'PASTE_YOUR_APPS_SCRIPT_URL_HERE'` with the copied URL.
+8. Commit and push. The form will then send real emails on submission.
+
+Until the URL is configured the form falls back to a `mailto:` link.
+
+Free tier limits: 100 email recipients/day on a personal Gmail account; upgrade to Google Workspace Starter (~£5/seat/month) for 1,500/day.
+
 ## Stripe Setup
 
 The current checkout uses hosted Stripe Payment Links so the static GitHub Pages site can redirect to a Stripe-hosted payment page without a custom backend.
