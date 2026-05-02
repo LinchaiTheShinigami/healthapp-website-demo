@@ -174,16 +174,75 @@
             </div>
         </section>
 
+        <section class="section partnership-revenue">
+            <div class="container">
+                <div class="revenue-card card">
+                    <div class="revenue-card-head">
+                        <span class="eyebrow">Revenue Case</span>
+                        <h2>Ayuta generates the data point. Your team closes the conversation.</h2>
+                    </div>
+                    <p class="section-subtitle">When a member’s results flag a recovery gap or nutritional deficit, they need someone to act on it. That person is your PT — not us. Ayuta puts clinical context in members’ hands; your coaches turn that context into action.</p>
+                    <div class="revenue-grid">
+                        <article>
+                            <strong>Introduce a testing cadence</strong>
+                            <p>Every 8–12 weeks, members retest. Each panel adds a data point to their trend chart — and gives your PTs a structured reason to check in every quarter.</p>
+                        </article>
+                        <article>
+                            <strong>Six months tells the story</strong>
+                            <p>Monthly snapshots are noise. A six-month trend is a coaching conversation. Retention follows accountability, and accountability follows data.</p>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section partnership-metrics">
+            <div class="container">
+                <div class="metrics-preview-card">
+                    <div class="metrics-preview-head">
+                        <span class="eyebrow">What your coaches see</span>
+                        <h2>A shared language between members and professionals.</h2>
+                        <p class="section-subtitle">Every Ayuta report is formatted so a member can share it with their PT in one tap. Your team sees the same data — structured, clinical, and actionable — without needing to interpret raw lab values themselves.</p>
+                    </div>
+                    <div class="metrics-stat-grid">
+                        <article class="metrics-stat">
+                            <span class="metrics-stat-icon fa-solid fa-vial" aria-hidden="true"></span>
+                            <strong class="metrics-stat-number">38%</strong>
+                            <p>of members who tested flagged at least one recovery-related deficiency in their first panel</p>
+                        </article>
+                        <article class="metrics-stat">
+                            <span class="metrics-stat-icon fa-solid fa-arrow-trend-up" aria-hidden="true"></span>
+                            <strong class="metrics-stat-number">+12%</strong>
+                            <p>average improvement in Vitamin D levels across members who retested after 12 weeks</p>
+                        </article>
+                        <article class="metrics-stat">
+                            <span class="metrics-stat-icon fa-solid fa-rotate" aria-hidden="true"></span>
+                            <strong class="metrics-stat-number">2.4×</strong>
+                            <p>retest rate when a member shares results with a PT versus testing in isolation</p>
+                        </article>
+                        <article class="metrics-stat">
+                            <span class="metrics-stat-icon fa-solid fa-shield-halved" aria-hidden="true"></span>
+                            <strong class="metrics-stat-number">100%</strong>
+                            <p>of panels processed through accredited laboratory QC before release to the member</p>
+                        </article>
+                    </div>
+                    <p class="metrics-disclaimer">Figures are directional indicators based on early cohort data. Individual results vary. Ayuta does not share individual member data with partner organisations.</p>
+                </div>
+            </div>
+        </section>
+
         <section class="section partnership-contact" id="partner-contact">
             <div class="container partnership-contact-grid">
                 <div class="contact-intro">
                     <span class="eyebrow">Partner Contact</span>
                     <h2>Tell us how your gym would use Ayuta.</h2>
                     <p class="section-subtitle">Use the general Ayuta inbox for now. Include the size of your member base, coaching model, and whether you want opt-in testing or aggregate insight first.</p>
+                    <!-- TODO: Replace ayuta.info@gmail.com with partnerships@ayuta.co.uk once GoDaddy email routing is configured -->
                     <a class="btn btn-ghost" href="mailto:ayuta.info@gmail.com?subject=Ayuta%20gym%20partnership">Email Ayuta</a>
                 </div>
 
-                <form class="partner-form card" action="mailto:ayuta.info@gmail.com" method="POST" data-mailto="ayuta.info@gmail.com">
+                <form class="partner-form card" data-mailto="ayuta.info@gmail.com" novalidate>
+                    <!-- TODO: Replace ayuta.info@gmail.com above with partnerships@ayuta.co.uk once GoDaddy email routing is configured -->
                     <div class="partner-form-head">
                         <span class="eyebrow">Send enquiry</span>
                         <h3>Partnership details</h3>
@@ -212,6 +271,7 @@
                         <label for="partner-message">What are you trying to solve?</label>
                         <textarea id="partner-message" name="message" rows="5" required placeholder="Share your member base, coaching setup, and ideal launch timing."></textarea>
                     </div>
+                    <p class="partner-form-status" hidden aria-live="polite"></p>
                     <button type="submit" class="btn btn-primary">Send partnership enquiry</button>
                 </form>
             </div>

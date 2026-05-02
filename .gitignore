@@ -4,6 +4,7 @@
 .vscode/
 .playwright-cli/
 output/
+node_modules/
 
 # Sensitive documents
 docs/*.pdf

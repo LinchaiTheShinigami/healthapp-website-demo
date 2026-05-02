@@ -6,11 +6,45 @@ document.addEventListener('DOMContentLoaded', async function () {
   const elements = {
     status: document.getElementById('payment-return-status'),
     detail: document.getElementById('payment-return-detail'),
-    summary: document.getElementById('payment-return-summary')
+    summary: document.getElementById('payment-return-summary'),
+    tracker: document.getElementById('order-tracker')
   };
 
   const setText = (node, value) => {
     if (node) node.textContent = value;
+  };
+
+  // Maps an order status string to a 0-based completed step index.
+  // Steps: 0=payment, 1=collected, 2=processing, 3=reviewed, 4=complete
+  const STATUS_STEP = {
+    pending: 0,
+    payment_pending: 0,
+    confirmed: 1,
+    payment_confirmed: 1,
+    collected: 2,
+    sample_collected: 2,
+    processing: 3,
+    lab_processing: 3,
+    reviewed: 4,
+    quality_reviewed: 4,
+    complete: 5,
+    results_ready: 5
+  };
+
+  const STEP_KEYS = ['payment', 'collected', 'processing', 'reviewed', 'complete'];
+
+  const updateTracker = (status) => {
+    if (!elements.tracker) return;
+    const completedUpTo = STATUS_STEP[status] !== undefined ? STATUS_STEP[status] : 1;
+    const steps = elements.tracker.querySelectorAll('[data-tracker-step]');
+    steps.forEach((step, index) => {
+      step.classList.remove('is-complete', 'is-active');
+      if (index < completedUpTo) {
+        step.classList.add('is-complete');
+      } else if (index === completedUpTo) {
+        step.classList.add('is-active');
+      }
+    });
   };
 
   const render = async () => {
@@ -18,7 +52,6 @@ document.addEventListener('DOMContentLoaded', async function () {
       await auth.whenReady();
     }
 
-    const snapshot = auth && typeof auth.getSnapshot === 'function' ? auth.getSnapshot() : null;
     const state = store.loadState();
     const latestOrder = [...(state.orders || [])]
       .filter((order) => order && order.paymentProvider === 'stripe_payment_link')
@@ -31,6 +64,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         'Return to the order page, choose a package, and open checkout to create an order record.'
       );
       setText(elements.summary, 'Your order summary will appear here after checkout.');
+      updateTracker('pending');
       return;
     }
 
@@ -43,6 +77,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       elements.summary,
       `${store.formatDate(latestOrder.createdAt)} | ${store.formatCurrency(latestOrder.total)} | ${latestOrder.collectionMethod === 'home' ? 'Home kit' : 'Clinic appointment'}`
     );
+    updateTracker(latestOrder.status || 'pending');
   };
 
   window.addEventListener('ayuta:auth-updated', render);

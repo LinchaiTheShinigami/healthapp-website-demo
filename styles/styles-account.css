@@ -1658,3 +1658,60 @@ body.has-app-shell #results-workbench {
         grid-template-columns: 1fr;
     }
 }
+
+/* Longitudinal record section (results page, visible pre-login) */
+.account-longitudinal {
+    display: grid;
+    gap: 20px;
+}
+
+.longitudinal-head {
+    display: grid;
+    gap: 10px;
+}
+
+.longitudinal-head h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 2.8vw, 2.8rem);
+    line-height: 0.94;
+    letter-spacing: -0.03em;
+}
+
+.longitudinal-head p {
+    margin: 0;
+    color: var(--muted);
+    max-width: 60ch;
+}
+
+.longitudinal-points {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.longitudinal-points article {
+    padding: 18px;
+    border-radius: 20px;
+    background: rgba(85, 117, 94, 0.06);
+    border: 1px solid rgba(85, 117, 94, 0.14);
+}
+
+.longitudinal-points strong {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--accent-dark);
+    font-size: 0.94rem;
+}
+
+.longitudinal-points p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.88rem;
+}
+
+@media (max-width: 760px) {
+    .longitudinal-points {
+        grid-template-columns: 1fr;
+    }
+}
