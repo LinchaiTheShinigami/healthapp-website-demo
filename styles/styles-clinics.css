@@ -496,7 +496,7 @@ body.clinic-modal-open {
     background: var(--accent-dark);
 }
 
-
+@media (max-width: 1180px) {
     .clinic-grid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }

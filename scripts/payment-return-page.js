@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   // Maps an order status string to a 0-based completed step index.
   // Steps: 0=payment, 1=collected, 2=processing, 3=reviewed, 4=complete
   const STATUS_STEP = {
+    // Snake-case keys (internal/future use)
     pending: 0,
     payment_pending: 0,
     confirmed: 1,
@@ -28,14 +29,16 @@ document.addEventListener('DOMContentLoaded', async function () {
     reviewed: 4,
     quality_reviewed: 4,
     complete: 5,
-    results_ready: 5
+    results_ready: 5,
+    // Human-readable labels used by order-page.js
+    'Awaiting payment confirmation': 0
   };
 
   const STEP_KEYS = ['payment', 'collected', 'processing', 'reviewed', 'complete'];
 
   const updateTracker = (status) => {
     if (!elements.tracker) return;
-    const completedUpTo = STATUS_STEP[status] !== undefined ? STATUS_STEP[status] : 1;
+    const completedUpTo = STATUS_STEP[status] !== undefined ? STATUS_STEP[status] : 0;
     const steps = elements.tracker.querySelectorAll('[data-tracker-step]');
     steps.forEach((step, index) => {
       step.classList.remove('is-complete', 'is-active');
@@ -64,7 +67,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         'Return to the order page, choose a package, and open checkout to create an order record.'
       );
       setText(elements.summary, 'Your order summary will appear here after checkout.');
-      updateTracker('pending');
       return;
     }
 

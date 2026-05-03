@@ -8,3 +8,6 @@ node_modules/
 
 # Sensitive documents
 docs/*.pdf
+
+# Tool metadata
+skills-lock.json

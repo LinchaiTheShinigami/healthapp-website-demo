@@ -12,7 +12,7 @@
  *    - Execute as: Me
  *    - Who has access: Anyone
  * 5. Click Deploy → copy the Web App URL
- * 6. Paste that URL into scripts/partnership-page.js as APPS_SCRIPT_URL
+ * 6. Paste that URL into scripts/partnership-page.js as PARTNERSHIP_APPS_SCRIPT_URL
  * 7. On first run, Google will ask you to authorise — click "Allow"
  *
  * TODO: 2FA REQUIREMENT
@@ -147,7 +147,10 @@ function getOrCreateSheet() {
 function sanitise(value) {
   if (!value) return '';
   // Strip HTML tags and trim whitespace
-  return String(value).replace(/<[^>]*>/g, '').trim().substring(0, 2000);
+  let s = String(value).replace(/<[^>]*>/g, '').trim().substring(0, 2000);
+  // Prevent spreadsheet formula injection: prefix cells starting with =, +, -, @
+  if (/^[=+\-@]/.test(s)) s = "'" + s;
+  return s;
 }
 
 function jsonResponse(data) {
