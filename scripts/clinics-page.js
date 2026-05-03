@@ -303,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let lastTrigger = null;
 
   const closeModal = () => {
-    modal.hidden = true;
+    modal.close();
     document.body.classList.remove('clinic-modal-open');
     if (mapFrame) mapFrame.src = 'about:blank';
     if (lastTrigger instanceof HTMLElement) {
@@ -324,7 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
     access.textContent = clinic.access;
     renderClinicServices(services, clinic.services);
     mapFrame.src = buildMapSrc(clinic.mapQuery || clinic.address);
-    modal.hidden = false;
+    modal.showModal();
     document.body.classList.add('clinic-modal-open');
     if (closeButton instanceof HTMLElement) closeButton.focus();
   };
@@ -339,8 +339,12 @@ document.addEventListener('DOMContentLoaded', () => {
     button.addEventListener('click', closeModal);
   });
 
+  modal.addEventListener('click', (event) => {
+    if (event.target === modal) closeModal();
+  });
+
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && !modal.hidden) {
+    if (event.key === 'Escape' && modal.open) {
       closeModal();
     }
   });
