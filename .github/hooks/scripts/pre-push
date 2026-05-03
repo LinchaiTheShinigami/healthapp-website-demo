@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+# .git/hooks/pre-push
+#
+# Automatically posts a comment to the open PR (if any) for the current branch
+# whenever `git push` is run, listing the commits about to be pushed.
+#
+# Runs BEFORE the push so comments are posted even if the remote rejects.
+# If gh CLI is unavailable or no PR exists, exits cleanly without blocking.
+#
+# Install (from repo root):
+#   cp .github/hooks/scripts/pre-push .git/hooks/pre-push
+#   chmod +x .git/hooks/pre-push
+
+set -euo pipefail
+
+REMOTE="$1"
+# REMOTE_URL="$2"  # available but not needed
+
+# ── 1. Bail silently if gh is not installed ───────────────────────────────────
+if ! command -v gh &>/dev/null; then
+    exit 0
+fi
+
+# ── 2. Current branch ────────────────────────────────────────────────────────
+BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || true)
+if [[ -z "$BRANCH" || "$BRANCH" == "HEAD" ]]; then
+    exit 0
+fi
+
+# ── 3. Find open PR for this branch ──────────────────────────────────────────
+PR_JSON=$(gh pr list --head "$BRANCH" --state open --json number,title --limit 1 2>/dev/null || true)
+if [[ -z "$PR_JSON" || "$PR_JSON" == "[]" ]]; then
+    exit 0
+fi
+
+PR_NUMBER=$(echo "$PR_JSON" | grep -o '"number":[0-9]*' | head -1 | grep -o '[0-9]*')
+PR_TITLE=$(echo "$PR_JSON"  | sed 's/.*"title":"\([^"]*\)".*/\1/')
+
+if [[ -z "$PR_NUMBER" ]]; then
+    exit 0
+fi
+
+# ── 4. Collect commits being pushed (stdin from git) ─────────────────────────
+# pre-push stdin: <local-ref> <local-sha> <remote-ref> <remote-sha>
+COMMIT_LINES=""
+PUSH_COUNT=0
+
+while IFS=' ' read -r LOCAL_REF LOCAL_SHA REMOTE_REF REMOTE_SHA; do
+    if [[ "$LOCAL_SHA" == "0000000000000000000000000000000000000000" ]]; then
+        continue  # branch deletion — skip
+    fi
+    if [[ "$REMOTE_SHA" == "0000000000000000000000000000000000000000" ]]; then
+        # New branch — show last 10 commits
+        LOG=$(git log -10 "$LOCAL_SHA" --oneline --no-merges 2>/dev/null || true)
+        RANGE_DESC="new branch"
+    else
+        LOG=$(git log "${REMOTE_SHA}..${LOCAL_SHA}" --oneline --no-merges 2>/dev/null || true)
+        RANGE_DESC="${REMOTE_SHA:0:7}..${LOCAL_SHA:0:7}"
+    fi
+    if [[ -n "$LOG" ]]; then
+        COMMIT_LINES+="$LOG"$'\n'
+        PUSH_COUNT=$(( PUSH_COUNT + $(echo "$LOG" | wc -l) ))
+    fi
+done
+
+if [[ -z "$COMMIT_LINES" || "$PUSH_COUNT" -eq 0 ]]; then
+    exit 0
+fi
+
+COMMIT_LIST=$(echo "$COMMIT_LINES" | grep -v '^$' | sed 's/^/- `/' | sed 's/$/`/')
+PLURAL=$([ "$PUSH_COUNT" -eq 1 ] && echo "commit" || echo "commits")
+BODY="**${PUSH_COUNT} ${PLURAL} pushed** to \`${BRANCH}\` (${RANGE_DESC})"$'\n\n'"${COMMIT_LIST}"$'\n\n'"*Posted automatically by pre-push hook*"
+
+# ── 5. Write body to temp file to avoid shell escaping issues ────────────────
+TMPFILE=$(mktemp /tmp/push-comment-XXXXXX.json)
+# Use python/node if available for clean JSON encoding, otherwise manual escape
+if command -v python3 &>/dev/null; then
+    python3 -c "import json,sys; print(json.dumps({'body': sys.argv[1]}))" "$BODY" > "$TMPFILE"
+elif command -v node &>/dev/null; then
+    node -e "process.stdout.write(JSON.stringify({body: process.argv[1]}))" "$BODY" > "$TMPFILE"
+else
+    # Fallback: manual JSON (safe for ASCII-only content)
+    ESCAPED=$(echo "$BODY" | sed 's/\\/\\\\/g; s/"/\\"/g' | tr '\n' '↵' | sed 's/↵/\\n/g')
+    echo "{\"body\":\"$ESCAPED\"}" > "$TMPFILE"
+fi
+
+# ── 6. Post the PR comment ────────────────────────────────────────────────────
+echo "pre-push: posting push summary to PR #${PR_NUMBER} ('${PR_TITLE}')…" >&2
+gh pr comment "$PR_NUMBER" --body-file "$TMPFILE" >/dev/null 2>&1 || true
+rm -f "$TMPFILE"
+
+exit 0
