@@ -15,6 +15,8 @@
     <link rel="icon" href="../Images/Logo/ayuta_favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../styles/site-base.css">
     <link rel="stylesheet" href="../styles/styles-clinics.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
     <script src="../scripts/app-store.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-app-compat.js" integrity="sha384-Znt+uHtXAdOhiGTGyIwmBNXlsc5TOAuAzcCG0eAE2dulpw9KiB0JhB34uEGwuHs8" crossorigin="anonymous" defer></script>
     <script src="https://www.gstatic.com/firebasejs/12.7.0/firebase-auth-compat.js" integrity="sha384-A6cYBBWGHa59uc1lMxnsMCEdmpRGH6sFBcvsp5iy586ULeLLZp7CTav7jH/SrDcr" crossorigin="anonymous" defer></script>
@@ -98,9 +100,14 @@
             <div class="container clinics-network-shell">
                 <article class="clinics-summary card">
                     <span class="eyebrow">Network shape</span>
-                    <h2>London, Sussex, Kent, Surrey, and selected South West routes are covered first.</h2>
-                    <p class="section-subtitle">The footprint is intentionally practical for the first rollout. If clinic coverage is not ideal for a client, the booking flow still allows the home-kit route.</p>
+                    <h2>We've started with London and the South East, expanding to the South West.</h2>
+                    <p class="section-subtitle">If there isn't a clinic near you yet, every package also works as a home kit — ordered online, collected on your schedule, no appointment needed.</p>
                 </article>
+
+                <div class="clinic-map-wrap">
+                    <div id="clinic-map" class="clinic-map-view" aria-label="Map of clinic locations"></div>
+                    <p class="clinic-map-hint"><span class="fa-solid fa-location-dot" aria-hidden="true"></span> Tap a pin to view clinic details, or browse the list below.</p>
+                </div>
 
                 <div class="clinic-grid">
                     <button class="clinic-card card" type="button" data-clinic-id="brighton-hove"><span class="clinic-tag">South East</span><h3>Brighton and Hove</h3><p>Appointment-led blood draw location for Brighton and nearby coastal clients.</p><span class="clinic-card-link">View clinic details</span></button>

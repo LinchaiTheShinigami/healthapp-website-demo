@@ -425,6 +425,21 @@ body.has-app-shell .order-subnav {
     opacity: 0.6;
 }
 
+.order-trust-note {
+    margin-top: 6px;
+    padding: 10px 14px;
+    border-radius: 14px;
+    background: rgba(85, 117, 94, 0.07);
+    border: 1px solid rgba(85, 117, 94, 0.16);
+    color: var(--accent-dark);
+}
+
+.order-trust-note .fa-shield-halved {
+    margin-top: 2px;
+    flex-shrink: 0;
+    color: var(--accent);
+}
+
 .order-panel-header {
     display: none;
 }
@@ -1575,6 +1590,137 @@ body.has-app-shell .order-subnav {
 .payment-return-side-grid strong {
     display: block;
     margin-bottom: 6px;
+}
+
+/* Order tracker (Dominos-style step indicator) */
+.order-tracker {
+    display: grid;
+    gap: 0;
+}
+
+.tracker-step {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 0 16px;
+    align-items: start;
+}
+
+.tracker-node-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+}
+
+.tracker-node {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(251, 250, 247, 0.14);
+    border: 2px solid rgba(251, 250, 247, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.tracker-icon {
+    font-size: 0.82rem;
+    color: rgba(251, 250, 247, 0.4);
+    transition: color 0.3s ease, opacity 0.3s ease;
+}
+
+.tracker-check {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.78rem;
+    color: #fbfaf7;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.tracker-line {
+    width: 2px;
+    flex: 1;
+    min-height: 32px;
+    background: rgba(251, 250, 247, 0.14);
+    margin: 4px 0;
+    border-radius: 2px;
+    transition: background 0.3s ease;
+}
+
+.tracker-copy {
+    padding: 4px 0 28px;
+}
+
+.tracker-copy strong {
+    display: block;
+    font-size: 0.9rem;
+    color: rgba(251, 250, 247, 0.5);
+    transition: color 0.3s ease;
+}
+
+.tracker-copy p {
+    margin: 4px 0 0;
+    font-size: 0.8rem;
+    color: rgba(251, 250, 247, 0.36);
+    line-height: 1.45;
+    transition: color 0.3s ease;
+}
+
+/* Complete step */
+.tracker-step.is-complete .tracker-node {
+    background: rgba(85, 117, 94, 0.72);
+    border-color: rgba(85, 117, 94, 0.9);
+}
+
+.tracker-step.is-complete .tracker-icon {
+    opacity: 0;
+}
+
+.tracker-step.is-complete .tracker-check {
+    opacity: 1;
+}
+
+.tracker-step.is-complete .tracker-line {
+    background: rgba(85, 117, 94, 0.6);
+}
+
+.tracker-step.is-complete .tracker-copy strong {
+    color: rgba(251, 250, 247, 0.9);
+}
+
+.tracker-step.is-complete .tracker-copy p {
+    color: rgba(251, 250, 247, 0.6);
+}
+
+/* Active step */
+.tracker-step.is-active .tracker-node {
+    background: rgba(85, 117, 94, 0.3);
+    border-color: rgba(85, 117, 94, 0.72);
+    animation: tracker-pulse 2s ease-in-out infinite;
+}
+
+.tracker-step.is-active .tracker-icon {
+    color: rgba(251, 250, 247, 0.9);
+}
+
+.tracker-step.is-active .tracker-copy strong {
+    color: #fbfaf7;
+}
+
+.tracker-step.is-active .tracker-copy p {
+    color: rgba(251, 250, 247, 0.72);
+}
+
+@keyframes tracker-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(85, 117, 94, 0.4); }
+    50%       { box-shadow: 0 0 0 8px rgba(85, 117, 94, 0); }
 }
 
 .payment-return-status-head {

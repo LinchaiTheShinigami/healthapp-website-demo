@@ -14,11 +14,20 @@
 
 - [ ] Configure Stripe Payment Links for all six package and collection variants, then set the after-payment redirect to `/pages/payment-return.html`.
 
+## Partnership Form
+
+- [x] **Wire Apps Script URL** — `apps-script/partnership-enquiry.gs` is deployed but `PARTNERSHIP_APPS_SCRIPT_URL` in `scripts/partnership-page.js` still contains the placeholder. Prerequisites: (1) enable 2-Step Verification on the Google account at https://myaccount.google.com/security, (2) deploy the script as a Web App (Execute as: Me, Anyone can access), (3) paste the generated URL into the constant.
+- ~~[ ] **Switch notification email**~~ — **Decision: not proceeding.** Routing `partnerships@ayuta.co.uk` requires a Microsoft 365 / Outlook mailbox (≈ £2/month per user) which adds unnecessary overhead for the current MVP stage. Partnership enquiries will continue to arrive at `ayuta.info@gmail.com` until a cost-appropriate email solution is in place. PR #7 (`feat/switch-notification-email`) was closed without merging for this reason.
+- [ ] **Harden Apps Script sheet lookup** — `getOrCreateSheet()` in `apps-script/partnership-enquiry.gs` finds the spreadsheet by name, which breaks if a duplicate "Ayuta Partnership Enquiries" file exists in Drive. After the first deployment creates the sheet, copy the spreadsheet ID from the URL and store it as a Script Property (`PropertiesService.getScriptProperties().setProperty('SHEET_ID', '...')`), then look up by ID instead of name. Low priority until the sheet is established.
+- [ ] **Apps Script bot / spam protection** — The Web App endpoint accepts any POST from anyone. MailApp quota is 100 emails/day (Gmail free tier). Before launching a paid marketing campaign that increases traffic to the partnership page, add a lightweight honeypot hidden field (checked server-side in `doPost`) or a shared secret header to deter automated submissions.
+
 ## Profile
 
 - [ ] **Phone number ISO ambiguity** — `splitPhone()` maps `+1` → `US` and `+7` → `RU`, but multiple countries share those prefixes (Canada, Jamaica, etc. for `+1`; Kazakhstan for `+7`). A user who selects Canada will have their number stored as `+1 …` and reloaded with the US flag. Fix: persist the selected ISO code as a separate field in the Firestore profile document (e.g. `phoneIso: "CA"`), then use it directly in `resetFormValues` rather than parsing from the prefix. Requires a Firestore profile schema update and a `saveProfile` change to write `phoneIso` alongside `phone`.
 
 
+
+- [ ] **Order tracker `aria-current`** — `updateTracker()` in `scripts/payment-return-page.js` sets `.is-active` via CSS class but never writes `aria-current="step"` on the active step element. Screen readers cannot identify the current progress step. Fix: add `step.setAttribute('aria-current', 'step')` for the active step and `step.removeAttribute('aria-current')` for all others inside `updateTracker()`.
 
 - [ ] **A02 Cryptographic / Credential Exposure** — Firebase API key is committed to `scripts/auth-config.js` and publicly visible. This is expected for client-side Firebase (the key is restricted by Firebase security rules and authorised domain settings). Confirm that authorised domains in Firebase console are locked to `ayuta.co.uk` only before going live.
 - [ ] **A03 Injection (XSS)** — `scripts/include-nav.js` sets `innerHTML` from a fetched snippet file (`navPlaceholder.innerHTML = data`). The fetch is same-origin (GitHub Pages static file) so risk is low in the current setup. If the nav snippet source ever changes to an external CDN, sanitise the response with DOMParser before inserting.

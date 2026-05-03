@@ -43,6 +43,15 @@ body.home footer {
     font-size: 1.02rem;
 }
 
+.hero-sub {
+    max-width: 52ch;
+    margin: 0;
+    margin-top: -6px;
+    color: var(--accent-dark);
+    font-size: 1.02rem;
+    font-weight: 600;
+}
+
 .hero-actions,
 .hero-proof-row,
 .preview-tags,
@@ -52,18 +61,38 @@ body.home footer {
     gap: 10px;
 }
 
-.hero-proof-chip,
+/* Proof chips: informational only — deliberately non-interactive */
+.hero-proof-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.84rem;
+    font-weight: 800;
+    color: var(--muted);
+}
+
+.hero-proof-chip::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+}
+
 .preview-tags span,
 .tier-tags span {
     display: inline-flex;
     align-items: center;
-    padding: 8px 12px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.64);
-    border: 1px solid rgba(23, 27, 24, 0.08);
+    padding: 6px 12px;
+    border-radius: 8px;
+    background: var(--surface-3);
+    border: 1px solid rgba(23, 27, 24, 0.06);
     font-size: 0.84rem;
     font-weight: 800;
-    color: var(--accent-2);
+    color: var(--muted);
+    cursor: default;
 }
 
 .hero-status {
@@ -80,6 +109,14 @@ body.home footer {
     background: linear-gradient(160deg, rgba(22, 37, 56, 0.98) 0%, rgba(22, 28, 24, 0.98) 100%);
     color: #fbfaf7;
     box-shadow: 0 34px 72px rgba(22, 37, 56, 0.18);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Hero image slot: add class hero-stage--image and define --hero-image-url when assets are ready */
+.hero-stage--image {
+    background: linear-gradient(160deg, rgba(22, 37, 56, 0.88) 0%, rgba(22, 28, 24, 0.88) 100%),
+        var(--hero-image-url, none) center / cover no-repeat;
 }
 
 .hero-stage-head {
@@ -472,6 +509,11 @@ body.home footer {
     .cta-band-inner {
         flex-direction: column;
         align-items: flex-start;
+    }
+
+    .cta-band-inner .btn {
+        width: 100%;
+        justify-content: center;
     }
 }
 

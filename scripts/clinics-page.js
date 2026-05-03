@@ -2,6 +2,8 @@ const CLINIC_DIRECTORY = {
   'brighton-hove': {
     name: 'Brighton and Hove',
     region: 'South East',
+    lat: 50.824,
+    lng: -0.163,
     summary: 'Best suited to Brighton and coastal clients who want a weekday venous draw without routing through London.',
     address: '39b Salisbury Road, Hove, BN3 3AA',
     hours: 'Monday to Friday, 08:00 to 14:00',
@@ -16,6 +18,8 @@ const CLINIC_DIRECTORY = {
   cambridge: {
     name: 'Cambridge',
     region: 'East of England',
+    lat: 52.212,
+    lng: 0.129,
     summary: 'A practical East of England option with longer weekday hours and straightforward parking for planned appointments.',
     address: '92 Chesterton Road, Cambridge, CB4 1ER',
     hours: 'Monday to Friday, 08:00 to 15:00',
@@ -30,6 +34,8 @@ const CLINIC_DIRECTORY = {
   chiswick: {
     name: 'Chiswick',
     region: 'West London',
+    lat: 51.498,
+    lng: -0.261,
     summary: 'A West London clinic route for clients who want professional collection without travelling into the City.',
     address: '2 Heathfield Terrace, Chiswick, London, W4 4JE',
     hours: 'Monday to Friday, 08:00 to 14:30',
@@ -44,6 +50,8 @@ const CLINIC_DIRECTORY = {
   crawley: {
     name: 'Crawley',
     region: 'Sussex',
+    lat: 51.108,
+    lng: -0.187,
     summary: 'A strong Sussex clinic option for airport-corridor clients and anyone wanting a quick weekday appointment.',
     address: 'Coachmans Drive, Crawley, RH11 9AQ',
     hours: 'Monday to Friday, 08:00 to 13:00',
@@ -58,6 +66,8 @@ const CLINIC_DIRECTORY = {
   croydon: {
     name: 'Croydon',
     region: 'South London',
+    lat: 51.375,
+    lng: -0.099,
     summary: 'A South London clinic with broad test coverage and practical access for clients travelling from across the southern rail network.',
     address: 'The Wellness Therapy Centre, 3 Overton Yard, Croydon, CR0 1SL',
     hours: 'Monday to Friday, 08:00 to 14:00',
@@ -72,6 +82,8 @@ const CLINIC_DIRECTORY = {
   exeter: {
     name: 'Exeter',
     region: 'South West',
+    lat: 50.724,
+    lng: -3.527,
     summary: 'The core South West clinic route for clients who want a staffed draw rather than a home kit.',
     address: 'The Exeter Business Hub, 46-48 Queen Street, Exeter, EX4 3SR',
     hours: 'Monday to Friday, 08:00 to 14:00',
@@ -86,6 +98,8 @@ const CLINIC_DIRECTORY = {
   guildford: {
     name: 'Guildford',
     region: 'Surrey',
+    lat: 51.238,
+    lng: -0.570,
     summary: 'A Surrey route with broad weekday coverage for clients who want clinic collection closer to home.',
     address: '36-37 Castle Street, Guildford, GU1 3UQ',
     hours: 'Monday to Friday, 08:00 to 14:30',
@@ -100,6 +114,8 @@ const CLINIC_DIRECTORY = {
   'london-city': {
     name: 'London City',
     region: 'Central London',
+    lat: 51.515,
+    lng: -0.085,
     summary: 'The strongest weekday commuter option, positioned for Liverpool Street and Monument travel routes.',
     address: '8-9 New Street, London, EC2M 4TP',
     hours: 'Monday to Friday, 07:45 to 15:00',
@@ -114,6 +130,8 @@ const CLINIC_DIRECTORY = {
   'london-victoria': {
     name: 'London Victoria',
     region: 'Central London',
+    lat: 51.497,
+    lng: -0.135,
     summary: 'A practical central London location for clients coming through Victoria or Westminster-side routes.',
     address: '10a Rochester Row, London, SW1P 1NS',
     hours: 'Monday to Friday, 08:00 to 15:00',
@@ -128,6 +146,8 @@ const CLINIC_DIRECTORY = {
   'london-canary-wharf': {
     name: 'London Canary Wharf',
     region: 'East London',
+    lat: 51.504,
+    lng: -0.018,
     summary: 'A Docklands option designed for clients who want clinic collection near Canary Wharf and the wider east-city office belt.',
     address: '56 Dockyard Lane, London, E14 9YX',
     hours: 'Monday to Friday, 07:45 to 14:30',
@@ -142,6 +162,8 @@ const CLINIC_DIRECTORY = {
   maidstone: {
     name: 'Maidstone',
     region: 'Kent',
+    lat: 51.272,
+    lng: 0.523,
     summary: 'A useful Kent base for clients who want local clinic collection rather than travelling toward London or Sussex.',
     address: 'Maidstone Community Support Centre, 39-48 Marsham Street, Maidstone, ME14 1HH',
     hours: 'Monday to Friday, 08:30 to 14:30',
@@ -156,6 +178,8 @@ const CLINIC_DIRECTORY = {
   plymouth: {
     name: 'Plymouth',
     region: 'South West',
+    lat: 50.375,
+    lng: -4.145,
     summary: 'A South West clinic route for clients who want city-centre access and in-person sample collection.',
     address: 'Eden Clinic, 23 Mayflower Street, Plymouth, PL1 1QJ',
     hours: 'Monday to Friday, 08:00 to 14:00',
@@ -170,6 +194,8 @@ const CLINIC_DIRECTORY = {
   'royal-tunbridge-wells': {
     name: 'Royal Tunbridge Wells',
     region: 'Kent',
+    lat: 51.132,
+    lng: 0.264,
     summary: 'A crossover clinic for Kent and Sussex clients who want a more local route than central London.',
     address: 'Prospect House, 11-13 Lonsdale Gardens, Royal Tunbridge Wells, TN1 1NU',
     hours: 'Monday to Friday, 08:00 to 14:00',
@@ -187,10 +213,77 @@ function buildMapSrc(query) {
   return `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`;
 }
 
+// Custom brand-coloured SVG marker for Leaflet
+const AYUTA_PIN_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 40" width="28" height="40">
+  <path d="M14 0C6.268 0 0 6.268 0 14c0 9.333 14 26 14 26S28 23.333 28 14C28 6.268 21.732 0 14 0z" fill="#55755e"/>
+  <circle cx="14" cy="14" r="6" fill="#fbfaf7"/>
+</svg>`;
+
 function renderClinicServices(container, services) {
   container.innerHTML = services.map((service) => `<li>${service}</li>`).join('');
 }
 
+// ----- Leaflet interactive map (separate listener, independent of modal) -----
+document.addEventListener('DOMContentLoaded', () => {
+  const mapEl = document.getElementById('clinic-map');
+  if (!mapEl || typeof L === 'undefined') return;
+
+  // Create icon here so L is guaranteed to exist
+  const markerIcon = L.divIcon({
+    html: AYUTA_PIN_SVG,
+    className: 'ayuta-map-marker',
+    iconSize: [28, 40],
+    iconAnchor: [14, 40],
+    popupAnchor: [0, -42]
+  });
+
+  const map = L.map(mapEl, {
+    center: [51.6, -0.85],
+    zoom: 7,
+    scrollWheelZoom: false,
+    zoomControl: true
+  });
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 19
+  }).addTo(map);
+
+  Object.entries(CLINIC_DIRECTORY).forEach(([id, clinic]) => {
+    if (!clinic.lat || !clinic.lng) return;
+    const marker = L.marker([clinic.lat, clinic.lng], { icon: markerIcon, title: clinic.name })
+      .addTo(map)
+      .bindPopup(
+        `<div class="map-popup"><strong>${clinic.name}</strong><span class="map-popup-region">${clinic.region}</span><button class="map-popup-btn" data-popup-clinic="${id}">View details</button></div>`,
+        { closeButton: false, className: 'ayuta-popup' }
+      );
+
+    marker.on('popupopen', () => {
+      const btn = marker.getPopup().getElement().querySelector('[data-popup-clinic]');
+      if (btn) {
+        btn.addEventListener('click', () => {
+          map.closePopup();
+          // Dispatch a synthetic click on the corresponding clinic card
+          const card = document.querySelector(`[data-clinic-id="${id}"]`);
+          if (card instanceof HTMLElement) card.click();
+        });
+      }
+    });
+  });
+
+  // Fly to pin when a clinic card is clicked
+  document.querySelectorAll('[data-clinic-id]').forEach((card) => {
+    card.addEventListener('click', () => {
+      const clinic = CLINIC_DIRECTORY[card.dataset.clinicId];
+      if (clinic && clinic.lat && clinic.lng) {
+        map.flyTo([clinic.lat, clinic.lng], 13, { duration: 0.8 });
+      }
+    });
+  });
+});
+
+// ----- Clinic modal -----
 document.addEventListener('DOMContentLoaded', () => {
   const modal = document.querySelector('[data-clinic-modal]');
   const cards = Array.from(document.querySelectorAll('[data-clinic-id]'));

@@ -55,17 +55,44 @@
     gap: 10px;
 }
 
-.partnership-proof span,
+/* Proof chips: informational only, non-interactive */
+.partnership-proof span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.84rem;
+    font-weight: 800;
+    color: var(--muted);
+}
+
+.partnership-proof span::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+}
+
+/* Model feature tags: informational, non-interactive */
 .model-points span {
     display: inline-flex;
     align-items: center;
-    padding: 8px 12px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.72);
-    border: 1px solid rgba(23, 27, 24, 0.08);
-    color: var(--accent-2);
+    padding: 6px 12px;
+    border-radius: 8px;
+    background: var(--surface-3);
+    border: 1px solid rgba(23, 27, 24, 0.06);
     font-size: 0.84rem;
     font-weight: 800;
+    color: var(--muted);
+    cursor: default;
+}
+
+.model-card--dark .model-points span {
+    background: rgba(251, 250, 247, 0.08);
+    border-color: rgba(251, 250, 247, 0.1);
+    color: rgba(251, 250, 247, 0.72);
 }
 
 .partnership-sidecard,
@@ -214,9 +241,152 @@
     padding-bottom: 88px;
 }
 
+/* Revenue case section */
+.revenue-card {
+    display: grid;
+    gap: 20px;
+    padding: 36px 40px;
+    border-radius: 30px;
+    background: linear-gradient(160deg, rgba(22, 37, 56, 0.97) 0%, rgba(43, 65, 54, 0.95) 100%);
+    color: #fbfaf7;
+    box-shadow: 0 30px 64px rgba(22, 37, 56, 0.18);
+}
+
+.revenue-card .eyebrow,
+.revenue-card .section-subtitle {
+    color: rgba(251, 250, 247, 0.68);
+}
+
+.revenue-card-head {
+    display: grid;
+    gap: 14px;
+}
+
+.revenue-card h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3vw, 3rem);
+    line-height: 0.94;
+    letter-spacing: -0.03em;
+    color: #fbfaf7;
+}
+
+.revenue-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.revenue-grid article {
+    padding: 22px;
+    border-radius: 20px;
+    background: rgba(251, 250, 247, 0.08);
+    border: 1px solid rgba(251, 250, 247, 0.1);
+}
+
+.revenue-grid strong {
+    display: block;
+    margin-bottom: 8px;
+    color: #fbfaf7;
+    font-size: 1rem;
+}
+
+.revenue-grid p {
+    margin: 0;
+    color: rgba(251, 250, 247, 0.7);
+    font-size: 0.92rem;
+}
+
 .contact-intro {
     align-content: center;
 }
+
+/* Metrics preview section */
+.metrics-preview-card {
+    display: grid;
+    gap: 28px;
+    padding: 40px 44px;
+    border-radius: 30px;
+    background: linear-gradient(148deg, rgba(22, 37, 56, 0.96) 0%, rgba(30, 55, 42, 0.94) 100%);
+    color: #fbfaf7;
+    box-shadow: 0 30px 72px rgba(22, 37, 56, 0.2);
+}
+
+.metrics-preview-head {
+    display: grid;
+    gap: 16px;
+    max-width: 68ch;
+}
+
+.metrics-preview-head .eyebrow {
+    color: rgba(220, 231, 214, 0.78);
+}
+
+.metrics-preview-head h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3vw, 3rem);
+    line-height: 0.94;
+    letter-spacing: -0.03em;
+    color: #fbfaf7;
+}
+
+.metrics-preview-head .section-subtitle {
+    color: rgba(251, 250, 247, 0.68);
+}
+
+.metrics-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.metrics-stat {
+    display: grid;
+    gap: 10px;
+    padding: 22px 20px;
+    border-radius: 20px;
+    background: rgba(251, 250, 247, 0.07);
+    border: 1px solid rgba(251, 250, 247, 0.1);
+    align-content: start;
+}
+
+.metrics-stat-icon {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: rgba(85, 117, 94, 0.3);
+    color: rgba(220, 231, 214, 0.92);
+    font-size: 0.9rem;
+}
+
+.metrics-stat-number {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 2.6rem;
+    line-height: 0.9;
+    color: #fbfaf7;
+    letter-spacing: -0.03em;
+}
+
+.metrics-stat p {
+    margin: 0;
+    color: rgba(251, 250, 247, 0.6);
+    font-size: 0.82rem;
+    line-height: 1.52;
+}
+
+.metrics-disclaimer {
+    margin: 0;
+    color: rgba(251, 250, 247, 0.38);
+    font-size: 0.76rem;
+    max-width: 80ch;
+}
+
+
 
 .partner-form {
     max-width: none;
@@ -236,6 +406,29 @@
     width: 100%;
 }
 
+.partner-form-status {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 8px;
+    padding: 10px 14px;
+}
+
+.partner-form-status--success {
+    background: #eaf4ec;
+    color: #2d6a38;
+}
+
+.partner-form-status--error {
+    background: #fdecea;
+    color: #8b1c1c;
+}
+
+.partner-form .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
 @media (max-width: 1120px) {
     .partnership-hero-grid,
     .benefit-grid,
@@ -246,6 +439,22 @@
 
     .timeline-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .revenue-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .revenue-card {
+        padding: 28px 24px;
+    }
+
+    .metrics-stat-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .metrics-preview-card {
+        padding: 28px 24px;
     }
 }
 
@@ -266,6 +475,10 @@
     }
 
     .timeline-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .metrics-stat-grid {
         grid-template-columns: 1fr;
     }
 }

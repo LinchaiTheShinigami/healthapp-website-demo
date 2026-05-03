@@ -53,17 +53,73 @@
                     </div>
 
                     <aside class="payment-return-side">
-                        <span class="eyebrow">Order timeline</span>
-                        <h2>Payment, collection, processing, and report access stay connected.</h2>
-                        <div class="payment-return-side-grid">
-                            <article>
-                                <strong>Saved first</strong>
-                                <p>The order is recorded against the signed-in account before checkout opens.</p>
-                            </article>
-                            <article>
-                                <strong>Confirmed later</strong>
-                                <p>Payment status updates when confirmation is received.</p>
-                            </article>
+                        <span class="eyebrow">Order progress</span>
+                        <h2>Track your test from payment to results.</h2>
+                        <div class="order-tracker" id="order-tracker" aria-label="Order progress tracker">
+                            <div class="tracker-step" data-tracker-step="payment">
+                                <div class="tracker-node-wrap">
+                                    <div class="tracker-node">
+                                        <span class="tracker-icon fa-solid fa-credit-card" aria-hidden="true"></span>
+                                        <span class="tracker-check fa-solid fa-check" aria-hidden="true"></span>
+                                    </div>
+                                    <div class="tracker-line" aria-hidden="true"></div>
+                                </div>
+                                <div class="tracker-copy">
+                                    <strong>Payment received</strong>
+                                    <p>Your order is saved and checkout is confirmed.</p>
+                                </div>
+                            </div>
+                            <div class="tracker-step" data-tracker-step="collected">
+                                <div class="tracker-node-wrap">
+                                    <div class="tracker-node">
+                                        <span class="tracker-icon fa-solid fa-vial" aria-hidden="true"></span>
+                                        <span class="tracker-check fa-solid fa-check" aria-hidden="true"></span>
+                                    </div>
+                                    <div class="tracker-line" aria-hidden="true"></div>
+                                </div>
+                                <div class="tracker-copy">
+                                    <strong>Collection arranged</strong>
+                                    <p>Your kit has been dispatched or your clinic appointment is booked.</p>
+                                </div>
+                            </div>
+                            <div class="tracker-step" data-tracker-step="processing">
+                                <div class="tracker-node-wrap">
+                                    <div class="tracker-node">
+                                        <span class="tracker-icon fa-solid fa-flask" aria-hidden="true"></span>
+                                        <span class="tracker-check fa-solid fa-check" aria-hidden="true"></span>
+                                    </div>
+                                    <div class="tracker-line" aria-hidden="true"></div>
+                                </div>
+                                <div class="tracker-copy">
+                                    <strong>Lab processing</strong>
+                                    <p>Your sample is being analysed at the accredited laboratory.</p>
+                                </div>
+                            </div>
+                            <div class="tracker-step" data-tracker-step="reviewed">
+                                <div class="tracker-node-wrap">
+                                    <div class="tracker-node">
+                                        <span class="tracker-icon fa-solid fa-shield-halved" aria-hidden="true"></span>
+                                        <span class="tracker-check fa-solid fa-check" aria-hidden="true"></span>
+                                    </div>
+                                    <div class="tracker-line" aria-hidden="true"></div>
+                                </div>
+                                <div class="tracker-copy">
+                                    <strong>Quality review</strong>
+                                    <p>Results are reviewed as part of clinical quality control.</p>
+                                </div>
+                            </div>
+                            <div class="tracker-step" data-tracker-step="complete">
+                                <div class="tracker-node-wrap">
+                                    <div class="tracker-node">
+                                        <span class="tracker-icon fa-solid fa-chart-line" aria-hidden="true"></span>
+                                        <span class="tracker-check fa-solid fa-check" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+                                <div class="tracker-copy">
+                                    <strong>Results ready</strong>
+                                    <p>Your dashboard is unlocked. View your biomarker report.</p>
+                                </div>
+                            </div>
                         </div>
                     </aside>
                 </div>

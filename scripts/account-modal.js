@@ -116,7 +116,7 @@
       pane.classList.toggle('is-active', isActive);
     });
 
-    if (title) title.textContent = tabName === 'register' ? 'Create your account' : 'Sign in to your account';
+    if (title) title.textContent = tabName === 'register' ? 'Create your account' : 'Your Ayuta account';
     clearStatuses();
   };
 
