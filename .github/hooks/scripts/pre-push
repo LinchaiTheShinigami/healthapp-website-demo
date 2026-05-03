@@ -85,8 +85,16 @@ else
 fi
 
 # ── 6. Post the PR comment ────────────────────────────────────────────────────
+REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null || true)
+PR_URL="https://github.com/${REPO}/pull/${PR_NUMBER}"
+
 echo "pre-push: posting push summary to PR #${PR_NUMBER} ('${PR_TITLE}')…" >&2
 gh pr comment "$PR_NUMBER" --body-file "$TMPFILE" >/dev/null 2>&1 || true
 rm -f "$TMPFILE"
+
+echo "" >&2
+echo "  ✔ PR comment posted" >&2
+echo "  → ${PR_URL}" >&2
+echo "" >&2
 
 exit 0

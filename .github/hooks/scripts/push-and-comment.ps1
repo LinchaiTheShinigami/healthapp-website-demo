@@ -99,7 +99,11 @@ $commentExit = $LASTEXITCODE
 Remove-Item $tempFile -ErrorAction SilentlyContinue
 
 if ($commentExit -eq 0) {
-    Write-Host "push-and-comment: comment posted to https://github.com/LinchaiTheShinigami/healthapp-website-demo/pull/$prNumber"
+    $prUrl = "https://github.com/LinchaiTheShinigami/healthapp-website-demo/pull/$prNumber"
+    Write-Host ""
+    Write-Host "  ✔ PR comment posted"
+    Write-Host "  → $prUrl"
+    Write-Host ""
 } else {
     Write-Host "push-and-comment: comment post failed (exit $commentExit) — push was still successful."
 }
