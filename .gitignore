@@ -9,5 +9,7 @@ node_modules/
 # Sensitive documents
 docs/*.pdf
 
-# Tool metadata
+# Tool metadata / dev dependencies (Playwright etc.)
 skills-lock.json
+package.json
+package-lock.json
