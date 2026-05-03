@@ -71,13 +71,12 @@ COMMIT_LIST=$(echo "$COMMIT_LINES" | grep -v '^$' | sed 's/^/- `/' | sed 's/$/`/
 PLURAL=$([ "$PUSH_COUNT" -eq 1 ] && echo "commit" || echo "commits")
 BODY="**${PUSH_COUNT} ${PLURAL} pushed** to \`${BRANCH}\` (${RANGE_DESC})"$'\n\n'"${COMMIT_LIST}"$'\n\n'"*Posted automatically by pre-push hook*"
 
-# ── 5. Write body to temp file to avoid shell escaping issues ────────────────
+# Use node if available (reliable on Windows Git Bash), fall back to python3 or manual
 TMPFILE=$(mktemp /tmp/push-comment-XXXXXX.json)
-# Use python/node if available for clean JSON encoding, otherwise manual escape
-if command -v python3 &>/dev/null; then
-    python3 -c "import json,sys; print(json.dumps({'body': sys.argv[1]}))" "$BODY" > "$TMPFILE"
-elif command -v node &>/dev/null; then
+if command -v node &>/dev/null; then
     node -e "process.stdout.write(JSON.stringify({body: process.argv[1]}))" "$BODY" > "$TMPFILE"
+elif python3 -c "" 2>/dev/null; then
+    python3 -c "import json,sys; print(json.dumps({'body': sys.argv[1]}))" "$BODY" > "$TMPFILE"
 else
     # Fallback: manual JSON (safe for ASCII-only content)
     ESCAPED=$(echo "$BODY" | sed 's/\\/\\\\/g; s/"/\\"/g' | tr '\n' '↵' | sed 's/↵/\\n/g')
