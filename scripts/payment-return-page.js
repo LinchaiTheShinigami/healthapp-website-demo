@@ -14,7 +14,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     if (node) node.textContent = value;
   };
 
-  // Maps an order status string to a 0-based completed step index.
+  // Maps an order status to the tracker step index that should be shown as
+  // active (index < value = complete, index === value = active).
   // Steps: 0=payment, 1=collected, 2=processing, 3=reviewed, 4=complete
   const STATUS_STEP = {
     // Snake-case keys (internal/future use)
@@ -24,10 +25,10 @@ document.addEventListener('DOMContentLoaded', async function () {
     payment_confirmed: 1,
     collected: 2,
     sample_collected: 2,
-    processing: 3,
-    lab_processing: 3,
-    reviewed: 4,
-    quality_reviewed: 4,
+    processing: 2,
+    lab_processing: 2,
+    reviewed: 3,
+    quality_reviewed: 3,
     complete: 5,
     results_ready: 5,
     // Human-readable labels used by order-page.js
