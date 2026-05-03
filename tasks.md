@@ -25,6 +25,8 @@
 
 
 
+- [ ] **Order tracker `aria-current`** — `updateTracker()` in `scripts/payment-return-page.js` sets `.is-active` via CSS class but never writes `aria-current="step"` on the active step element. Screen readers cannot identify the current progress step. Fix: add `step.setAttribute('aria-current', 'step')` for the active step and `step.removeAttribute('aria-current')` for all others inside `updateTracker()`.
+
 - [ ] **A02 Cryptographic / Credential Exposure** — Firebase API key is committed to `scripts/auth-config.js` and publicly visible. This is expected for client-side Firebase (the key is restricted by Firebase security rules and authorised domain settings). Confirm that authorised domains in Firebase console are locked to `ayuta.co.uk` only before going live.
 - [ ] **A03 Injection (XSS)** — `scripts/include-nav.js` sets `innerHTML` from a fetched snippet file (`navPlaceholder.innerHTML = data`). The fetch is same-origin (GitHub Pages static file) so risk is low in the current setup. If the nav snippet source ever changes to an external CDN, sanitise the response with DOMParser before inserting.
 - [ ] **A05 Security Misconfiguration — No Content-Security-Policy** — GitHub Pages does not support custom HTTP headers, so a server-side CSP cannot be set. A `<meta http-equiv="Content-Security-Policy">` tag may be added as a partial mitigation but must be tested against Firebase and payment scripts. Track for the move to a server-backed deployment.
