@@ -71,29 +71,71 @@ COMMIT_LIST=$(echo "$COMMIT_LINES" | grep -v '^$' | sed 's/^/- `/' | sed 's/$/`/
 PLURAL=$([ "$PUSH_COUNT" -eq 1 ] && echo "commit" || echo "commits")
 BODY="**${PUSH_COUNT} ${PLURAL} pushed** to \`${BRANCH}\` (${RANGE_DESC})"$'\n\n'"${COMMIT_LIST}"$'\n\n'"*Posted automatically by pre-push hook*"
 
-# Use node if available (reliable on Windows Git Bash), fall back to python3 or manual
-TMPFILE=$(mktemp /tmp/push-comment-XXXXXX.json)
-if command -v node &>/dev/null; then
-    node -e "process.stdout.write(JSON.stringify({body: process.argv[1]}))" "$BODY" > "$TMPFILE"
-elif python3 -c "" 2>/dev/null; then
-    python3 -c "import json,sys; print(json.dumps({'body': sys.argv[1]}))" "$BODY" > "$TMPFILE"
-else
-    # Fallback: manual JSON (safe for ASCII-only content)
-    ESCAPED=$(echo "$BODY" | sed 's/\\/\\\\/g; s/"/\\"/g' | tr '\n' '↵' | sed 's/↵/\\n/g')
-    echo "{\"body\":\"$ESCAPED\"}" > "$TMPFILE"
-fi
-
-# ── 6. Post the PR comment ────────────────────────────────────────────────────
+# ── 6. Reply to open review threads, or post standalone if none ───────────────
 REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null || true)
+OWNER=${REPO%%/*}
+REPONAME=${REPO##*/}
 PR_URL="https://github.com/${REPO}/pull/${PR_NUMBER}"
 
-echo "pre-push: posting push summary to PR #${PR_NUMBER} ('${PR_TITLE}')…" >&2
-gh pr comment "$PR_NUMBER" --body-file "$TMPFILE" >/dev/null 2>&1 || true
-rm -f "$TMPFILE"
+# Query unresolved review threads via GraphQL
+THREADS_FILE=$(mktemp /tmp/pr-threads-XXXXXX.json)
+gh api graphql \
+    -F owner="$OWNER" -F repo="$REPONAME" -F number="$PR_NUMBER" \
+    -f query='query($owner:String!,$repo:String!,$number:Int!){repository(owner:$owner,name:$repo){pullRequest(number:$number){reviewThreads(first:50){nodes{id isResolved comments(first:1){nodes{databaseId}}}}}}}' \
+    > "$THREADS_FILE" 2>/dev/null || echo '{"data":null}' > "$THREADS_FILE"
 
-echo "" >&2
-echo "  ✔ PR comment posted" >&2
-echo "  → ${PR_URL}" >&2
-echo "" >&2
+THREAD_COUNT=$(node -e "
+const fs=require('fs');
+const d=JSON.parse(fs.readFileSync(process.argv[1],'utf8'));
+const n=(d.data?.repository?.pullRequest?.reviewThreads?.nodes||[])
+  .filter(t=>!t.isResolved&&t.comments.nodes.length>0).length;
+process.stdout.write(String(n));
+" "$THREADS_FILE" 2>/dev/null || echo "0")
+
+echo "pre-push: PR #${PR_NUMBER} — ${THREAD_COUNT} unresolved review thread(s)…" >&2
+
+# Encode body as JSON for REST API (replies endpoint)
+REPLY_JSON=$(mktemp /tmp/pr-reply-XXXXXX.json)
+node -e "process.stdout.write(JSON.stringify({body:process.argv[1]}))" "$BODY" > "$REPLY_JSON" 2>/dev/null || \
+    { ESCAPED=$(printf '%s' "$BODY" | sed 's/\\/\\\\/g; s/"/\\"/g'); printf '{"body":"%s"}' "$ESCAPED" > "$REPLY_JSON"; }
+
+# Plain-text body for standalone comment fallback
+REPLY_TXT=$(mktemp /tmp/pr-reply-XXXXXX.md)
+printf '%s' "$BODY" > "$REPLY_TXT"
+
+if [[ "${THREAD_COUNT:-0}" -gt 0 ]]; then
+    RESOLVED=0
+    while IFS=$'\t' read -r THREAD_ID COMMENT_DB_ID; do
+        # Reply to the thread's root comment
+        gh api "/repos/${REPO}/pulls/${PR_NUMBER}/comments/${COMMENT_DB_ID}/replies" \
+            --method POST --input "$REPLY_JSON" >/dev/null 2>&1 || true
+        # Mark the thread resolved
+        gh api graphql \
+            -F threadId="$THREAD_ID" \
+            -f query='mutation($threadId:ID!){resolveReviewThread(input:{threadId:$threadId}){thread{isResolved}}}' \
+            >/dev/null 2>&1 || true
+        RESOLVED=$(( RESOLVED + 1 ))
+    done < <(node -e "
+const fs=require('fs');
+const d=JSON.parse(fs.readFileSync(process.argv[1],'utf8'));
+(d.data?.repository?.pullRequest?.reviewThreads?.nodes||[])
+  .filter(t=>!t.isResolved&&t.comments.nodes.length>0)
+  .forEach(t=>console.log(t.id+'\t'+t.comments.nodes[0].databaseId));
+" "$THREADS_FILE" 2>/dev/null || true)
+
+    rm -f "$REPLY_JSON" "$REPLY_TXT" "$THREADS_FILE"
+    echo "" >&2
+    echo "  ✔ ${RESOLVED} review thread(s) replied to and resolved" >&2
+    echo "  → ${PR_URL}" >&2
+    echo "" >&2
+else
+    # No open review threads — post as a standalone push summary comment
+    gh pr comment "$PR_NUMBER" --body-file "$REPLY_TXT" >/dev/null 2>&1 || true
+    rm -f "$REPLY_JSON" "$REPLY_TXT" "$THREADS_FILE"
+    echo "" >&2
+    echo "  ✔ PR comment posted (no open review threads)" >&2
+    echo "  → ${PR_URL}" >&2
+    echo "" >&2
+fi
 
 exit 0

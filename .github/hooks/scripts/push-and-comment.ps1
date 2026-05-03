@@ -85,27 +85,65 @@ if (-not $commitLines) {
 
 $commitList = ($commitLines | ForEach-Object { "- ``$_``" }) -join "`n"
 $pushedCount = ($commitLines | Measure-Object).Count
-
-# ── 6. Write comment body to temp JSON (avoids PowerShell backtick escaping) ──
-$tempFile = [System.IO.Path]::GetTempFileName() -replace '\.tmp$', '.json'
 $body = "**$pushedCount commit$(if ($pushedCount -ne 1) {'s'}) pushed** to \`$branch\` ($rangeDesc)`n`n$commitList`n`n*Posted automatically by push-and-comment.ps1*"
 
-@{ body = $body } | ConvertTo-Json -Compress | Set-Content -Path $tempFile -Encoding UTF8
+# ── 7. Reply to open review threads, or post standalone if none ──────────────
+$repoView  = gh repo view --json nameWithOwner,owner,name 2>$null | ConvertFrom-Json
+$repoFull  = $repoView.nameWithOwner
+$prUrl     = "https://github.com/$repoFull/pull/$prNumber"
 
-# ── 7. Post the comment ───────────────────────────────────────────────────────
-Write-Host "push-and-comment: posting comment to PR #$prNumber ('$prTitle')…"
-gh pr comment $prNumber --body-file $tempFile
-$commentExit = $LASTEXITCODE
-Remove-Item $tempFile -ErrorAction SilentlyContinue
+$threadsRaw = gh api graphql `
+    -F owner=$repoView.owner.login -F repo=$repoView.name -F number=$prNumber `
+    -f query='query($owner:String!,$repo:String!,$number:Int!){repository(owner:$owner,name:$repo){pullRequest(number:$number){reviewThreads(first:50){nodes{id isResolved comments(first:1){nodes{databaseId}}}}}}}' `
+    2>$null
 
-if ($commentExit -eq 0) {
-    $prUrl = "https://github.com/LinchaiTheShinigami/healthapp-website-demo/pull/$prNumber"
+$unresolved = @()
+if ($threadsRaw) {
+    $allThreads = ($threadsRaw | ConvertFrom-Json).data.repository.pullRequest.reviewThreads.nodes
+    $unresolved = @($allThreads | Where-Object { -not $_.isResolved -and $_.comments.nodes.Count -gt 0 })
+}
+
+Write-Host "push-and-comment: PR #$prNumber — $($unresolved.Count) unresolved review thread(s)…"
+
+if ($unresolved.Count -gt 0) {
+    # JSON body for REST API replies endpoint
+    $replyJsonFile = [System.IO.Path]::GetTempFileName() -replace '\.tmp$', '.json'
+    @{ body = $body } | ConvertTo-Json -Compress | Set-Content -Path $replyJsonFile -Encoding UTF8
+
+    $resolved = 0
+    foreach ($thread in $unresolved) {
+        $commentId = $thread.comments.nodes[0].databaseId
+        # Reply to the thread's root comment
+        gh api "/repos/$repoFull/pulls/$prNumber/comments/$commentId/replies" `
+            --method POST --input $replyJsonFile 2>$null | Out-Null
+        # Resolve the thread via GraphQL
+        gh api graphql -F threadId=$thread.id `
+            -f query='mutation($threadId:ID!){resolveReviewThread(input:{threadId:$threadId}){thread{isResolved}}}' `
+            2>$null | Out-Null
+        $resolved++
+    }
+    Remove-Item $replyJsonFile -ErrorAction SilentlyContinue
+
     Write-Host ""
-    Write-Host "  ✔ PR comment posted"
+    Write-Host "  ✔ $resolved review thread(s) replied to and resolved"
     Write-Host "  → $prUrl"
     Write-Host ""
 } else {
-    Write-Host "push-and-comment: comment post failed (exit $commentExit) — push was still successful."
+    # No open review threads — post as a standalone push summary comment
+    $bodyFile = [System.IO.Path]::GetTempFileName() -replace '\.tmp$', '.md'
+    Set-Content -Path $bodyFile -Value $body -Encoding UTF8 -NoNewline
+    gh pr comment $prNumber --body-file $bodyFile 2>$null | Out-Null
+    $commentExit = $LASTEXITCODE
+    Remove-Item $bodyFile -ErrorAction SilentlyContinue
+
+    if ($commentExit -eq 0) {
+        Write-Host ""
+        Write-Host "  ✔ PR comment posted (no open review threads)"
+        Write-Host "  → $prUrl"
+        Write-Host ""
+    } else {
+        Write-Host "push-and-comment: comment post failed (exit $commentExit) — push was still successful."
+    }
 }
 
 exit 0
