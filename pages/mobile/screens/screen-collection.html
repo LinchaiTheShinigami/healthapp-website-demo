@@ -57,7 +57,7 @@
 
     <script>
         (function(){
-            const price = parseFloat(sessionStorage.getItem('packagePrice') || '0') || 0;
+            const price = Number.parseFloat(sessionStorage.getItem('packagePrice') || '0') || 0;
             const el = document.getElementById('total-line');
             el.textContent = `Total Price: £${price.toFixed(2)}`;
         })();

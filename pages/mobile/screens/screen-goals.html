@@ -19,10 +19,10 @@
             if (!root) return;
             root.querySelectorAll('.goal-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
-                    const goal = btn.getAttribute('data-goal') || btn.textContent.trim();
-                    try { sessionStorage.setItem('selectedGoal', goal); } catch(e) {}
-                    if (window.navigateToScreen) {
-                        window.navigateToScreen('screen-review');
+                    const goal = btn.dataset.goal || btn.textContent.trim();
+                    try { sessionStorage.setItem('selectedGoal', goal); } catch {}
+                    if (globalThis.navigateToScreen) {
+                        globalThis.navigateToScreen('screen-review');
                     }
                 });
             });

@@ -9,9 +9,9 @@
         </div>
 
         <form class="receipt-form" onsubmit="return false;">
-            <label>Email address</label>
+            <label for="receipt-email">Email address</label>
             <input id="receipt-email" type="email" placeholder="your@email.com" required />
-            <label>Name (optional)</label>
+            <label for="receipt-name">Name (optional)</label>
             <input id="receipt-name" type="text" placeholder="Your name" />
             <button type="button" class="btn-primary" data-target="screen-home">Email me a copy of the receipt</button>
         </form>
@@ -67,7 +67,7 @@
                         x,
                         y,
                         size: 6 + Math.random()*7,
-                        color: colors[(Math.random()*colors.length)|0],
+                        color: colors[Math.trunc(Math.random()*colors.length)],
                         angle: Math.random()*Math.PI,
                         angVel: (-2+Math.random()*4) * 0.06,
                         vx: fromRight ? -speedX : speedX, // shoot inward from sides
@@ -120,8 +120,8 @@
                 return `AYU-${y}${m}${day}-${seg}`;
             }
             let id = null;
-            try { id = sessionStorage.getItem('orderId') || null; } catch(e) {}
-            if (!id) { id = generateOrderId(); try { sessionStorage.setItem('orderId', id); } catch(e) {} }
+            try { id = sessionStorage.getItem('orderId') || null; } catch {}
+            if (!id) { id = generateOrderId(); try { sessionStorage.setItem('orderId', id); } catch {} }
             const el = document.getElementById('order-number');
             if (el) el.textContent = id;
         })();

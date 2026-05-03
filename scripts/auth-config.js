@@ -1,5 +1,5 @@
 (function () {
-  window.AYUTA_FIREBASE_CONFIG = window.AYUTA_FIREBASE_CONFIG || {
+  globalThis.AYUTA_FIREBASE_CONFIG = globalThis.AYUTA_FIREBASE_CONFIG || {
     apiKey: "AIzaSyCbRBySrRFVO4HJXdPaJsyDJhEwCxyx6Cw",
     authDomain: "ayuta-website-4643b.firebaseapp.com",
     projectId: "ayuta-website-4643b",
@@ -8,7 +8,7 @@
     appId: "1:74186439038:web:ef81b06bf3bcbc620b9b2f"
   };
 
-  window.AYUTA_AUTH_SETTINGS = window.AYUTA_AUTH_SETTINGS || {
+  globalThis.AYUTA_AUTH_SETTINGS = globalThis.AYUTA_AUTH_SETTINGS || {
     enableEmailVerification: true,
     emailVerificationContinueUrl: "https://ayuta.co.uk/pages/profile.html",
     passwordResetContinueUrl: "https://ayuta.co.uk/"

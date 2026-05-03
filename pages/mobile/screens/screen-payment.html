@@ -42,7 +42,7 @@
         .pm-google { background:#fff; color:#1b2538; }
         .pm-primary { background:#5b68ff; border-color:#5b68ff; color:#fff; }
 
-        .pay-separator { display:flex; align-items:center; justify-content:center; gap:10px; color:#5b6c82; font-weight:700; margin:10px 0; }
+        .pay-separator { display:flex; align-items:center; justify-content:center; gap:10px; color:#424f5f; font-weight:700; margin:10px 0; }
         .pay-separator::before, .pay-separator::after { content:""; flex:1; height:1px; background:rgba(27,37,56,0.12); }
         .pay-separator span { white-space:nowrap; }
         .pm-logo { height:18px; width:auto; display:inline-block; }
@@ -52,11 +52,10 @@
 
     <script>
         (function(){
-            function formatGBP(n){ return String.fromCharCode(163) + n.toFixed(2); }
+            function formatGBP(n){ return String.fromCodePoint(163) + n.toFixed(2); }
             const priceRaw = (sessionStorage.getItem('packagePrice') || '99');
-            const name = sessionStorage.getItem('packageName') || 'Selected Package';
-            const price = isNaN(parseFloat(priceRaw)) ? 99 : parseFloat(priceRaw);
-            const shipping = (isNaN(parseFloat(sessionStorage.getItem("shippingCost"))) ? 0 : parseFloat(sessionStorage.getItem("shippingCost")));
+            const price = Number.isNaN(Number.parseFloat(priceRaw)) ? 99 : Number.parseFloat(priceRaw);
+            const shipping = (Number.isNaN(Number.parseFloat(sessionStorage.getItem("shippingCost"))) ? 0 : Number.parseFloat(sessionStorage.getItem("shippingCost")));
             const taxes = Math.round(price * 0.05 * 100) / 100; // 5%
             const total = Math.round((price + shipping + taxes) * 100) / 100;
 

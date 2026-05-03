@@ -99,7 +99,7 @@ const CLINIC_DIRECTORY = {
     name: 'Guildford',
     region: 'Surrey',
     lat: 51.238,
-    lng: -0.570,
+    lng: -0.57,
     summary: 'A Surrey route with broad weekday coverage for clients who want clinic collection closer to home.',
     address: '36-37 Castle Street, Guildford, GU1 3UQ',
     hours: 'Monday to Friday, 08:00 to 14:30',
@@ -276,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('[data-clinic-id]').forEach((card) => {
     card.addEventListener('click', () => {
       const clinic = CLINIC_DIRECTORY[card.dataset.clinicId];
-      if (clinic && clinic.lat && clinic.lng) {
+      if (clinic?.lat && clinic.lng) {
         map.flyTo([clinic.lat, clinic.lng], 13, { duration: 0.8 });
       }
     });

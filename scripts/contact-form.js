@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
-    const recipient = form.getAttribute('data-mailto') || 'ayuta.info@gmail.com';
+    const recipient = form.dataset.mailto || 'ayuta.info@gmail.com';
     const nameField = form.querySelector('[name="name"]');
     const emailField = form.querySelector('[name="email"]');
     const reasonField = form.querySelector('[name="reason"]');
@@ -18,6 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const body = encodeURIComponent(`Name: ${nameValue}\nEmail: ${emailValue}\nReason: ${reasonValue}\n\n${messageValue}`);
     const mailto = `mailto:${recipient}?subject=${subject}&body=${body}`;
 
-    window.location.href = mailto;
+    globalThis.location.href = mailto;
   });
 });

@@ -1,6 +1,6 @@
 (function () {
-  const firebaseConfig = window.AYUTA_FIREBASE_CONFIG || {};
-  const settings = window.AYUTA_AUTH_SETTINGS || {};
+  const firebaseConfig = globalThis.AYUTA_FIREBASE_CONFIG || {};
+  const settings = globalThis.AYUTA_AUTH_SETTINGS || {};
   const requiredConfigKeys = ['apiKey', 'authDomain', 'projectId', 'appId'];
   const isConfigured = requiredConfigKeys.every((key) => {
     const value = firebaseConfig[key];
@@ -13,8 +13,12 @@
   const setTone = (tone) => {
     if (pageElements.card) pageElements.card.dataset.tone = tone;
     if (pageElements.badge) {
-      pageElements.badge.textContent =
-        tone === 'error' ? 'Link problem' : tone === 'success' ? 'Complete' : tone === 'loading' ? 'Checking link' : 'Secure action';
+      let badgeText;
+      if (tone === 'error') badgeText = 'Link problem';
+      else if (tone === 'success') badgeText = 'Complete';
+      else if (tone === 'loading') badgeText = 'Checking link';
+      else badgeText = 'Secure action';
+      pageElements.badge.textContent = badgeText;
     }
   };
 
@@ -37,8 +41,8 @@
       normalizeText(settings.passwordResetContinueUrl) ||
       normalizeText(settings.emailVerificationContinueUrl);
     if (configured) return configured;
-    if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
-      return `${window.location.origin}/`;
+    if (globalThis.location.protocol === 'http:' || globalThis.location.protocol === 'https:') {
+      return `${globalThis.location.origin}/`;
     }
     return '/';
   };
@@ -48,10 +52,10 @@
     const input = normalizeText(value);
     if (!input) return fallback;
     try {
-      const url = new URL(input, window.location.origin);
-      if (url.origin !== window.location.origin) return fallback;
+      const url = new URL(input, globalThis.location.origin);
+      if (url.origin !== globalThis.location.origin) return fallback;
       return url.toString();
-    } catch (error) {
+    } catch {
       return fallback;
     }
   };
@@ -82,11 +86,11 @@
   };
 
   const getAuth = (lang) => {
-    if (!window.firebase) {
+    if (!globalThis.firebase) {
       throw new Error('Authentication service could not be loaded.');
     }
-    const app = window.firebase.apps && window.firebase.apps.length ? window.firebase.app() : window.firebase.initializeApp(firebaseConfig);
-    const auth = window.firebase.auth(app);
+    const app = globalThis.firebase.apps?.length ? globalThis.firebase.app() : globalThis.firebase.initializeApp(firebaseConfig);
+    const auth = globalThis.firebase.auth(app);
     if (lang) auth.languageCode = lang;
     return auth;
   };
@@ -104,9 +108,7 @@
 
   const handleVerifyEmail = async (auth, actionCode, continueUrl) => {
     await auth.applyActionCode(actionCode);
-    if (auth.currentUser) {
-      await auth.currentUser.reload();
-    }
+    await auth.currentUser?.reload();
     finalizeSuccess(
       'Email verified',
       'Your email address has been verified. You can return to ayuta and continue in the signed-in flow.',
@@ -117,7 +119,7 @@
 
   const handleRecoverEmail = async (auth, actionCode, continueUrl) => {
     const info = await auth.checkActionCode(actionCode);
-    const restoredEmail = normalizeText(info && info.data ? info.data.email : '');
+    const restoredEmail = normalizeText(info?.data?.email ?? '');
     await auth.applyActionCode(actionCode);
     finalizeSuccess(
       'Email restored',
@@ -206,7 +208,7 @@
       return;
     }
 
-    const params = new URLSearchParams(window.location.search);
+    const params = new URLSearchParams(globalThis.location.search);
     const mode = normalizeText(params.get('mode'));
     const actionCode = normalizeText(params.get('oobCode'));
     const continueUrl = resolveContinueUrl(params.get('continueUrl'));
