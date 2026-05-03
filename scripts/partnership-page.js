@@ -1,6 +1,6 @@
 // Paste your deployed Apps Script Web App URL here.
 // See docs/partnership-enquiry-apps-script.gs for setup instructions.
-const PARTNERSHIP_APPS_SCRIPT_URL = 'PASTE_YOUR_APPS_SCRIPT_URL_HERE';
+const PARTNERSHIP_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzGFN4wFju6tO3uw_5Uw4LcW4kL8BFlWstXwkiYqMoDkfS6GkWijGSDBtCyvW188Eqe8A/exec';
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.querySelector('.partner-form');
