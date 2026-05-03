@@ -17,7 +17,7 @@
 ## Partnership Form
 
 - [x] **Wire Apps Script URL** — `apps-script/partnership-enquiry.gs` is deployed but `PARTNERSHIP_APPS_SCRIPT_URL` in `scripts/partnership-page.js` still contains the placeholder. Prerequisites: (1) enable 2-Step Verification on the Google account at https://myaccount.google.com/security, (2) deploy the script as a Web App (Execute as: Me, Anyone can access), (3) paste the generated URL into the constant.
-- [ ] **Switch notification email** — Replace `ayuta.info@gmail.com` with `partnerships@ayuta.co.uk` in `apps-script/partnership-enquiry.gs` once GoDaddy email routing is configured for that address.
+- [x] **Switch notification email** — Replace `ayuta.info@gmail.com` with `partnerships@ayuta.co.uk` in `apps-script/partnership-enquiry.gs` once GoDaddy email routing is configured for that address.
 
 ## Profile
 

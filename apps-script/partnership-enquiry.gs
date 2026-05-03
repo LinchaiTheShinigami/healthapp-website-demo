@@ -31,7 +31,7 @@
  */
 
 // ── CONFIG ──────────────────────────────────────────────────────────────────
-const NOTIFY_EMAIL  = 'ayuta.info@gmail.com'; // ← change to your inbox
+const NOTIFY_EMAIL  = 'partnerships@ayuta.co.uk'; // ← GoDaddy-routed inbox
 const SHEET_NAME    = 'Partnership Enquiries';
 // ─────────────────────────────────────────────────────────────────────────────
 
