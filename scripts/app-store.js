@@ -123,7 +123,7 @@
     return `AYU-${stamp}-${random}`;
   };
 
-  window.AyutaStore = {
+  globalThis.AyutaStore = {
     STORAGE_KEYS,
     loadState,
     saveState,

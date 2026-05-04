@@ -126,9 +126,8 @@
         </div>
     </main>
 
-    <div class="metric-modal" data-metric-modal hidden>
-        <div class="metric-modal-backdrop" data-metric-close></div>
-        <div class="metric-modal-panel" role="dialog" aria-modal="true" aria-labelledby="metric-modal-title">
+    <dialog class="metric-modal" data-metric-modal aria-labelledby="metric-modal-title">
+        <div class="metric-modal-panel">
             <button class="metric-modal-close" type="button" data-metric-close aria-label="Close biomarker detail">&times;</button>
             <p class="eyebrow">Biomarker detail</p>
             <h2 id="metric-modal-title">Biomarker</h2>
@@ -152,7 +151,7 @@
                 </article>
             </div>
         </div>
-    </div>
+    </dialog>
 
     <footer class="site-footer">
         <div class="container">

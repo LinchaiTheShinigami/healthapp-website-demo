@@ -194,18 +194,25 @@ body.clinic-modal-open {
     font-size: 0.78rem;
 }
 
-.clinic-modal {
+dialog.clinic-modal {
     position: fixed;
     inset: 0;
     z-index: 140;
-    display: grid;
-    place-items: center;
     padding: 22px;
+    border: 0;
+    background: transparent;
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0;
+    overflow: visible;
 }
 
-.clinic-modal-backdrop {
-    position: absolute;
-    inset: 0;
+dialog.clinic-modal[open] {
+    display: grid;
+    place-items: center;
+}
+
+dialog.clinic-modal::backdrop {
     background: rgba(12, 17, 15, 0.52);
     backdrop-filter: blur(10px);
 }
@@ -543,7 +550,7 @@ body.clinic-modal-open {
         height: 340px;
     }
 
-    .clinic-modal {
+    dialog.clinic-modal {
         padding: 12px;
     }
 

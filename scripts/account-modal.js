@@ -106,13 +106,13 @@
     const panes = modalRoot.querySelectorAll('[data-account-pane]');
 
     tabs.forEach((tab) => {
-      const isActive = tab.getAttribute('data-account-tab') === tabName;
+      const isActive = tab.dataset.accountTab === tabName;
       tab.classList.toggle('is-active', isActive);
       tab.setAttribute('aria-selected', String(isActive));
     });
 
     panes.forEach((pane) => {
-      const isActive = pane.getAttribute('data-account-pane') === tabName;
+      const isActive = pane.dataset.accountPane === tabName;
       pane.classList.toggle('is-active', isActive);
     });
 
@@ -281,7 +281,7 @@
     });
 
     modalRoot.querySelectorAll('[data-account-tab]').forEach((tab) => {
-      tab.addEventListener('click', () => setActiveTab(tab.getAttribute('data-account-tab')));
+      tab.addEventListener('click', () => setActiveTab(tab.dataset.accountTab));
     });
 
     bindLoginForm();
@@ -290,7 +290,7 @@
 
     root.addEventListener('ayuta:auth-updated', () => {
       const snapshot = getAuthSnapshot();
-      if (snapshot && snapshot.user && modalRoot.classList.contains('is-open')) {
+      if (snapshot?.user && modalRoot.classList.contains('is-open')) {
         closeModal();
       } else {
         prefillFields();

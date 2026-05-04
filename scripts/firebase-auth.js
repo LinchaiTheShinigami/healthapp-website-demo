@@ -1,6 +1,6 @@
 (function () {
-  const firebaseConfig = window.AYUTA_FIREBASE_CONFIG || {};
-  const settings = window.AYUTA_AUTH_SETTINGS || {};
+  const firebaseConfig = globalThis.AYUTA_FIREBASE_CONFIG || {};
+  const settings = globalThis.AYUTA_AUTH_SETTINGS || {};
   const requiredConfigKeys = ['apiKey', 'authDomain', 'projectId', 'appId'];
   const isConfigured = requiredConfigKeys.every((key) => {
     const value = firebaseConfig[key];
@@ -27,30 +27,30 @@
     readyResolve = resolve;
   });
 
-  const clone = (value) => JSON.parse(JSON.stringify(value));
+  const clone = (value) => structuredClone(value);
   const normalizeText = (value) => String(value || '').trim();
   const normalizeUrl = (value) => {
     const input = normalizeText(value);
     if (!input) return '';
     try {
-      return new URL(input, window.location.origin).toString();
-    } catch (error) {
+      return new URL(input, globalThis.location.origin).toString();
+    } catch {
       return '';
     }
   };
   const resolveDefaultContinueUrl = () => {
-    if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
-      return normalizeUrl(`${window.location.origin}/`);
+    if (globalThis.location.protocol === 'http:' || globalThis.location.protocol === 'https:') {
+      return normalizeUrl(`${globalThis.location.origin}/`);
     }
     return '';
   };
   const buildEmailActionSettings = (purpose) => {
-    const purposeUrl =
-      purpose === 'verifyEmail'
-        ? settings.emailVerificationContinueUrl
-        : purpose === 'resetPassword'
-          ? settings.passwordResetContinueUrl
-          : '';
+    let purposeUrl = '';
+    if (purpose === 'verifyEmail') {
+      purposeUrl = settings.emailVerificationContinueUrl;
+    } else if (purpose === 'resetPassword') {
+      purposeUrl = settings.passwordResetContinueUrl;
+    }
     const url = normalizeUrl(purposeUrl || settings.emailContinueUrl || resolveDefaultContinueUrl());
     if (!url) return undefined;
     return {
@@ -60,8 +60,8 @@
   };
   const cacheStorage = (() => {
     try {
-      return window.sessionStorage;
-    } catch (error) {
+      return globalThis.sessionStorage;
+    } catch {
       return null;
     }
   })();
@@ -79,7 +79,7 @@
         return null;
       }
       return parsed.data;
-    } catch (error) {
+    } catch {
       return null;
     }
   };
@@ -94,7 +94,7 @@
           data
         })
       );
-    } catch (error) {
+    } catch {
       return;
     }
   };
@@ -104,7 +104,7 @@
     ['profile', 'orders', 'results'].forEach((scope) => {
       try {
         cacheStorage.removeItem(getCacheKey(scope, uid));
-      } catch (error) {
+      } catch {
         return;
       }
     });
@@ -136,7 +136,7 @@
   };
 
   const syncLocalMirror = () => {
-    const store = window.AyutaStore;
+    const store = globalThis.AyutaStore;
     if (!store || typeof store.loadState !== 'function' || typeof store.saveState !== 'function') return;
 
     const localState = store.loadState();
@@ -167,8 +167,8 @@
   const dispatchAuthUpdate = () => {
     syncLocalMirror();
     const detail = getSnapshot();
-    window.dispatchEvent(new CustomEvent('ayuta:auth-updated', { detail }));
-    window.dispatchEvent(new CustomEvent('ayuta:state-updated', { detail }));
+    globalThis.dispatchEvent(new CustomEvent('ayuta:auth-updated', { detail }));
+    globalThis.dispatchEvent(new CustomEvent('ayuta:state-updated', { detail }));
   };
 
   const mapAuthError = (error) => {
@@ -206,13 +206,13 @@
 
   const buildProfilePayload = (user, input) => ({
     uid: user.uid,
-    email: normalizeText(input && input.email ? input.email : user.email),
-    name: normalizeText(input && Object.prototype.hasOwnProperty.call(input, 'name') ? input.name : user.displayName),
-    phone: normalizeText(input && input.phone ? input.phone : ''),
+    email: normalizeText(input?.email ?? user.email),
+    name: normalizeText(Object.hasOwn(input ?? {}, 'name') ? input.name : user.displayName),
+    phone: normalizeText(input?.phone ?? ''),
     emailVerified: Boolean(user.emailVerified),
     createdAt:
-      normalizeText(input && input.createdAt ? input.createdAt : '') ||
-      normalizeText(state.profile && state.profile.createdAt ? state.profile.createdAt : '') ||
+      normalizeText(input?.createdAt ?? '') ||
+      normalizeText(state.profile?.createdAt ?? '') ||
       new Date().toISOString(),
     updatedAt: new Date().toISOString()
   });
@@ -267,7 +267,7 @@
       return;
     }
 
-    if (!window.firebase) {
+    if (!globalThis.firebase) {
       state.loading = false;
       state.ready = true;
       state.error = 'Authentication service could not be loaded.';
@@ -277,14 +277,14 @@
     }
 
     try {
-      const app = window.firebase.apps && window.firebase.apps.length ? window.firebase.app() : window.firebase.initializeApp(firebaseConfig);
-      auth = window.firebase.auth(app);
-      db = window.firebase.firestore(app);
+      const app = globalThis.firebase.apps?.length ? globalThis.firebase.app() : globalThis.firebase.initializeApp(firebaseConfig);
+      auth = globalThis.firebase.auth(app);
+      db = globalThis.firebase.firestore(app);
 
-      auth.setPersistence(window.firebase.auth.Auth.Persistence.LOCAL).catch(() => {});
+      auth.setPersistence(globalThis.firebase.auth.Auth.Persistence.LOCAL).catch(() => {});
 
       auth.onAuthStateChanged(async (firebaseUser) => {
-        const previousUid = state.user && state.user.uid;
+        const previousUid = state.user?.uid;
         state.user = firebaseUser;
         state.error = null;
 
@@ -540,7 +540,7 @@
     }
   };
 
-  window.AyutaAuth = {
+  globalThis.AyutaAuth = {
     whenReady,
     getSnapshot,
     getCurrentUser: () => (auth ? auth.currentUser : null),

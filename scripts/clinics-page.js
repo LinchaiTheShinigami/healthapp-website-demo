@@ -99,7 +99,7 @@ const CLINIC_DIRECTORY = {
     name: 'Guildford',
     region: 'Surrey',
     lat: 51.238,
-    lng: -0.570,
+    lng: -0.57,
     summary: 'A Surrey route with broad weekday coverage for clients who want clinic collection closer to home.',
     address: '36-37 Castle Street, Guildford, GU1 3UQ',
     hours: 'Monday to Friday, 08:00 to 14:30',
@@ -276,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('[data-clinic-id]').forEach((card) => {
     card.addEventListener('click', () => {
       const clinic = CLINIC_DIRECTORY[card.dataset.clinicId];
-      if (clinic && clinic.lat && clinic.lng) {
+      if (clinic?.lat && clinic.lng) {
         map.flyTo([clinic.lat, clinic.lng], 13, { duration: 0.8 });
       }
     });
@@ -303,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let lastTrigger = null;
 
   const closeModal = () => {
-    modal.hidden = true;
+    modal.close();
     document.body.classList.remove('clinic-modal-open');
     if (mapFrame) mapFrame.src = 'about:blank';
     if (lastTrigger instanceof HTMLElement) {
@@ -324,7 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
     access.textContent = clinic.access;
     renderClinicServices(services, clinic.services);
     mapFrame.src = buildMapSrc(clinic.mapQuery || clinic.address);
-    modal.hidden = false;
+    modal.showModal();
     document.body.classList.add('clinic-modal-open');
     if (closeButton instanceof HTMLElement) closeButton.focus();
   };
@@ -339,8 +339,12 @@ document.addEventListener('DOMContentLoaded', () => {
     button.addEventListener('click', closeModal);
   });
 
+  modal.addEventListener('click', (event) => {
+    if (event.target === modal) closeModal();
+  });
+
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && !modal.hidden) {
+    if (event.key === 'Escape' && modal.open) {
       closeModal();
     }
   });
