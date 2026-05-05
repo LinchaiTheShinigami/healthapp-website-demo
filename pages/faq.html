@@ -48,8 +48,8 @@
 <body>
 
 <nav class="faq-nav" aria-label="Site navigation">
-    <a href="../index.html" class="logo" aria-label="Ayuta Health home">Ayuta<span>.</span></a>
-    <a href="../index.html" class="back" aria-label="Back to Ayuta Health site">← Back to site</a>
+    <a href="../index.html" class="logo">Ayuta<span>.</span></a>
+    <a href="../index.html" class="back">← Back to site</a>
 </nav>
 
 <div class="faq-page">
@@ -60,7 +60,8 @@
         <p class="subhead">Everything you need to know before you order, while you wait, and after your results arrive.</p>
     </div>
 
-    <div class="filter-bar" role="group" aria-label="Filter questions by category">
+    <fieldset class="filter-bar">
+        <legend class="visually-hidden">Filter questions by category</legend>
         <button class="filter-btn active" onclick="filterCategory('all',this)" aria-pressed="true">All questions</button>
         <button class="filter-btn" onclick="filterCategory('ordering',this)" aria-pressed="false">Ordering</button>
         <button class="filter-btn" onclick="filterCategory('kits',this)" aria-pressed="false">Home kits</button>
@@ -68,7 +69,7 @@
         <button class="filter-btn" onclick="filterCategory('refunds',this)" aria-pressed="false">Refunds &amp; cancellations</button>
         <button class="filter-btn" onclick="filterCategory('subscriptions',this)" aria-pressed="false">Subscriptions</button>
         <button class="filter-btn" onclick="filterCategory('partnerships',this)" aria-pressed="false">Gym partnerships</button>
-    </div>
+    </fieldset>
 
     <!-- ORDERING -->
     <div class="faq-category" data-category="ordering">

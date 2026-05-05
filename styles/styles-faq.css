@@ -109,11 +109,24 @@ h1 {
 }
 
 /* ── Category filter tabs ────────────────────────────────── */
+.visually-hidden {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+}
+
 .filter-bar {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
     margin-bottom: 48px;
+    border: none;
+    padding: 0;
+    min-inline-size: unset;
 }
 
 .filter-btn {
