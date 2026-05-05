@@ -571,9 +571,18 @@
     window.addEventListener('pageshow', (event) => {
       if (event.persisted) {
         document.body.classList.remove('is-navigating-away');
+        // Force a synchronous reflow so the compositor picks up the style change
+        // immediately — without this, Chrome may leave the nav visually invisible
+        // even after the class is removed on bfcache restore.
+        void document.body.offsetWidth;
         if (transitionTimer) {
           window.clearTimeout(transitionTimer);
           transitionTimer = null;
+        }
+        // Re-run nav refresh so auth/cart state is current after being frozen.
+        const navRoot = document.querySelector('.site-nav');
+        if (navRoot && window.AyutaNav && typeof window.AyutaNav.refresh === 'function') {
+          window.AyutaNav.refresh(navRoot);
         }
       }
     });

@@ -163,3 +163,33 @@ if (navPlaceholder) {
       console.error(error);
     });
 }
+
+// On bfcache restore, scripts do not re-execute. If the nav fetch was still
+// in-flight when the browser froze the page, the placeholder may be empty
+// when the user returns. Re-fetch and re-initialise the nav in that case.
+window.addEventListener('pageshow', function (event) {
+  if (event.persisted && navPlaceholder && !navPlaceholder.querySelector('.site-nav')) {
+    fetch(getNavPath(basePath))
+      .then(function (response) {
+        if (!response.ok) throw new Error('Nav snippet not found');
+        return response.text();
+      })
+      .then(function (data) {
+        navPlaceholder.innerHTML = data;
+        var navRoot = navPlaceholder.querySelector('.site-nav');
+        if (!navRoot) return;
+        setNavLinks(navPlaceholder, basePath);
+        setActiveLink(navPlaceholder);
+        wireNavToggle(navRoot);
+        wireA11yControls(navRoot);
+        if (window.AyutaNav && typeof window.AyutaNav.init === 'function') {
+          window.AyutaNav.init(navRoot);
+        }
+        if (window.AyutaAccount && typeof window.AyutaAccount.init === 'function') {
+          window.AyutaAccount.init(navRoot);
+        }
+        window.dispatchEvent(new CustomEvent('ayuta:nav-ready', { detail: { navRoot: navRoot } }));
+      })
+      .catch(function (error) { console.error('Nav re-fetch on bfcache restore failed:', error); });
+  }
+});
