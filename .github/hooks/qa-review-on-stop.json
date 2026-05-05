@@ -3,8 +3,8 @@
     "Stop": [
       {
         "type": "command",
-        "windows": "powershell -File c:/Users/Aditya/source/repos/playbook/generalized/cli_tools/qa-review.ps1",
-        "command": "bash c:/Users/Aditya/source/repos/playbook/generalized/cli_tools/qa-review.sh",
+        "windows": "powershell -File .github/hooks/scripts/qa-review.ps1",
+        "command": "bash .github/hooks/scripts/qa-review.sh",
         "timeout": 120
       }
     ]

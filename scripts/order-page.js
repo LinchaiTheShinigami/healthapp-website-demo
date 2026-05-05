@@ -270,15 +270,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const getPaymentLinkUrl = (productId, collectionMethod) => {
     const products = stripePaymentLinks.products || {};
     const productLinks = products[productId] || {};
-    const base = productLinks[collectionMethod] || productLinks.default || '';
-    if (!base) return base;
-    const isLocalhost = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?/i.test(root.location.href);
-    if (isLocalhost) {
-      const returnUrl = `${root.location.origin}/pages/payment-return.html`;
-      const sep = base.includes('?') ? '&' : '?';
-      return `${base}${sep}return_url=${encodeURIComponent(returnUrl)}`;
-    }
-    return base;
+    return productLinks[collectionMethod] || productLinks.default || '';
   };
   const isConfiguredPaymentLink = (value) =>
     typeof value === 'string' && /^https?:\/\//i.test(value) && !value.includes('REPLACE_ME');
