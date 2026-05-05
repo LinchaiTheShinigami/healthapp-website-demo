@@ -564,6 +564,20 @@
   const bindPageTransitions = () => {
     if (pageTransitionBound) return;
 
+    // When the browser restores this page from the bfcache (back/forward),
+    // the DOM is frozen mid-navigation with is-navigating-away still on <body>,
+    // which sets pointer-events:none and opacity:0 — making the page unclickable.
+    // Clear it unconditionally on any pageshow so the page is always interactive.
+    window.addEventListener('pageshow', (event) => {
+      if (event.persisted) {
+        document.body.classList.remove('is-navigating-away');
+        if (transitionTimer) {
+          window.clearTimeout(transitionTimer);
+          transitionTimer = null;
+        }
+      }
+    });
+
     document.addEventListener('click', (event) => {
       // Match nav links OR any plain same-origin anchor
       const link = event.target.closest('a[href]');
