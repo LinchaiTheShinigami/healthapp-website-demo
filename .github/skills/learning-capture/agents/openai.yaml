@@ -1,5 +1,0 @@
-interface:
-  display_name: "Learning Capture"
-  short_description: "Save durable repo learnings into tasks, docs, or instructions"
-  default_prompt: "Review the recent work, identify durable learnings, and update the smallest appropriate repo files with concise, actionable guidance."
-

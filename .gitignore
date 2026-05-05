@@ -10,6 +10,5 @@ node_modules/
 docs/*.pdf
 
 # Tool metadata / dev dependencies (Playwright etc.)
-skills-lock.json
 package.json
 package-lock.json
