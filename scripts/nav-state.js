@@ -574,15 +574,15 @@
         // Force a synchronous reflow so the compositor picks up the style change
         // immediately — without this, Chrome may leave the nav visually invisible
         // even after the class is removed on bfcache restore.
-        void document.body.offsetWidth;
+        document.body.getBoundingClientRect();
         if (transitionTimer) {
-          window.clearTimeout(transitionTimer);
+          globalThis.clearTimeout(transitionTimer);
           transitionTimer = null;
         }
         // Re-run nav refresh so auth/cart state is current after being frozen.
         const navRoot = document.querySelector('.site-nav');
-        if (navRoot && window.AyutaNav && typeof window.AyutaNav.refresh === 'function') {
-          window.AyutaNav.refresh(navRoot);
+        if (navRoot && globalThis.AyutaNav && typeof globalThis.AyutaNav.refresh === 'function') {
+          globalThis.AyutaNav.refresh(navRoot);
         }
       }
     });

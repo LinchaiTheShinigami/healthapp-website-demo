@@ -176,19 +176,19 @@ window.addEventListener('pageshow', function (event) {
       })
       .then(function (data) {
         navPlaceholder.innerHTML = data;
-        var navRoot = navPlaceholder.querySelector('.site-nav');
+        const navRoot = navPlaceholder.querySelector('.site-nav');
         if (!navRoot) return;
         setNavLinks(navPlaceholder, basePath);
         setActiveLink(navPlaceholder);
         wireNavToggle(navRoot);
         wireA11yControls(navRoot);
-        if (window.AyutaNav && typeof window.AyutaNav.init === 'function') {
-          window.AyutaNav.init(navRoot);
+        if (globalThis.AyutaNav && typeof globalThis.AyutaNav.init === 'function') {
+          globalThis.AyutaNav.init(navRoot);
         }
-        if (window.AyutaAccount && typeof window.AyutaAccount.init === 'function') {
-          window.AyutaAccount.init(navRoot);
+        if (globalThis.AyutaAccount && typeof globalThis.AyutaAccount.init === 'function') {
+          globalThis.AyutaAccount.init(navRoot);
         }
-        window.dispatchEvent(new CustomEvent('ayuta:nav-ready', { detail: { navRoot: navRoot } }));
+        globalThis.dispatchEvent(new CustomEvent('ayuta:nav-ready', { detail: { navRoot: navRoot } }));
       })
       .catch(function (error) { console.error('Nav re-fetch on bfcache restore failed:', error); });
   }
