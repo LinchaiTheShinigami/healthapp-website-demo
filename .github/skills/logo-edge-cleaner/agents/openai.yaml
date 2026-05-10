@@ -1,4 +1,0 @@
-interface:
-  display_name: "Logo Edge Cleaner"
-  short_description: "Remove logo halos and sharpen transparent edges"
-  default_prompt: "Use the logo-edge-cleaner skill to clean a transparent logo asset, prefer the bundled PowerShell script, and report any parameter changes needed."

@@ -1,0 +1,384 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    --bg: #0d0f0e;
+    --surface: #141916;
+    --surface2: #1a1f1c;
+    --border: rgba(255,255,255,0.07);
+    --accent: #7eb89a;
+    --accent-glow: rgba(126,184,154,0.10);
+    --accent-dim: rgba(126,184,154,0.45);
+    --text: #e8e4dc;
+    --text-muted: rgba(232,228,220,0.52);
+    --text-dim: rgba(232,228,220,0.32);
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.75;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: -20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(ellipse, rgba(126,184,154,0.035) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ── Nav ─────────────────────────────────────────────────── */
+.faq-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 48px;
+    background: rgba(13,15,14,0.88);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+}
+
+.faq-nav .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 21px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--text);
+    text-decoration: none;
+}
+
+.faq-nav .logo span { color: var(--accent); }
+
+.faq-nav a.back {
+    font-size: 13px;
+    color: var(--text-muted);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: color 0.2s;
+}
+
+.faq-nav a.back:hover { color: var(--accent); }
+
+/* ── Page layout ─────────────────────────────────────────── */
+.faq-page {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 72px 32px 120px;
+}
+
+.page-header {
+    margin-bottom: 56px;
+    padding-bottom: 36px;
+    border-bottom: 1px solid var(--border);
+}
+
+.eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 18px;
+    font-weight: 500;
+    display: block;
+}
+
+h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 5.5vw, 52px);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 18px;
+}
+
+.subhead {
+    font-size: 15px;
+    color: var(--text-muted);
+    max-width: 500px;
+    line-height: 1.7;
+}
+
+/* ── Category filter tabs ────────────────────────────────── */
+.visually-hidden {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.filter-bar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 48px;
+    border: none;
+    padding: 0;
+    min-inline-size: unset;
+}
+
+.filter-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.filter-btn:hover {
+    border-color: var(--accent-dim);
+    color: var(--text);
+}
+
+.filter-btn.active {
+    background: var(--accent-glow);
+    border-color: rgba(126,184,154,0.3);
+    color: var(--accent);
+}
+
+/* ── Category section ────────────────────────────────────── */
+.faq-category { margin-bottom: 56px; }
+
+.category-label {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.category-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+
+/* ── Accordion ───────────────────────────────────────────── */
+.faq-item { border-bottom: 1px solid var(--border); }
+.faq-item:first-of-type { border-top: 1px solid var(--border); }
+
+.faq-q {
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 4px;
+    gap: 16px;
+    text-align: left;
+}
+
+.faq-q-text {
+    font-size: 15px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+    transition: color 0.2s;
+}
+
+.faq-q:hover .faq-q-text { color: var(--accent); }
+
+.faq-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s;
+}
+
+.faq-icon svg { transition: transform 0.25s; }
+
+.faq-item.open .faq-icon {
+    background: var(--accent-glow);
+    border-color: rgba(126,184,154,0.25);
+}
+
+.faq-item.open .faq-icon svg { transform: rotate(45deg); }
+
+.faq-a {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.3s ease;
+    padding: 0 4px;
+}
+
+.faq-item.open .faq-a {
+    max-height: 800px;
+    padding-bottom: 24px;
+}
+
+.faq-a p {
+    font-size: 14px;
+    color: rgba(232,228,220,0.68);
+    line-height: 1.85;
+    margin-bottom: 10px;
+}
+
+.faq-a p:last-child { margin-bottom: 0; }
+
+.faq-a a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(126,184,154,0.25);
+    padding-bottom: 1px;
+}
+
+/* ── Inline info boxes ───────────────────────────────────── */
+.faq-a .info-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 12px 0;
+}
+
+.faq-a .info-box p { margin: 0; font-size: 13.5px; }
+
+.faq-a .quick-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 12px 0;
+}
+
+@media (max-width: 500px) {
+    .faq-a .quick-grid { grid-template-columns: 1fr; }
+}
+
+.faq-a .qg-cell {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+}
+
+.faq-a .qg-cell .ql {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.faq-a .qg-cell .qv {
+    font-size: 13px;
+    color: var(--text);
+}
+
+.divider {
+    height: 1px;
+    background: var(--border);
+    margin: 56px 0;
+}
+
+/* ── Still need help block ───────────────────────────────── */
+.help-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 36px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+@media (max-width: 560px) {
+    .help-block { grid-template-columns: 1fr; }
+}
+
+.help-card {
+    border-right: 1px solid var(--border);
+    padding-right: 16px;
+}
+
+.help-card:last-child {
+    border-right: none;
+    padding-right: 0;
+}
+
+.help-card .hc-label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.help-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 8px;
+}
+
+.help-card p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 12px;
+}
+
+.help-card a {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(126,184,154,0.25);
+    padding-bottom: 1px;
+}
+
+/* ── Footer ──────────────────────────────────────────────── */
+footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 28px 32px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.03em;
+}
+
+footer a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(232,228,220,0.12);
+    padding-bottom: 1px;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 600px) {
+    .faq-nav { padding: 16px 20px; }
+    .faq-page { padding: 48px 20px 80px; }
+}
